@@ -29,6 +29,21 @@ int main()
                 Monster* monster = GameManager::generateMonster(player->getLevel);
 
                 GameManager::battle(player, monster);
+
+                //몬스터 사망 -> 경험치와 골드 아이템 획득
+
+                //골드 획득
+                //몬스터마다 골드 다르게 하고 dropGold 같은 함수로 드랍 골드 확인
+                //플레이어에 addGold 함수로 골드 추가, 골드 획득 문구 출력
+                player->addGold(monster->dropGold());
+
+                //경험치 획득 문구 출력, 레벨 업 문구 출력
+                player->addExp(50);
+
+                if (player->getExp() == 100)
+                {
+                    player->levelUp();
+                }
             }
             catch (const runtime_error& e)
             {
