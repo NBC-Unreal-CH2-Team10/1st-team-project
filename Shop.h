@@ -21,5 +21,3 @@ public:
 
 	void enter(Character* player); // 플레이어가 상점에 입장시 호출
 };
-
-///
