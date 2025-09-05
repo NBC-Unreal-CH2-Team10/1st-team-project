@@ -6,7 +6,7 @@ using namespace std;
 
 // 생성자: 부모(Item) 생성자를 호출해 이름을 정하고, 자신의 멤버 변수를 초기화한다.
 HealthPotion::HealthPotion()
-    : Item("체력 포션"), healthRestore(50)
+    : Item("체력 포션", 15), healthRestore(50)
 {
 }
 

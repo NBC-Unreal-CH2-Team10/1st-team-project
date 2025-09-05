@@ -126,6 +126,7 @@
     <ClCompile Include="AttackBoost.cpp" />
     <ClCompile Include="GameManager.cpp" />
     <ClCompile Include="HealthPotion.cpp" />
+    <ClCompile Include="Shop.cpp" />
     <ClCompile Include="TextRPGGame.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -133,6 +134,7 @@
     <ClInclude Include="GameManager.h" />
     <ClInclude Include="HealthPotion.h" />
     <ClInclude Include="item.h" />
+    <ClInclude Include="Shop.h" />
     <Content Include=".gitignore" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
