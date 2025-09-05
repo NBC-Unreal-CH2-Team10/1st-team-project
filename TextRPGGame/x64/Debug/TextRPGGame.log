@@ -1,0 +1,7 @@
+﻿  GameManager.cpp
+  TextRPGGame.cpp
+C:\Users\seodo\Desktop\code\git\TextRPGGame\GameManager.h(3,10): error C1083: 포함 파일을 열 수 없습니다. 'Character.h': No such file or directory
+  (소스 파일 'GameManager.cpp'을(를) 컴파일하는 중)
+  
+C:\Users\seodo\Desktop\code\git\TextRPGGame\TextRPGGame.cpp(5,10): error C1083: 포함 파일을 열 수 없습니다. 'GameManager': No such file or directory
+  코드를 생성하고 있습니다...
