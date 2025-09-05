@@ -74,7 +74,7 @@ int Character::getMaxHealth()
 
 void Character::addGold(int a)
 {
-	gold = a;
+	gold += a;
 	cout << a << "°ñµå¸¦ È¹µæÇß½À´Ï´Ù. ÇöÀç º¸À¯·® : " << gold << " G" << endl;
 	return;
 }
