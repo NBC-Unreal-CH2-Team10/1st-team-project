@@ -123,10 +123,17 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="AttackBoost.cpp" />
+    <ClCompile Include="HealthPotion.cpp" />
     <ClCompile Include="TextRPGGame.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Content Include=".gitignore" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="AttackBoost.h" />
+    <ClInclude Include="HealthPotion.h" />
+    <ClInclude Include="item.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
