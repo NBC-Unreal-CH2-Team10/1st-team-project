@@ -52,7 +52,7 @@ int Character::getAttack()
 
 void Character::setAttack(int buffAttack)
 {
-	attack += buffAttack;
+	attack = buffAttack;
 	return ;
 }
 
@@ -63,7 +63,7 @@ int Character::getHealth()
 
 void Character::setHealth(int a)
 {
-	health += a;
+	health = a;
 	return ;
 }
 
@@ -72,10 +72,9 @@ int Character::getMaxHealth()
 	return maxHealth;
 }
 
-void Character::addGold(int a)
+void Character::setGold(int a)
 {
-	gold += a;
-	cout << a << "°ñµå¸¦ È¹µæÇß½À´Ï´Ù. ÇöÀç º¸À¯·® : " << gold << " G" << endl;
+	gold = a;
 	return;
 }
 
@@ -84,9 +83,9 @@ int Character::getExp()
 	return experience;
 }
 
-void Character::addExp(int a)
+void Character::setExp(int a)
 {
-	experience += a;
+	experience = a;
 	return;
 }
 

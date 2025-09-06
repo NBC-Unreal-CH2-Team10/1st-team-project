@@ -41,11 +41,11 @@ public:
 	int getMaxHealth();
 
 	// Gold
-	void addGold(int a);
+	void setGold(int a);
 
 	// Exp
 	int getExp();
-	void addExp(int a);
+	void setExp(int a);
 
 	// Item
 	void useItem(int index);
