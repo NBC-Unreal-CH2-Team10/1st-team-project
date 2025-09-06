@@ -1,7 +1,7 @@
 #pragma once
 #include <string>
 #include <vector>
-
+#include "Item.h"
 
 class Character
 {
@@ -41,16 +41,20 @@ public:
 	int getMaxHealth();
 
 	// Gold
-	void addGold(int a);
+	void setGold(int a);
 
 	// Exp
 	int getExp();
-	void addExp(int a);
+	void setExp(int a);
 
 	// Item
 	void useItem(int index);
 
 	// inventory
+	void addInventory(Item* item);		// inventory ∫§≈Õø° »πµÊ æ∆¿Ã≈€ ≥÷±‚
+
 	void getInventory();
 
+	// Damage
+	void takeDamage(int a);
 };

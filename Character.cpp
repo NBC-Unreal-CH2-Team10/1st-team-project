@@ -72,10 +72,9 @@ int Character::getMaxHealth()
 	return maxHealth;
 }
 
-void Character::addGold(int a)
+void Character::setGold(int a)
 {
-	gold += a;
-	cout << a << "골드를 획득했습니다. 현재 보유량 : " << gold << " G" << endl;
+	gold = a;
 	return;
 }
 
@@ -84,18 +83,37 @@ int Character::getExp()
 	return experience;
 }
 
-void Character::addExp(int a)
+void Character::setExp(int a)
 {
-	experience += a;
+	experience = a;
 	return;
 }
 
+void Character::addInventory(Item* item)
+{
+	inventory.push_back(item);
+}
 void Character::getInventory()
 {
+	if (inventory.empty())
+	{
+		cout << "인벤토리가 비어있습니다.\n";
+	}
+	cout << "======== 인벤토리 ========\n";
+	for (size_t i = 0; i < inventory.size(); ++i)
+	{
+		cout << i+1 << " : " << inventory[i]->getName() << "\n";
+	}
+	return;
+}
+void Character::useItem(int index)
+{
 
 	return;
 }
-//void Character::useItem(int index)
-//{
 
-//}
+void Character::takeDamage(int a)
+{
+	health -= a;
+	return;
+}
