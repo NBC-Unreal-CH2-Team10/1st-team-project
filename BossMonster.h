@@ -5,17 +5,19 @@
 
 using namespace std;
 
-class Goblin : public Monster {
+class BossMonster : public Monster {
 private:
 	string name;
 	int health;
 	int attack;
 
 public:
-	Goblin(int level);
+	BossMonster(int level);
 	string getName() const override;
 	int getHealth() const override;
 	int getAttack() const override;
 	void takeDamage(int damage) override;
 	DropAll* dropAll() override;
 };
+
+

@@ -18,3 +18,13 @@ public:
 		return name;
 	}
 };
+
+//몬스터 처치 보상 묶음
+struct DropAll {
+	DropItem* dropItem;
+	int gold;
+	int exp;
+
+	DropAll(DropItem* dropItem, int gold, int exp)
+		:dropItem(dropItem), gold(gold), exp(exp){}
+};

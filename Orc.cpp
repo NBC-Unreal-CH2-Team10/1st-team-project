@@ -1,13 +1,13 @@
 #include <iostream>
 #include <string>
-#include "Goblin.h"
+#include "Orc.h"
 #include <random>
 
 using namespace std;
 
-Goblin::Goblin(int level)
+Orc::Orc(int level)
 {
-	name = "Goblin";
+	name = "Orc";
 
 	//랜덤 범위의 값 코드 chat Gpt의 도움을 받아서 작성했습니다.
 	random_device rd;	 //시드 생성 (난수 시드를 만드는 장치)
@@ -20,31 +20,31 @@ Goblin::Goblin(int level)
 	attack = attackDist(gen);
 }
 
-string Goblin::getName() const
+string Orc::getName() const
 {
 	return name;
 }
-int Goblin::getHealth() const
+int Orc::getHealth() const
 {
 	return health;
 }
-int Goblin::getAttack() const
+int Orc::getAttack() const
 {
 	return attack;
 }
 
 
 //몬스터 피격
-void Goblin::takeDamage(int damage)
+void Orc::takeDamage(int damage)
 {
 	health -= damage;
 	if (health < 0) health = 0;  // 0이 되면 죽어야하니 데미지가 오버될 떄 0으로 설정
 }
 
 //아이템 드랍 + 경험치 추가 + 골드 드랍 추가
-DropAll* Goblin::dropAll() {
+DropAll* Orc::dropAll() {
 	int exp = 50; // 경험치는 고정값으로 넣었습니다.
-	
+
 
 
 	//골드는 체력,공격력 설정과 같은 방법으로 랜덤으로 드랍하게 했습니다.
