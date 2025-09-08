@@ -11,7 +11,7 @@ private:
 
 public:
 	//생성자
-	DropItem(string& name) : name(name) {}
+	DropItem(const string& name) : name(name) {}
 
 	string getName() const
 	{
@@ -19,12 +19,3 @@ public:
 	}
 };
 
-//몬스터 처치 보상 묶음
-struct DropAll {
-	DropItem* dropItem;
-	int gold;
-	int exp;
-
-	DropAll(DropItem* dropItem, int gold, int exp)
-		:dropItem(dropItem), gold(gold), exp(exp){}
-};

@@ -10,6 +10,9 @@ private:
 	string name;
 	int health;
 	int attack;
+	int maxHealth;
+	int exp;
+	int gold;
 
 public:
 	BossMonster(int level);
@@ -17,7 +20,12 @@ public:
 	int getHealth() const override;
 	int getAttack() const override;
 	void takeDamage(int damage) override;
-	DropAll* dropAll() override;
+
+	int getMaxHealth() const override;
+	int getExp() const override;
+	int getGold() const override;
+
+	DropItem* dropItem() override;
 };
 
 
