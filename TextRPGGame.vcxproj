@@ -134,7 +134,6 @@
   <ItemGroup>
     <ClInclude Include="AttackBoost.h" />
     <ClInclude Include="Character.h" />
-    <ClInclude Include="DropItem.h" />
     <ClInclude Include="GameManager.h" />
     <ClInclude Include="Goblin.h" />
     <ClInclude Include="HealthPotion.h" />

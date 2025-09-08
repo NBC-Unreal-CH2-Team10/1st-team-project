@@ -9,14 +9,23 @@ Goblin::Goblin(int level)
 {
 	name = "Goblin";
 
-	//·£´ı ¹üÀ§ÀÇ °ª ÄÚµå chat GptÀÇ µµ¿òÀ» ¹Ş¾Æ¼­ ÀÛ¼ºÇß½À´Ï´Ù.
-	random_device rd;	 //½Ãµå »ı¼º (³­¼ö ½Ãµå¸¦ ¸¸µå´Â ÀåÄ¡)
-	mt19937 gen(rd());	 //¿£Áø ÃÊ±âÈ­ (Mersenne Twister 19937 ¾Ë°í¸®Áò ±â¹İÀÇ ³­¼ö »ı¼º±â)
+	exp = 50;
 
-	uniform_int_distribution<int> healthDist(level * 20, level * 30);	//¹üÀ§ ¼³Á¤ (level * 20 ~ level * 30)
-	uniform_int_distribution<int> attackDist(level * 5, level * 10);	//¹üÀ§ ¼³Á¤ (level * 5 ~ level * 10)
+	//ëœë¤ ë²”ìœ„ì˜ ê°’ ì½”ë“œ chat Gptì˜ ë„ì›€ì„ ë°›ì•„ì„œ ì‘ì„±í–ˆìŠµë‹ˆë‹¤.
+	random_device rd;	 //ì‹œë“œ ìƒì„± (ë‚œìˆ˜ ì‹œë“œë¥¼ ë§Œë“œëŠ” ì¥ì¹˜)
+	mt19937 gen(rd());	 //ì—”ì§„ ì´ˆê¸°í™” (Mersenne Twister 19937 ì•Œê³ ë¦¬ì¦˜ ê¸°ë°˜ì˜ ë‚œìˆ˜ ìƒì„±ê¸°)
+
+	uniform_int_distribution<int> healthDist(level * 20, level * 30);	//ë²”ìœ„ ì„¤ì • (level * 20 ~ level * 30)
+	uniform_int_distribution<int> attackDist(level * 5, level * 10);	//ë²”ìœ„ ì„¤ì • (level * 5 ~ level * 10)
+
+	uniform_int_distribution<int> goldDist(1, 5);  // 1~5ê³¨ë“œ
+	gold = goldDist(gen);
+
 
 	health = healthDist(gen);
+
+	maxHealth = health;
+
 	attack = attackDist(gen);
 }
 
@@ -32,17 +41,41 @@ int Goblin::getAttack() const
 {
 	return attack;
 }
+int Goblin::getMaxHealth() const
+{
+	return maxHealth;
+}
+int Goblin::getExp() const
+{
+	return exp;
+}
+int Goblin::getGold() const
+{
+	return gold;
+}
 
 
-//¸ó½ºÅÍ ÇÇ°İ
+//ëª¬ìŠ¤í„° í”¼ê²©
 void Goblin::takeDamage(int damage)
 {
 	health -= damage;
-	if (health < 0) health = 0;  // 0ÀÌ µÇ¸é Á×¾î¾ßÇÏ´Ï µ¥¹ÌÁö°¡ ¿À¹öµÉ ‹š 0À¸·Î ¼³Á¤
+	if (health < 0) health = 0;  // 0ì´ ë˜ë©´ ì£½ì–´ì•¼í•˜ë‹ˆ ë°ë¯¸ì§€ê°€ ì˜¤ë²„ë  Â‹Âš 0ìœ¼ë¡œ ì„¤ì •
 }
 
-//¾ÆÀÌÅÛ µå¶ø
-DropItem* Goblin::dropItem()
-{
-	return new DropItem("sword");
+//ì•„ì´í…œ ë“œë
+DropItem* Goblin::dropItem() {
+
+	random_device rd;
+	mt19937 gen(rd());
+
+	//FMathì— RandRangeëŠ” ì–¸ë¦¬ì–¼ ì „ìš© ë¼ì´ë¸ŒëŸ¬ë¦¬ë¼ ì‚¬ìš©í•˜ì§€ ëª»í•œë‹¤ê³  í•˜ë„¤ìš”.. 
+	uniform_int_distribution<int> chance(0, 1);
+	
+	//50%í™•ë¥ ë¡œ ë“œë
+	if (chance(gen) == 1) {
+		return new DropItem("HealthPotion");
+	}
+
+	//ë“œëì‹¤íŒ¨
+	return nullptr;
 }
