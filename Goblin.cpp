@@ -1,7 +1,7 @@
 #include <iostream>
 #include <string>
-#include <Goblin.h>
 #include <random>
+#include "Goblin.h"
 
 using namespace std;
 

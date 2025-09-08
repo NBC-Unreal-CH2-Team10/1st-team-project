@@ -124,16 +124,22 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="AttackBoost.cpp" />
+    <ClCompile Include="Character.cpp" />
     <ClCompile Include="GameManager.cpp" />
+    <ClCompile Include="Goblin.cpp" />
     <ClCompile Include="HealthPotion.cpp" />
     <ClCompile Include="Shop.cpp" />
     <ClCompile Include="TextRPGGame.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="AttackBoost.h" />
+    <ClInclude Include="Character.h" />
+    <ClInclude Include="DropItem.h" />
     <ClInclude Include="GameManager.h" />
+    <ClInclude Include="Goblin.h" />
     <ClInclude Include="HealthPotion.h" />
     <ClInclude Include="item.h" />
+    <ClInclude Include="Monster.h" />
     <ClInclude Include="Shop.h" />
     <Content Include=".gitignore" />
   </ItemGroup>
