@@ -1,13 +1,13 @@
 #include <iostream>
 #include <string>
-#include "Goblin.h"
+#include "Orc.h"
 #include <random>
 
 using namespace std;
 
-Goblin::Goblin(int level)
+Orc::Orc(int level)
 {
-	name = "Goblin";
+	name = "Orc";
 
 	exp = 50;
 
@@ -21,7 +21,6 @@ Goblin::Goblin(int level)
 	uniform_int_distribution<int> goldDist(1, 5);  // 1~5골드
 	gold = goldDist(gen);
 
-
 	health = healthDist(gen);
 
 	maxHealth = health;
@@ -29,48 +28,47 @@ Goblin::Goblin(int level)
 	attack = attackDist(gen);
 }
 
-string Goblin::getName() const
+string Orc::getName() const
 {
 	return name;
 }
-int Goblin::getHealth() const
+int Orc::getHealth() const
 {
 	return health;
 }
-int Goblin::getAttack() const
+int Orc::getAttack() const
 {
 	return attack;
 }
-int Goblin::getMaxHealth() const
+int Orc::getMaxHealth() const
 {
 	return maxHealth;
 }
-int Goblin::getExp() const
+int Orc::getExp() const
 {
 	return exp;
 }
-int Goblin::getGold() const
+int Orc::getGold() const
 {
 	return gold;
 }
 
-
 //몬스터 피격
-void Goblin::takeDamage(int damage)
+void Orc::takeDamage(int damage)
 {
 	health -= damage;
 	if (health < 0) health = 0;  // 0이 되면 죽어야하니 데미지가 오버될 떄 0으로 설정
 }
 
 //아이템 드랍
-DropItem* Goblin::dropItem() {
+DropItem* Orc::dropItem() {
 
 	random_device rd;
 	mt19937 gen(rd());
 
 	//FMath에 RandRange는 언리얼 전용 라이브러리라 사용하지 못한다고 하네요.. 
 	uniform_int_distribution<int> chance(0, 1);
-	
+
 	//50%확률로 드랍
 	if (chance(gen) == 1) {
 		return new DropItem("HealthPotion");

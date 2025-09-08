@@ -11,10 +11,11 @@ private:
 
 public:
 	//»ý¼ºÀÚ
-	DropItem(string& name) : name(name) {}
+	DropItem(const string& name) : name(name) {}
 
 	string getName() const
 	{
 		return name;
 	}
 };
+
