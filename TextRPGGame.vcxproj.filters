@@ -39,6 +39,18 @@
     <ClCompile Include="askii test.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="BossMonster.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Goblin.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Orc.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Troll.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="GameManager.h">
@@ -59,16 +71,23 @@
     <ClInclude Include="Character.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-
-    <ClInclude Include="DropItem.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="Goblin.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Monster.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-
+    <ClInclude Include="BossMonster.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Orc.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Troll.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="MainArt.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

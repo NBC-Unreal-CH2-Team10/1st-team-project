@@ -7,6 +7,7 @@
 #include "BossMonster.h"
 #include "Orc.h"
 #include "Troll.h"
+#include "MainArt.h"
 
 class GameManager
 {
@@ -25,6 +26,7 @@ public:
 	void drawMonsterArt(Monster* monster, int line);
 	void drawShopArt(Shop* shop, int line);
 	void drawDefeat(Character* player, int line);
+	void drawMainArt(MainArt* mainart, int line);
 	void printLog(const string& msg, int line);
 };
 

@@ -63,7 +63,7 @@ void Goblin::takeDamage(int damage)
 }
 
 //아이템 드랍
-DropItem* Goblin::dropItem() {
+Item* Goblin::dropItem() {
 
 	random_device rd;
 	mt19937 gen(rd());
@@ -73,7 +73,7 @@ DropItem* Goblin::dropItem() {
 	
 	//50%확률로 드랍
 	if (chance(gen) == 1) {
-		return new DropItem("HealthPotion");
+		return new Item("HealthPotion");
 	}
 
 	//드랍실패

@@ -13,7 +13,13 @@ using namespace std;
 
 int main()
 {
+    GameManager gm;
+
     //여기에 초기 화면 아스키아트 출력 코드 입력
+    MainArt* mainart = new MainArt();
+    gm.drawMainArt(mainart, 1);
+
+    delete mainart;
     
     std::cout << "Press any key to start..." << std::endl;
     _getch();  // 키 입력 대기 (Enter 불필요)
@@ -38,7 +44,6 @@ int main()
 
     Character* player = Character::getInstance(nickname);    //싱글톤 사용
 
-    GameManager gm;
 
     while (true)
     {
@@ -54,7 +59,7 @@ int main()
             try
             {
                 //전투 상황
-                Monster* monster = gm.generateMonster(player->getLevel);
+                Monster* monster = gm.generateMonster(player->getLevel());
 
                 gm.battle(player, monster);
 

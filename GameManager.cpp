@@ -8,6 +8,8 @@
 #include <conio.h>
 #include <thread>
 #include <chrono>
+#include <sstream>
+
 
 using namespace std;
 using std::cout;
@@ -130,7 +132,7 @@ void GameManager::battle(Character* player, Monster* monster)  // 캐릭터/몬스터 
 
 	int dropGold = monster->getGold(); //드랍 골드 출력하기
 
-	player->setkillmonster(player->getkillmonster + 1);  //몬스터 킬수 +1
+	player->setKillcount(player->getKillcount() + 1);  //몬스터 킬수 +1
 	player->setGold(dropGold + player->getGold());
 
 	playerUI(player);
@@ -199,7 +201,7 @@ void GameManager::visitShop(Character* player)
 
 				setCursor(0, logline);
 
-				int choice = shop->displayBuyMenu(player);
+				int choice = shop->buyLoop(player);
 
 				if (choice == 0) break;       // 뒤로가기
 				if (choice == -1) 
@@ -210,17 +212,8 @@ void GameManager::visitShop(Character* player)
 				}
 
 				// 선택한 아이템 구매 처리
-				Item* selectedItem = shop->availableItems[choice];
-				if (player->getGold() >= selectedItem->getPrice()) 
-				{
-					shop->buyItem(selectedItem);
-					printLog("아이템을 구매했습니다.", logline + 10);
-					this_thread::sleep_for(chrono::milliseconds(1000)); // 1초 대기
-				}
-				else 
-				{
-					printLog("골드가 부족합니다!", logline + 10);											//로그 출력 라인 위치 수정 필요
-				}
+				setCursor(0, logline + 10);
+				shop->buyItem(choice - 1, player);
 			}
 		}
 		else if (choice == 2) //판매
@@ -235,7 +228,7 @@ void GameManager::visitShop(Character* player)
 
 				setCursor(0, logline);
 
-				int choice = shop->displaySellMenu(player);
+				int choice = shop->sellLoop(player);
 
 				if (choice == 0) break;       // 뒤로가기
 				if (choice == -1)
@@ -244,10 +237,15 @@ void GameManager::visitShop(Character* player)
 					this_thread::sleep_for(chrono::milliseconds(1000)); // 1초 대기
 					continue;
 				}
+				else if (choice == -2)
+				{
+					printLog("판매할 아이템이 없습니다.", logline + 10);
+					break;
+				}
 
 				// 아이템 판매
-				Item* soldItem = player->getInventory[choice];
-				shop->sellItem(soldItem);
+
+				shop->sellItem(choice - 1, player);
 				printLog("아이템을 판매했습니다.", logline + 10);
 				this_thread::sleep_for(chrono::milliseconds(1000)); // 1초 대기
 			}
@@ -298,19 +296,34 @@ void GameManager::displayInventory(Character* player)
 	}
 }
 
-void GameManager::drawHealthbar(int hp, int maxHp, int barWidth = 10) 
+void drawHealthbar(int hp, int maxHp, int barWidth = 10)
 {
-	// 체력 비율 계산
+	UINT oldCP = GetConsoleOutputCP();
+	SetConsoleOutputCP(CP_UTF8);
+
+	HANDLE hConsole = GetStdHandle(STD_OUTPUT_HANDLE);
+
 	double ratio = (double)hp / maxHp;
 	int filled = (int)(ratio * barWidth);
 
 	cout << "[";
-	for (int i = 0; i < barWidth; i++) 
+
+	for (int i = 0; i < barWidth; i++)
 	{
-		if (i < filled) cout << "|";  // 체력이 있는 부분
-		else cout << "-";             // 체력이 없는 부분
+		if (i < filled) {
+			SetConsoleTextAttribute(hConsole, 10); // 10 = 초록색
+			cout << u8"■";
+		}
+		else {
+			SetConsoleTextAttribute(hConsole, 7); // 12 = 빨간색
+			cout << u8"-";  // 빈 칸도 □ 대신 색칠된 ■로 통일 가능
+		}
 	}
+
+	SetConsoleTextAttribute(hConsole, 7); // 기본 색상으로 복구
 	cout << "] ";
+
+	SetConsoleOutputCP(oldCP);
 }
 
 void GameManager::playerUI(Character* player) // 콘솔창 상단 고정
@@ -321,8 +334,8 @@ void GameManager::playerUI(Character* player) // 콘솔창 상단 고정
 	cout << " " << player->getHealth() << "/" << player->getMaxHealth();
 	cout << " | 레벨: " << player->getLevel();
 	cout << " | 경험치: " << player->getExp() << "/100";
-	cout << " | 골드: " << player->getGold();
-	cout << " | 처치한 몬스터 수: " << player-> getkillmonster() << "마리\n" << endl;
+	cout << " | 골드: " << player->getGold() << " G";
+	cout << " | 처치한 몬스터 수: " << player->getKillcount() << "마리\n" << endl;
 }
 
 void GameManager::battleUI(Character* player, Monster* monster, int line)
@@ -345,35 +358,78 @@ void GameManager::setCursor(int x, int y) {
 
 void GameManager::drawMonsterArt(Monster* monster, int line)
 {
-	vector<string> art = monster->getart();
+	UINT oldCP = GetConsoleOutputCP();
+	SetConsoleOutputCP(CP_UTF8);
 
-	for (size_t i = 0; i < art.size(); ++i) 
-	{
-		setCursor(0, line + i);   // 각 줄마다 고정 위치 지정
-		cout << art[i] << "                                         "; // 공백으로 이전 출력 흔적 지움
+	string art = monster->getart();
+	istringstream iss(art);
+	string lineStr;
+	int offset = 0;
+
+	while (std::getline(iss, lineStr)) {
+		setCursor(0, line + offset);
+		cout << lineStr << "                                         ";
+		offset++;
 	}
+
+	SetConsoleOutputCP(oldCP);
 }
 
 void GameManager::drawShopArt(Shop* shop, int line)
 {
-	vector<string> art = shop->getart();
+	UINT oldCP = GetConsoleOutputCP();
+	SetConsoleOutputCP(CP_UTF8);
 
-	for (size_t i = 0; i < art.size(); ++i)
-	{
-		setCursor(0, line + i);   // 각 줄마다 고정 위치 지정
-		cout << art[i] << "                               "; // 공백으로 이전 출력 흔적 지움
+	string art = shop->getart();
+	istringstream iss(art);
+	string lineStr;
+	int offset = 0;
+
+	while (std::getline(iss, lineStr)) {
+		setCursor(0, line + offset);
+		cout << lineStr << "                                         ";
+		offset++;
 	}
+
+	SetConsoleOutputCP(oldCP);
 }
 
 void GameManager::drawDefeat(Character* player, int line)
 {
-	vector<string> art = player->getart();
+	UINT oldCP = GetConsoleOutputCP();
+	SetConsoleOutputCP(CP_UTF8);
 
-	for (size_t i = 0; i < art.size(); ++i)
-	{
-		setCursor(0, line + i);   // 각 줄마다 고정 위치 지정
-		cout << art[i] << "                               "; // 공백으로 이전 출력 흔적 지움
+	string art = player->getart();
+	istringstream iss(art);
+	string lineStr;
+	int offset = 0;
+
+	while (std::getline(iss, lineStr)) {
+		setCursor(0, line + offset);
+		cout << lineStr << "                                         ";
+		offset++;
 	}
+
+	SetConsoleOutputCP(oldCP);
+}
+
+void GameManager::drawMainArt(MainArt* mainart, int line)
+{
+	UINT oldCP = GetConsoleOutputCP();
+	SetConsoleOutputCP(CP_UTF8);
+
+	string art = mainart->getart();
+	istringstream iss(art);
+	string lineStr;
+	int offset = 0;
+
+	while (std::getline(iss, lineStr)) {
+		setCursor(0, line + offset);
+		cout << lineStr << "                                         ";
+		offset++;
+	}
+
+	SetConsoleOutputCP(oldCP);
 }
 
 void GameManager::printLog(const string& msg, int line)

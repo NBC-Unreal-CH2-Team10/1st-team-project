@@ -25,7 +25,6 @@ public:
 	int getExp() const override;
 	int getGold() const override;
 
-	DropItem* dropItem() override;
 };
 
 

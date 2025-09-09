@@ -4,8 +4,6 @@
 //int main() {
     // 현재 콘솔 코드 페이지 저장
     UINT oldCP = GetConsoleOutputCP();
-
-    // UTF-8로 변경
     SetConsoleOutputCP(CP_UTF8);
 
     // UTF-8 문자열 출력 (u8 리터럴 사용)

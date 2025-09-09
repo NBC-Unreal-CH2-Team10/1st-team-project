@@ -25,6 +25,6 @@ public:
 	int getMaxHealth() const override;
 	int getGold() const override;
 	
-	DropItem* dropItem() override;
+	Item* dropItem() override;
 };
 

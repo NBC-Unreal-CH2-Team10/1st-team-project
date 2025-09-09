@@ -123,8 +123,12 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="art.cpp" />
-    <ClCompile Include="askii test.cpp" />
+    <ClCompile Include="art.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="askii test.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+    </ClCompile>
     <ClCompile Include="AttackBoost.cpp" />
     <ClCompile Include="BossMonster.cpp" />
     <ClCompile Include="Character.cpp" />
@@ -144,6 +148,7 @@
     <ClInclude Include="Goblin.h" />
     <ClInclude Include="HealthPotion.h" />
     <ClInclude Include="item.h" />
+    <ClInclude Include="MainArt.h" />
     <ClInclude Include="Monster.h" />
     <ClInclude Include="Orc.h" />
     <ClInclude Include="Shop.h" />

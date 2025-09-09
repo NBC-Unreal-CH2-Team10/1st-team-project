@@ -60,21 +60,3 @@ void BossMonster::takeDamage(int damage)
 	health -= damage;
 	if (health < 0) health = 0;  // 0이 되면 죽어야하니 데미지가 오버될 떄 0으로 설정
 }
-
-//아이템 드랍
-DropItem* BossMonster::dropItem() {
-
-	random_device rd;
-	mt19937 gen(rd());
-
-	//FMath에 RandRange는 언리얼 전용 라이브러리라 사용하지 못한다고 하네요.. 
-	uniform_int_distribution<int> chance(0, 1);
-
-	//50%확률로 드랍
-	if (chance(gen) == 1) {
-		return new DropItem("HealthPotion");
-	}
-
-	//드랍실패
-	return nullptr;
-}
