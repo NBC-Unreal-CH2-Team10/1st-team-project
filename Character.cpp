@@ -9,9 +9,9 @@ Character* Character::instance = nullptr;
 Character::Character(string name) :
 	name(name),
 	level(1),
-	health(300),
-	maxHealth(300),
-	attack(30),
+	health(100),
+	maxHealth(100),
+	attack(5),
 	experience(0),
 	gold(0),
 	killcount(0)

@@ -72,36 +72,45 @@ void GameManager::battle(Character* player, Monster* monster)  // 캐릭터/몬스터 
 	cout << "전투를 시작합니다!" << endl;
 	this_thread::sleep_for(chrono::milliseconds(1000)); //1초 딜레이
 
-	int logline = monster->getart().size() + 4; //아트에서 2줄 아래
-	int battlelog = logline + 6;
+	int logline = 45; //아트 크기 + 여유 공간
+	int battlelog = logline + 10;
 	int delay = 500; //0.5초
 
 	system("cls");
 	
-	while (player->getHealth() != 0 && monster->getHealth() != 0) // attack 함수 제작?
+	while (true) // attack 함수 제작?
 	{
 		playerUI(player);  //커서 맨위로 이동 후 1줄짜리 UI 출력
 
-		drawMonsterArt(monster, 2); // 3번째 줄부터 아트 출력
+		drawMonsterArt(monster, 5); // 3번째 줄부터 아트 출력
 
 		printLog(monster->getName() + "이(가) 나타났습니다!", logline);
 		
-		battleUI(player, monster, logline + 2);
+		battleUI(player, monster, logline + 4);
 
 		monster->takeDamage(player->getAttack());				//몬스터가 먼저 공격 받음
 		playerUI(player);
-		battleUI(player, monster, logline);
+		battleUI(player, monster, logline + 4);
 		printLog("모험가가 " + to_string(player->getAttack()) + "의 피해를 입혔습니다.", battlelog);
 		++battlelog;
 		this_thread::sleep_for(chrono::milliseconds(delay));
 
+		if (player->getHealth() == 0 || monster->getHealth() == 0)
+		{
+			break;
+		}
+
 		player->takeDamage(monster->getAttack());				//플레이어가 공격 받음
 		playerUI(player);
-		battleUI(player, monster, logline);
+		battleUI(player, monster, logline + 4);
 		printLog("몬스터가 " + to_string(monster->getAttack()) + "의 피해를 입혔습니다.", battlelog);
 		++battlelog;
 		this_thread::sleep_for(chrono::milliseconds(delay));
 
+		if(player->getHealth() == 0 || monster->getHealth() == 0)
+		{
+			break;
+		}
 
 		if (player->getHealth() < (player->getMaxHealth() / 2)) //최대 체력의 50% 아래로 내려갈 경우 자동 사용
 		{
@@ -156,7 +165,7 @@ void GameManager::visitShop(Character* player)
 {
 	Shop* shop = new Shop();
 
-	int logline = shop->getart().size() + 4; //상점 아트 4줄 아래부터
+	int logline = 20; //상점 아트 4줄 아래부터
 
 	while (true)
 	{
@@ -191,7 +200,7 @@ void GameManager::visitShop(Character* player)
 		if (choice == 1) //구매
 		{
 			while (true) {
-				system("clear");
+				system("cls");
 
 				playerUI(player);
 
@@ -294,7 +303,7 @@ void GameManager::displayInventory(Character* player)
 	}
 }
 
-void drawHealthbar(int hp, int maxHp, int barWidth = 10)
+void GameManager::drawHealthbar(int hp, int maxHp, int barWidth = 10)
 {
 	UINT oldCP = GetConsoleOutputCP();
 	SetConsoleOutputCP(CP_UTF8);
@@ -357,7 +366,9 @@ void GameManager::setCursor(int x, int y) {
 void GameManager::drawMonsterArt(Monster* monster, int line)
 {
 	UINT oldCP = GetConsoleOutputCP();
+	UINT oldInputCP = GetConsoleCP();
 	SetConsoleOutputCP(CP_UTF8);
+	SetConsoleCP(CP_UTF8);
 
 	string art = monster->getart();
 	istringstream iss(art);
@@ -371,12 +382,15 @@ void GameManager::drawMonsterArt(Monster* monster, int line)
 	}
 
 	SetConsoleOutputCP(oldCP);
+	SetConsoleCP(oldInputCP);
 }
 
 void GameManager::drawShopArt(Shop* shop, int line)
 {
 	UINT oldCP = GetConsoleOutputCP();
+	UINT oldInputCP = GetConsoleCP();
 	SetConsoleOutputCP(CP_UTF8);
+	SetConsoleCP(CP_UTF8);
 
 	string art = shop->getart();
 	istringstream iss(art);
@@ -390,12 +404,15 @@ void GameManager::drawShopArt(Shop* shop, int line)
 	}
 
 	SetConsoleOutputCP(oldCP);
+	SetConsoleCP(oldInputCP);
 }
 
 void GameManager::drawDefeat(Character* player, int line)
 {
 	UINT oldCP = GetConsoleOutputCP();
+	UINT oldInputCP = GetConsoleCP();
 	SetConsoleOutputCP(CP_UTF8);
+	SetConsoleCP(CP_UTF8);
 
 	string art = player->getart();
 	istringstream iss(art);
@@ -409,12 +426,15 @@ void GameManager::drawDefeat(Character* player, int line)
 	}
 
 	SetConsoleOutputCP(oldCP);
+	SetConsoleCP(oldInputCP);
 }
 
 void GameManager::drawMainArt(MainArt* mainart, int line)
 {
 	UINT oldCP = GetConsoleOutputCP();
+	UINT oldInputCP = GetConsoleCP();
 	SetConsoleOutputCP(CP_UTF8);
+	SetConsoleCP(CP_UTF8);
 
 	string art = mainart->getart();
 	istringstream iss(art);
@@ -428,6 +448,7 @@ void GameManager::drawMainArt(MainArt* mainart, int line)
 	}
 
 	SetConsoleOutputCP(oldCP);
+	SetConsoleCP(oldInputCP);
 }
 
 void GameManager::printLog(const string& msg, int line)

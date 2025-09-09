@@ -43,7 +43,7 @@ int BossMonster::getMaxHealth() const
 {
 	return maxHealth;
 }
-vector<string>& BossMonster::getArt()
+string BossMonster::getart() const
 {
 	return art;
 }

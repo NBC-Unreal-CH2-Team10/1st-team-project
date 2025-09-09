@@ -18,7 +18,7 @@ public:
 	void battle(Character* player, Monster* monster);				//캐릭터 선공, 몬스터 후공으로 한번씩 공격
 	void visitShop(Character* player);								//캐릭터가 상점 방문
 	void displayInventory(Character* player);						//캐릭터 인벤토리 확인
-	void drawHealthbar(int hp, int maxHp, int barWidth = 20);
+	void drawHealthbar(int hp, int maxHp, int barWidth);
 
 	void playerUI(Character* player);
 	void battleUI(Character* player, Monster* monster, int line);

@@ -14,7 +14,6 @@ private:
 	//int exp;
 	//int gold;
 
-	vector<string> art;
 
 public:
 	BossMonster(int level);
@@ -27,9 +26,12 @@ public:
 	int getExp() const override;
 	int getGold() const override;
 
-	vector<string>& getArt();
+	string getart() const;
 
 	Item* dropItem() override;
+
+private:
+	string art = "임시 보스 이미지";
 };
 
 
