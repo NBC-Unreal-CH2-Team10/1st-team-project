@@ -1,5 +1,4 @@
 ﻿#pragma once
-#pragma once
 #include <vector>
 
 class Item;
@@ -34,7 +33,7 @@ public:
     void sellItem(int index);
 
     // 인벤토리 크기 반환
-    int getSize() const;
+    size_t getSize() const;
 
     // 인벤토리 슬롯 벡터에 대한 읽기 전용 접근 제공
     const std::vector<InventorySlot>& getSlots() const;
@@ -48,7 +47,7 @@ public:
 
 private:
     // 아이템을 사용하고 수량을 관리하는 함수
-    void useItem(int index, class Character* owner);
+    void useItem(int index, Character* owner);
 
     // --- 멤버변수 --- 
     // 인벤토리 슬롯 벡터

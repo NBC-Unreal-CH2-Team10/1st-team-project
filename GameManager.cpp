@@ -1,4 +1,4 @@
-﻿#include "GameManager.h"
+#include "GameManager.h"
 #include "Shop.h"
 #include <Windows.h>
 #include <iostream>
@@ -10,18 +10,13 @@
 #include <chrono>
 #include <sstream>
 
-
-using namespace std;
-using std::cout;
-
-
 Monster* GameManager::generateMonster(int level)
 {
-	vector<Monster*> Monsterlist = { new Goblin(level), new Orc(level), new Troll(level) }; //한번에 다 받는 방법?
+	std::vector<Monster*> Monsterlist = { new Goblin(level), new Orc(level), new Troll(level) }; //한번에 다 받는 방법?
 	
-	random_device rand;
-	mt19937 gen(rand());
-	uniform_int_distribution<int> dis(0, 2);	// 0 ~ 2 사이에서 랜덤하게 숫자를 선택하고 몬스터리스트에 인덱스로 넣음
+	std::random_device rand;
+	std::mt19937 gen(rand());
+	std::uniform_int_distribution<int> dis(0, 2);	// 0 ~ 2 사이에서 랜덤하게 숫자를 선택하고 몬스터리스트에 인덱스로 넣음
 
 	return Monsterlist[dis(gen)];
 }
@@ -34,26 +29,30 @@ Monster* GameManager::generateBossMonster(int level)
 void GameManager::battle(Character* player, Monster* monster)  // 캐릭터/몬스터 순서로 한번씩 공격하고 둘 중 하나가 죽으면 break
 {
 	int curAttack = player->getAttack();	//현재 공격력
-	vector<Item*> inventory = player->getInventory();
+	std::vector<Item*> inventory;
+	for (const auto& slot : player->getInventory()->getSlots())
+	{
+		inventory.push_back(slot.item);
+	}
 
-	string find = "AttackBoost";
+	std::string find = "AttackBoost";
 
 	auto it = find_if(inventory.begin(), inventory.end(), [&find](Item* item) {return item->getName() == find; }); // 공격력 증가 포션이 존재하는지 확인
 
 	if (it != inventory.end()) 
 	{
-		string choice;
+		std::string choice;
 
 		while (true)
 		{
-			cout << "공격력 강화 포션을 사용하시겠습니까? (Y/N)\n" << endl;
-			cin >> choice;
+			std::cout << "공격력 강화 포션을 사용하시겠습니까? (Y/N)\n" << std::endl;
+			std::cin >> choice;
 
-			if (cin.fail()) //잘 못된 타입이 입력되면 true 반환
+			if (std::cin.fail()) //잘 못된 타입이 입력되면 true 반환
 			{
-				cin.clear(); // 오류 상태 초기화
-				cin.ignore(1000, '\n'); // 잘못된 입력 버리기
-				cout << "잘못된 입력입니다. 다시 입력해주세요.\n" << endl;
+				std::cin.clear(); // 오류 상태 초기화
+				std::cin.ignore(1000, '\n'); // 잘못된 입력 버리기
+				std::cout << "잘못된 입력입니다. 다시 입력해주세요.\n" << std::endl;
 				continue;
 			}
 
@@ -69,8 +68,8 @@ void GameManager::battle(Character* player, Monster* monster)  // 캐릭터/몬�
 		}
 	}
 
-	cout << "전투를 시작합니다!" << endl;
-	this_thread::sleep_for(chrono::milliseconds(1000)); //1초 딜레이
+	std::cout << "전투를 시작합니다!" << std::endl;
+	std::this_thread::sleep_for(std::chrono::milliseconds(1000)); //1초 딜레이
 
 
 	int logline = 45; 
@@ -96,9 +95,9 @@ void GameManager::battle(Character* player, Monster* monster)  // 캐릭터/몬�
 		playerUI(player);
 
 		battleUI(player, monster, logline + 4);
-		printLog("모험가가" + to_string(player->getAttack()) + "의 피해를 입혔습니다.", battlelog);
+		printLog("모험가가"+ std::to_string(player->getAttack()) + "의 피해를 입혔습니다.", battlelog);
 		++battlelog;
-		this_thread::sleep_for(chrono::milliseconds(delay));
+		std::this_thread::sleep_for(std::chrono::milliseconds(delay));
 
 		if (player->getHealth() == 0 || monster->getHealth() == 0)
 		{
@@ -108,10 +107,10 @@ void GameManager::battle(Character* player, Monster* monster)  // 캐릭터/몬�
 		player->takeDamage(monster->getAttack());				
 		playerUI(player);
 		battleUI(player, monster, logline + 4);
-		printLog("몬스터가 " + to_string(monster->getAttack()) + "의 피해를 입혔습니다.", battlelog);
+		printLog("몬스터가 " + std::to_string(monster->getAttack()) + "의 피해를 입혔습니다.", battlelog);
 
 		++battlelog;
-		this_thread::sleep_for(chrono::milliseconds(delay));
+		std::this_thread::sleep_for(std::chrono::milliseconds(delay));
 
 		if(player->getHealth() == 0 || monster->getHealth() == 0)
 		{
@@ -120,7 +119,7 @@ void GameManager::battle(Character* player, Monster* monster)  // 캐릭터/몬�
 
 		if (player->getHealth() < (player->getMaxHealth() / 2)) //최대 체력의 50% 아래로 내려갈 경우 자동 사용
 		{
-			string find = "체력 물약";
+			std::string find = "체력 물약";
 
 			auto it = find_if(inventory.begin(), inventory.end(), [&find](Item* item) {return item->getName() == find; }); // 체력 포션이 존재하는지 확인
 
@@ -132,7 +131,7 @@ void GameManager::battle(Character* player, Monster* monster)  // 캐릭터/몬�
 				battleUI(player, monster, logline);
 				printLog("체력 포션을 사용하여 50의 체력을 회복했습니다!", battlelog);
 				++battlelog;
-				this_thread::sleep_for(chrono::milliseconds(delay));
+				std::this_thread::sleep_for(std::chrono::milliseconds(delay));
 			}
 		}
 		++battlelog;
@@ -140,7 +139,7 @@ void GameManager::battle(Character* player, Monster* monster)  // 캐릭터/몬�
 
 	if (player->getHealth() == 0)
 	{
-		throw runtime_error("모험가가 사망했습니다.");
+		throw std::runtime_error("모험가가 사망했습니다.");
 	}
 
 	player->setAttack(curAttack); //공격력 원상 복구
@@ -158,7 +157,7 @@ void GameManager::battle(Character* player, Monster* monster)  // 캐릭터/몬�
 	//몬스터마다 골드 다르게 하고 dropGold 같은 함수로 드랍 골드 확인
 	//플레이어에 addGold 함수로 골드 추가, 골드 획득 문구 출력
 
-	cout << monster->getGold() << "골드를 획득했습니다." << endl;
+	std::cout << monster->getGold() << "골드를 획득했습니다." << std::endl;
 
 	player->addInventory(monster->dropItem());
 
@@ -190,16 +189,16 @@ void GameManager::visitShop()
 		printLog("3. 상점 나가기", logline + 3);
 		printLog("==================", logline + 4);
 		
-		cout << "번호를 입력하세요: ";
+		std::cout << "번호를 입력하세요: ";
 
-		cin >> choice;
-		cin.ignore(1000, '\n');
+		std::cin >> choice;
+		std::cin.ignore(1000, '\n');
 
-		if (cin.fail()) 
+		if (std::cin.fail()) 
 		{
-			cin.clear(); 
-			cin.ignore(1000, '\n'); 
-			cout << "잘못된 입력입니다. 다시 입력해주세요." << endl;
+			std::cin.clear(); 
+			std::cin.ignore(1000, '\n'); 
+			std::cout << "잘못된 입력입니다. 다시 입력해주세요." << std::endl;
 			continue;
 		}
 
@@ -219,8 +218,8 @@ void GameManager::visitShop()
 				if (choice == 0) break;       
 				if (choice == -1) 
 				{
-					printLog("잘못된 선택입니다. 다시 선택해세요.", logline + 10);											
-					this_thread::sleep_for(chrono::milliseconds(1000)); 
+					printLog("잘못된 선택입니다. 다시 선택해세요.", logline + 10);									
+					std::this_thread::sleep_for(std::chrono::milliseconds(1000)); 
 					continue;
 				}
 
@@ -246,8 +245,8 @@ void GameManager::visitShop()
 				if (choice == 0) break;       
 				if (choice == -1)
 				{
-					printLog("잘못된 선택입니다. 다시 입력해주세요.", logline + 10);											
-					this_thread::sleep_for(chrono::milliseconds(1000));
+					printLog("잘못된 선택입니다. 다시 입력해주세요.", logline + 10);									
+					std::this_thread::sleep_for(std::chrono::milliseconds(1000));
 					continue;
 				}
 				else if (choice == -2)
@@ -260,22 +259,22 @@ void GameManager::visitShop()
 
 				shop->sellItem(choice - 1, player);
 				printLog("아이템을 판매했습니다.", logline + 10);
-				this_thread::sleep_for(chrono::milliseconds(1000)); 
+				std::this_thread::sleep_for(std::chrono::milliseconds(1000)); 
 			}
 		}
 		else if (choice == 3)
 		{
-			string answer;
+			std::string answer;
 
-			cout << "상점을 나가시겠습니까? (Y/N)" << endl;
-			cin >> answer;
-			cin.ignore(1000, '\n');
+			std::cout << "상점을 나가시겠습니까? (Y/N)" << std::endl;
+			std::cin >> answer;
+			std::cin.ignore(1000, '\n');
 
-			if (cin.fail()) //잘 못된 타입이 입력되면 true 반환
+			if (std::cin.fail()) //잘 못된 타입이 입력되면 true 반환
 			{
-				cin.clear(); // 오류 상태 초기화
-				cin.ignore(1000, '\n'); // 잘못된 입력 버리기
-				cout << "잘못된 입력입니다. 다시 입력해주세요." << endl;
+				std::cin.clear(); // 오류 상태 초기화
+				std::cin.ignore(1000, '\n'); // 잘못된 입력 버리기
+				std::cout << "잘못된 입력입니다. 다시 입력해주세요." << std::endl;
 				continue;
 			}
 
@@ -290,7 +289,7 @@ void GameManager::visitShop()
 		}
 		else
 		{
-			cout << "잘못된 입력입니다. 다시 입력해주세요." << endl;
+			std::cout << "잘못된 입력입니다. 다시 입력해주세요." << std::endl;
 			continue;
 		}
 	}
@@ -312,22 +311,22 @@ void GameManager::drawHealthbar(int hp, int maxHp, int barWidth = 10)
 	double ratio = (double)hp / maxHp;
 	int filled = (int)(ratio * barWidth);
 
-	cout << "[";
+	std::cout << "[";
 
 	for (int i = 0; i < barWidth; i++)
 	{
 		if (i < filled) {
 			SetConsoleTextAttribute(hConsole, 10); // 10 = 초록색
-			cout << u8"■";
+			std::cout << u8"■";
 		}
 		else {
 			SetConsoleTextAttribute(hConsole, 7); // 12 = 빨간색
-			cout << u8"-";  // 빈 칸도 □ 대신 색칠된 ■로 통일 가능
+			std::cout << u8"-";  // 빈 칸도 □ 대신 색칠된 ■로 통일 가능
 		}
 	}
 
 	SetConsoleTextAttribute(hConsole, 7); // 기본 색상으로 복구
-	cout << "] ";
+	std::cout << "] ";
 
 	SetConsoleOutputCP(oldCP);
 }
@@ -335,26 +334,26 @@ void GameManager::drawHealthbar(int hp, int maxHp, int barWidth = 10)
 void GameManager::playerUI(Character* player) // 콘솔창 상단 고정
 {
 	setCursor(0, 0);
-	cout << "닉네임: " << player->getName() << " | 체력: ";
+	std::cout << "닉네임: " << player->getName() << " | 체력: ";
 	drawHealthbar(player->getHealth(), player->getMaxHealth());
-	cout << " " << player->getHealth() << "/" << player->getMaxHealth();
-	cout << " | 레벨: " << player->getLevel();
-	cout << " | 경험치: " << player->getExp() << "/100";
-	cout << " | 골드: " << player->getGold() << " G";
-	cout << " | 처치한 몬스터 수: " << player->getKillcount() << "마리\n" << endl;
+	std::cout << " " << player->getHealth() << "/" << player->getMaxHealth();
+	std::cout << " | 레벨: " << player->getLevel();
+	std::cout << " | 경험치: " << player->getExp() << "/100";
+	std::cout << " | 골드: " << player->getGold() << " G";
+	std::cout << " | 처치한 몬스터 수: " << player->getKillcount() << "마리\n" << std::endl;
 }
 
 void GameManager::battleUI(Character* player, Monster* monster, int line)
 {
 	setCursor(0, line); // 커서 이동
-	cout << "========== 전투 상태 ==========\n";
-	cout << "모험가 체력: ";
+	std::cout << "========== 전투 상태 ==========\n";
+	std::cout << "모험가 체력: ";
 	drawHealthbar(player->getHealth(), player->getMaxHealth(), 20);
-	cout << "  " << player->getHealth() << "/" << player->getMaxHealth() << "  공격력: " << player->getAttack() << "\n";
-	cout << "몬스터 체력: ";
+	std::cout << "  " << player->getHealth() << "/" << player->getMaxHealth() << "  공격력: " << player->getAttack() << "\n";
+	std::cout << "몬스터 체력: ";
 	drawHealthbar(monster->getHealth(), monster->getMaxHealth(), 20);
-	cout << "  " << monster->getHealth() << "/" << monster->getMaxHealth() << "  공격력: " << monster->getAttack() << "\n";
-	cout << "===============================\n";
+	std::cout << "  " << monster->getHealth() << "/" << monster->getMaxHealth() << "  공격력: " << monster->getAttack() << "\n";
+	std::cout << "===============================\n";
 }
 
 void GameManager::setCursor(int x, int y) {
@@ -369,14 +368,14 @@ void GameManager::drawMonsterArt(Monster* monster, int line)
 	SetConsoleOutputCP(CP_UTF8);
 	SetConsoleCP(CP_UTF8);
 
-	string art = monster->getart();
-	istringstream iss(art);
-	string lineStr;
+	std::string art = monster->getart();
+	std::istringstream iss(art);
+	std::string lineStr;
 	int offset = 0;
 
 	while (std::getline(iss, lineStr)) {
 		setCursor(0, line + offset);
-		cout << lineStr << "                                         ";
+		std::cout << lineStr << "                                         ";
 		offset++;
 	}
 
@@ -391,14 +390,14 @@ void GameManager::drawShopArt(Shop* shop, int line)
 	SetConsoleOutputCP(CP_UTF8);
 	SetConsoleCP(CP_UTF8);
 
-	string art = shop->getart();
-	istringstream iss(art);
-	string lineStr;
+	std::string art = shop->getart();
+	std::istringstream iss(art);
+	std::string lineStr;
 	int offset = 0;
 
 	while (std::getline(iss, lineStr)) {
 		setCursor(0, line + offset);
-		cout << lineStr << "                                         ";
+		std::cout << lineStr << "                                         ";
 		offset++;
 	}
 
@@ -413,14 +412,14 @@ void GameManager::drawDefeat(Character* player, int line)
 	SetConsoleOutputCP(CP_UTF8);
 	SetConsoleCP(CP_UTF8);
 
-	string art = player->getart();
-	istringstream iss(art);
-	string lineStr;
+	std::string art = player->getart();
+	std::istringstream iss(art);
+	std::string lineStr;
 	int offset = 0;
 
 	while (std::getline(iss, lineStr)) {
 		setCursor(0, line + offset);
-		cout << lineStr << "                                         ";
+		std::cout << lineStr << "                                         ";
 		offset++;
 	}
 
@@ -435,14 +434,14 @@ void GameManager::drawMainArt(MainArt* mainart, int line)
 	SetConsoleOutputCP(CP_UTF8);
 	SetConsoleCP(CP_UTF8);
 
-	string art = mainart->getart();
-	istringstream iss(art);
-	string lineStr;
+	std::string art = mainart->getart();
+	std::istringstream iss(art);
+	std::string lineStr;
 	int offset = 0;
 
 	while (std::getline(iss, lineStr)) {
 		setCursor(0, line + offset);
-		cout << lineStr << "                                         ";
+		std::cout << lineStr << "                                         ";
 		offset++;
 	}
 
@@ -450,8 +449,8 @@ void GameManager::drawMainArt(MainArt* mainart, int line)
 	SetConsoleCP(oldInputCP);
 }
 
-void GameManager::printLog(const string& msg, int line)
+void GameManager::printLog(const std::string& msg, int line)
 {
 	setCursor(0, line);
-	cout << msg << "                         \n"; // 공백으로 이전 텍스트 지우기
+	std::cout << msg << "                         \n"; // 공백으로 이전 텍스트 지우기
 }
