@@ -167,135 +167,6 @@ void GameManager::battle(Character* player, Monster* monster)  // 캐릭터/몬�
 	delete monster;
 }
 
-//void GameManager::visitShop(Character* player)
-//{
-//	Shop* shop = new Shop();
-//
-//	int logline = shop->getart().size() + 4; //상점 아트 4줄 아래부터
-//
-//	while (true)
-//	{
-//		system("cls"); //콘솔 화면 지우기
-//
-//		playerUI(player);
-//
-//		drawShopArt(shop, 2);
-//
-//		int choice;
-//		//구매 혹은 판매 선택지 출력
-//
-//		printLog("==================", logline);
-//		printLog("1. 구매", logline + 1);
-//		printLog("2. 판매", logline + 2);
-//		printLog("3. 상점 나가기", logline + 3);
-//		printLog("==================", logline + 4);
-//		
-//		cout << "번호를 입력하세요: ";
-//
-//		cin >> choice;
-//		cin.ignore(1000, '\n');
-//
-//		if (cin.fail()) //잘 못된 타입이 입력되면 true 반환
-//		{
-//			cin.clear(); // 오류 상태 초기화
-//			cin.ignore(1000, '\n'); // 잘못된 입력 버리기
-//			cout << "잘못된 입력입니다. 다시 입력해주세요." << endl;
-//			continue;
-//		}
-//
-//		if (choice == 1) //구매
-//		{
-//			while (true) {
-//				system("clear");
-//
-//				playerUI(player);
-//
-//				drawShopArt(shop, 2);
-//
-//				setCursor(0, logline);
-//
-//				int choice = shop->buyLoop(player);
-//
-//				if (choice == 0) break;       // 뒤로가기
-//				if (choice == -1) 
-//				{
-//					printLog("잘못된 입력입니다. 다시 입력해주세요.", logline + 10);											//로그 출력 라인 위치 수정 필요
-//					this_thread::sleep_for(chrono::milliseconds(1000)); // 1초 대기
-//					continue;
-//				}
-//
-//				// 선택한 아이템 구매 처리
-//				setCursor(0, logline + 10);
-//				shop->buyItem(choice - 1, player);
-//			}
-//		}
-//		else if (choice == 2) //판매
-//		{
-//			while (true)
-//			{
-//				system("cls"); //콘솔 화면 지우기
-//
-//				playerUI(player);
-//
-//				drawShopArt(shop, 2);
-//
-//				setCursor(0, logline);
-//
-//				int choice = shop->sellLoop(player);
-//
-//				if (choice == 0) break;       // 뒤로가기
-//				if (choice == -1)
-//				{
-//					printLog("잘못된 선택입니다. 다시 입력해주세요.", logline + 10);											//로그 출력 라인 위치 수정 필요
-//					this_thread::sleep_for(chrono::milliseconds(1000)); // 1초 대기
-//					continue;
-//				}
-//				else if (choice == -2)
-//				{
-//					printLog("판매할 아이템이 없습니다.", logline + 10);
-//					break;
-//				}
-//
-//				// 아이템 판매
-//
-//				shop->sellItem(choice - 1, player);
-//				printLog("아이템을 판매했습니다.", logline + 10);
-//				this_thread::sleep_for(chrono::milliseconds(1000)); // 1초 대기
-//			}
-//		}
-//		else if (choice == 3)
-//		{
-//			string answer;
-//
-//			cout << "상점을 나가시겠습니까? (Y/N)" << endl;
-//			cin >> answer;
-//			cin.ignore(1000, '\n');
-//
-//			if (cin.fail()) //잘 못된 타입이 입력되면 true 반환
-//			{
-//				cin.clear(); // 오류 상태 초기화
-//				cin.ignore(1000, '\n'); // 잘못된 입력 버리기
-//				cout << "잘못된 입력입니다. 다시 입력해주세요." << endl;
-//				continue;
-//			}
-//
-//			if (answer == "Y" || answer == "y")
-//			{
-//				break;
-//			}
-//			else
-//			{
-//				continue;
-//			}
-//		}
-//		else
-//		{
-//			cout << "잘못된 입력입니다. 다시 입력해주세요." << endl;
-//			continue;
-//		}
-//	}
-//	delete shop;
-//}
 void GameManager::visitShop()
 {
 
@@ -319,7 +190,7 @@ void GameManager::visitShop()
 		printLog("3. 상점 나가기", logline + 3);
 		printLog("==================", logline + 4);
 		
-		cout << "번호를요입력하세요: ";
+		cout << "번호를 입력하세요: ";
 
 		cin >> choice;
 		cin.ignore(1000, '\n');
@@ -328,7 +199,7 @@ void GameManager::visitShop()
 		{
 			cin.clear(); 
 			cin.ignore(1000, '\n'); 
-			cout << "잘못된 입력입니다. 다시 입력해요주세요." << endl;
+			cout << "잘못된 입력입니다. 다시 입력해주세요." << endl;
 			continue;
 		}
 
@@ -426,17 +297,6 @@ void GameManager::visitShop()
 	delete shop;
 }
 
-//void GameManager::displayInventory(Character* player)
-//{
-//	//캐릭터 클래스에서 getInventory 함수 필요
-//	
-//	vector<Item*> item = player->getInventory();
-//	
-//	for (int i = 1; i <= item.size(); ++i)
-//	{
-//		cout << i << ". " << item[i]->getName() << ": " << item[i]->getPrice()*0.8 << "골드" << endl; //여기서 price는 상점에서 판매시 가격
-//	}
-//}
 void GameManager::manageInventory()
 {
 	player->getInventory()->manage(player);
