@@ -5,14 +5,27 @@
 #include <iostream>
 #include <vector>
 #include <conio.h>
+#include <windows.h>
 #include "GameManager.h"
 
 using namespace std;
 
+void setConsoleSize(int width, int height) {
+    HANDLE hOut = GetStdHandle(STD_OUTPUT_HANDLE);
 
+    // 1. 버퍼 크기 설정
+    COORD bufferSize = { (SHORT)width, (SHORT)height };
+    SetConsoleScreenBufferSize(hOut, bufferSize);
+
+    // 2. 창 크기 설정
+    SMALL_RECT windowSize = { 0, 0, (SHORT)(width - 1), (SHORT)(height - 1) };
+    SetConsoleWindowInfo(hOut, TRUE, &windowSize);
+}
 
 int main()
 {
+    setConsoleSize(120, 150);
+
     GameManager gm;
 
     //여기에 초기 화면 아스키아트 출력 코드 입력
@@ -87,6 +100,7 @@ int main()
             }
         
             //전투 종료 후 상점 방문
+            system("cls");
             gm.playerUI(player);
             cout << "\n" << endl;
 
@@ -94,6 +108,7 @@ int main()
 
             while (true)
             {
+
                 cout << "상점을 방문하시겠습니까? (Y/N)" << endl;
                 cin >> answer;
 
