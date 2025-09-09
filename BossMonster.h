@@ -11,8 +11,10 @@ private:
 	int health;
 	int attack;
 	int maxHealth;
-	int exp;
-	int gold;
+	//int exp;
+	//int gold;
+
+	vector<string> art;
 
 public:
 	BossMonster(int level);
@@ -25,6 +27,9 @@ public:
 	int getExp() const override;
 	int getGold() const override;
 
+	vector<string>& getArt();
+
+	Item* dropItem() override;
 };
 
 
