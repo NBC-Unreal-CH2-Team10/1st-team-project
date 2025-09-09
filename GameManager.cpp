@@ -1,4 +1,4 @@
-#include "GameManager.h"
+﻿#include "GameManager.h"
 #include "Shop.h"
 #include <Windows.h>
 #include <iostream>

@@ -9,8 +9,6 @@
 
 using namespace std;
 
-
-
 int main()
 {
     GameManager gm;
@@ -44,8 +42,8 @@ int main()
     }
 
     Character* player = Character::getInstance(nickname);    //싱글톤 사용
-
-
+    gm.player = player;
+    
     while (true)
     {
         system("cls"); //콘솔 로그 지우기
@@ -84,6 +82,7 @@ int main()
 
                 player->displayStatus();
                 delete player;
+                break;
             }
         
             //전투 종료 후 상점 방문
@@ -138,6 +137,7 @@ int main()
 
                 player->displayStatus();
                 delete player;
+                break;
             }
         }
     }
