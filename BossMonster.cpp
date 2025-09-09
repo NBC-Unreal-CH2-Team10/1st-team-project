@@ -1,4 +1,4 @@
-#include <iostream>
+﻿#include <iostream>
 #include <string>
 #include "BossMonster.h"
 #include <random>
@@ -59,7 +59,7 @@ void BossMonster::takeDamage(int damage)
 
 //순수가상함수를 사용해서 일단 구현만 해두었습니다. 값x
 Item* BossMonster::dropItem() {
-	return nullptr;
+	return new HealthPotion();
 }
 
 int BossMonster::getExp() const {
