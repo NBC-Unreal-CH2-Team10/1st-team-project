@@ -14,6 +14,8 @@ private:
 	int exp;
 	int gold;
 
+	vector<string> art;
+
 public:
 	Troll(int level);
 	string getName() const override;
@@ -24,7 +26,9 @@ public:
 	int getExp() const override;
 	int getMaxHealth() const override;
 	int getGold() const override;
+
+	vector<string>& getArt();
 	
-	DropItem* dropItem() override;
+	Item* dropItem() override;
 };
 

@@ -2,6 +2,8 @@
 #include <string>
 #include "Troll.h"
 #include <random>
+#include "HealthPotion.h"
+#include "AttackBoost.h"
 
 using namespace std;
 
@@ -10,6 +12,8 @@ Troll::Troll(int level)
 	name = "Troll";
 
 	exp = 50;
+
+	art = {};
 
 	//랜덤 범위의 값 코드 chat Gpt의 도움을 받아서 작성했습니다.
 	random_device rd;	 //시드 생성 (난수 시드를 만드는 장치)
@@ -53,6 +57,11 @@ int Troll::getGold() const
 	return gold;
 }
 
+vector<string>& Troll::getArt() 
+{
+	return art;
+}
+
 
 //몬스터 피격
 void Troll::takeDamage(int damage)
@@ -62,19 +71,25 @@ void Troll::takeDamage(int damage)
 }
 
 //아이템 드랍
-DropItem* Troll::dropItem() {
+Item* Troll::dropItem() {
 
 	random_device rd;
 	mt19937 gen(rd());
 
 	//FMath에 RandRange는 언리얼 전용 라이브러리라 사용하지 못한다고 하네요.. 
-	uniform_int_distribution<int> chance(0, 1);
+	uniform_int_distribution<int> dist(0, 99);  // 0~99 난수 생성
 
-	//50%확률로 드랍
-	if (chance(gen) == 1) {
-		return new DropItem("HealthPotion");
+	int per = dist(gen);
+
+	//확률에 따른 드랍아이템
+	if (per < 40) {
+		return new HealthPotion();  // 40% hp drop
+	}
+	else if (per < 60) {
+		return new AttackBoost();  // 20% AB drop
+	}
+	else {
+		return nullptr;  // 40% drop X
 	}
 
-	//드랍실패
-	return nullptr;
 }
