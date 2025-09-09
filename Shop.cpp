@@ -108,44 +108,28 @@ void Shop::displayMainMenu(Character* player) const
 }
 
 // 구매 루프
-void Shop::buyLoop(Character* player)
+int Shop::buyLoop(Character* player)
 {
-    int buyChoice = -1;
-    while (buyChoice != 0)
+    int buyChoice;
+    
+    cout << "\n--- [ 아이템 구매 ] ---" << endl;
+    for (size_t i = 0; i < availableItems.size(); ++i)
     {
-        system("cls");
-        cout << "\n--- [ 아이템 구매 ] ---" << endl;
-        for (size_t i = 0; i < availableItems.size(); ++i)
-        {
-            cout << i + 1 << ". " << availableItems[i]->getName()
-                << " - " << availableItems[i]->getPrice() << " Gold" << endl;
-        }
-        player->getInventory()->displayInventory();
-        cout << "현재 소지 골드: " << player->getGold() << " G\n" << endl;
-        cout << "\n구매할 아이템 번호를 입력하세요 (0: 뒤로 가기): ";
-        cin >> buyChoice;
-        // 입력 오류 처리
-        if (cin.fail()) {
-            cin.clear();
-            cin.ignore(1024, '\n');
-            buyChoice = -1;
-            cout << "잘못된 입력입니다." << endl;
-            this_thread::sleep_for(chrono::milliseconds(1500));
-        }
-        //아이템 구매, 인덱스는 번호 - 1
-        else if (buyChoice > 0 && buyChoice <= availableItems.size()) {
-            buyItem(buyChoice - 1, player);
-            this_thread::sleep_for(chrono::milliseconds(1000));
-        }
-        // 잘못된 번호 처리
-        else if (buyChoice != 0) {
-            cin.clear();
-            cin.ignore(1024, '\n');
-            buyChoice = -1;
-            cout << "잘못된 아이템 번호입니다." << endl;
-            this_thread::sleep_for(chrono::milliseconds(1500));
-        }
+        cout << i + 1 << ". " << availableItems[i]->getName()
+            << " - " << availableItems[i]->getPrice() << " Gold" << endl;
     }
+    cout << "현재 소지 골드: " << player->getGold() << " G\n" << endl;
+    cout << "\n구매할 아이템 번호를 입력하세요 (0: 뒤로 가기): ";
+    cin >> buyChoice;
+
+    // 입력 오류 처리
+    if (cin.fail()) {
+        cin.clear();
+        cin.ignore(1024, '\n');
+        return -1;
+    }
+
+    return buyChoice;
 }
 
 // 구매 처리
@@ -181,52 +165,34 @@ void Shop::buyItem(int index, Character* player)
 }
 
 // 판매 루프
-void Shop::sellLoop(Character* player)
+int Shop::sellLoop(Character* player)
 {
-    int sellChoice = -1;
-    while (sellChoice != 0)
+    int sellChoice;
+
+    cout << "--- [ 아이템 판매 ] ---" << endl;
+    for (size_t i = 0; i < availableItems.size(); ++i)
     {
-        system("cls");
-        cout << "--- [ 아이템 판매 ] ---" << endl;
-        for (size_t i = 0; i < availableItems.size(); ++i)
-        {
-            cout << i + 1 << ". " << availableItems[i]->getName()
-                << " - " << availableItems[i]->getPrice() * 0.6 << " Gold" << endl;
-        }
-        player->getInventory()->displayInventory();
-
-        // 인벤토리가 비었을 경우 판매 불가
-        if (player->getInventory()->getSize() == 0)
-        {
-            cout << "\n판매할 아이템이 없습니다." << endl;
-            this_thread::sleep_for(chrono::milliseconds(1500));
-            break;
-        }
-        cout << "현재 소지 골드: " << player->getGold() << " G\n" << endl;
-        cout << "\n판매할 아이템 번호를 입력하세요 (0: 뒤로 가기): ";
-        cin >> sellChoice;
-
-        // 입력 오류 처리
-        if (cin.fail()) {
-            cin.clear();
-            cin.ignore(1024, '\n');
-            sellChoice = -1;
-            cout << "잘못된 입력입니다." << endl;
-            this_thread::sleep_for(chrono::milliseconds(1500));
-        }
-        // 아이템 판매, 인덱스는 번호 -1
-        else if (sellChoice > 0 && sellChoice <= player->getInventory()->getSize())
-        {
-            sellItem(sellChoice - 1, player);
-            this_thread::sleep_for(chrono::milliseconds(1000));
-
-        }
-        // 잘못된 번호 처리
-        else if (sellChoice != 0) {
-            cout << "잘못된 아이템 번호입니다." << endl;
-            this_thread::sleep_for(chrono::milliseconds(1500));
-        }
+        cout << i + 1 << ". " << availableItems[i]->getName()
+            << " - " << availableItems[i]->getPrice() * 0.6 << " Gold" << endl;
     }
+
+    // 인벤토리가 비었을 경우 판매 불가
+    if (player->getInventory().size() == 0)
+    {
+        return -2;
+    }
+    cout << "현재 소지 골드: " << player->getGold() << " G\n" << endl;
+    cout << "\n판매할 아이템 번호를 입력하세요 (0: 뒤로 가기): ";
+    cin >> sellChoice;
+
+    // 입력 오류 처리
+    if (cin.fail()) {
+        cin.clear();
+        cin.ignore(1024, '\n');
+        return -1;
+
+    }
+    return sellChoice;
 }
 
 // 판매 처리 함수 작성
