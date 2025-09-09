@@ -1,4 +1,4 @@
-#include "Character.h"
+ï»¿#include "Character.h"
 #include <iostream>
 #include <string>
 
@@ -15,35 +15,44 @@ Character::Character(string name) :
 	experience(0),
 	gold(0),
 	killcount(0)
-{}
+
+{
+	inventory = new Inventory();
+}
+
+Character::~Character()
+{
+	delete inventory;
+	inventory = nullptr;
+}
 
 void Character :: displayStatus() const
 {
-	cout << "¦¬¦¬¦¬¦¬¦¬¦¬¦¬¦¬¦¬¦¬¦¬¦¬¦¬¦¬¦¬¦¬¦¬¦¬¦¬¦¬¦¬¦¬¦¬¦¬¦¬¦¬¦¬¦¬¦¬¦¬¦¬¦¬¦¬";
+	cout << "â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”";
 	cout << endl;
-	cout << "ÀÌ¸§ : " << name << "\n";
+	cout << "ì´ë¦„ : " << name << "\n";
 	cout << "Lv : " << level << "\n";
-	cout << "°æÇèÄ¡ : " << experience << "\n";
+	cout << "ê²½í—˜ì¹˜ : " << experience << "\n";
 	cout << "HP : " << health << "/"<<maxHealth<< "\n";
-	cout << "°ø°Ý·Â : " << attack;
+	cout << "ê³µê²©ë ¥ : " << attack;
 	cout << endl;
-	cout << "¦¬¦¬¦¬¦¬¦¬¦¬¦¬¦¬¦¬¦¬¦¬¦¬¦¬¦¬¦¬¦¬¦¬¦¬¦¬¦¬¦¬¦¬¦¬¦¬¦¬¦¬¦¬¦¬¦¬¦¬¦¬¦¬¦¬";
+	cout << "â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”";
 }
 
 void Character :: levelUp()
 {
 		experience -= 100;
 		cout << endl;
-		cout << "·¹º§¾÷ Çß½À´Ï´Ù!" << endl;
+		cout << "ë ˆë²¨ì—… í–ˆìŠµë‹ˆë‹¤!" << endl;
 		++level;
 		maxHealth += level * 20;
 		health = maxHealth;
-		cout << "Ã¼·ÂÀÌ ¸ðµÎ È¸º¹µÆ½À´Ï´Ù.\n";
+		cout << "ì²´ë ¥ì´ ëª¨ë‘ íšŒë³µëìŠµë‹ˆë‹¤.\n";
 		attack += level * 5;
-		cout << "°ø°Ý·ÂÀÌ »ó½ÂÇß½À´Ï´Ù.\n";
-		cout << "ÇöÀç Lv : " << level << endl;
-		cout << "ÇöÀç Ã¼·Â :" << health << "/" << maxHealth << endl;
-		cout << "ÇöÀç °ø°Ý·Â :" << attack << endl;
+		cout << "ê³µê²©ë ¥ì´ ìƒìŠ¹í–ˆìŠµë‹ˆë‹¤.\n";
+		cout << "í˜„ìž¬ Lv : " << level << endl;
+		cout << "í˜„ìž¬ ì²´ë ¥ :" << health << "/" << maxHealth << endl;
+		cout << "í˜„ìž¬ ê³µê²©ë ¥ :" << attack << endl;
 }
 
 int Character::getAttack()
@@ -90,14 +99,14 @@ void Character::setExp(int a)
 	return;
 }
 
-void Character::addInventory(Item* item)
-{
-	inventory.push_back(item);
-}
-vector<Item*> Character::getInventory()
-{
-	return inventory;
-}
+//void Character::addInventory(Item* item)
+//{
+//	inventory.push_back(item);
+//}
+//vector<Item*> Character::getInventory()
+//{
+//	return inventory;
+//}
 void Character::useItem(int index)
 {
 
@@ -137,3 +146,4 @@ void Character::setKillcount(int a)
 }
 
 string Character::getart() { return art; }
+
