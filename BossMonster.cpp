@@ -13,12 +13,12 @@ BossMonster::BossMonster(int level)
 
 	art = {};
 
-	//·£´ı ¹üÀ§ÀÇ °ª ÄÚµå chat GptÀÇ µµ¿òÀ» ¹Ş¾Æ¼­ ÀÛ¼ºÇß½À´Ï´Ù.
-	random_device rd;	 //½Ãµå »ı¼º (³­¼ö ½Ãµå¸¦ ¸¸µå´Â ÀåÄ¡)
-	mt19937 gen(rd());	 //¿£Áø ÃÊ±âÈ­ (Mersenne Twister 19937 ¾Ë°í¸®Áò ±â¹İÀÇ ³­¼ö »ı¼º±â)
+	//ëœë¤ ë²”ìœ„ì˜ ê°’ ì½”ë“œ chat Gptì˜ ë„ì›€ì„ ë°›ì•„ì„œ ì‘ì„±í–ˆìŠµë‹ˆë‹¤.
+	random_device rd;	 //ì‹œë“œ ìƒì„± (ë‚œìˆ˜ ì‹œë“œë¥¼ ë§Œë“œëŠ” ì¥ì¹˜)
+	mt19937 gen(rd());	 //ì—”ì§„ ì´ˆê¸°í™” (Mersenne Twister 19937 ì•Œê³ ë¦¬ì¦˜ ê¸°ë°˜ì˜ ë‚œìˆ˜ ìƒì„±ê¸°)
 
-	uniform_int_distribution<int> healthDist(level * 30, level * 45);	//¹üÀ§ ¼³Á¤ (level * 30 ~ level * 45)
-	uniform_int_distribution<int> attackDist(level * 10, level * 15);	//¹üÀ§ ¼³Á¤ (level * 10 ~ level * 15)
+	uniform_int_distribution<int> healthDist(level * 30, level * 45);	//ë²”ìœ„ ì„¤ì • (level * 30 ~ level * 45)
+	uniform_int_distribution<int> attackDist(level * 10, level * 15);	//ë²”ìœ„ ì„¤ì • (level * 10 ~ level * 15)
 
 	health = healthDist(gen);
 
@@ -49,15 +49,15 @@ string BossMonster::getart() const
 }
 
 
-//¸ó½ºÅÍ ÇÇ°İ
+//ëª¬ìŠ¤í„° í”¼ê²©
 void BossMonster::takeDamage(int damage)
 {
 	health -= damage;
-	if (health < 0) health = 0;  // 0ÀÌ µÇ¸é Á×¾î¾ßÇÏ´Ï µ¥¹ÌÁö°¡ ¿À¹öµÉ ‹š 0À¸·Î ¼³Á¤
+	if (health < 0) health = 0;  // 0ì´ ë˜ë©´ ì£½ì–´ì•¼í•˜ë‹ˆ ë°ë¯¸ì§€ê°€ ì˜¤ë²„ë  ë–„ 0ìœ¼ë¡œ ì„¤ì •
 }
 
 
-//¼ø¼ö°¡»óÇÔ¼ö¸¦ »ç¿ëÇØ¼­ ÀÏ´Ü ±¸Çö¸¸ ÇØµÎ¾ú½À´Ï´Ù. °ªx
+//ìˆœìˆ˜ê°€ìƒí•¨ìˆ˜ë¥¼ ì‚¬ìš©í•´ì„œ ì¼ë‹¨ êµ¬í˜„ë§Œ í•´ë‘ì—ˆìŠµë‹ˆë‹¤. ê°’x
 Item* BossMonster::dropItem() {
 	return nullptr;
 }

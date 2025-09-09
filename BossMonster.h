@@ -31,7 +31,7 @@ public:
 	Item* dropItem() override;
 
 private:
-	string art = "ÀÓ½Ã º¸½º ÀÌ¹ÌÁö";
+	string art = "ì„ì‹œ ë³´ìŠ¤ ì´ë¯¸ì§€";
 };
 
 

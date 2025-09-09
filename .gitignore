@@ -1,4 +1,7 @@
 ﻿### C++ template
+*.xml
+*.name
+
 # Prerequisites
 *.d
 

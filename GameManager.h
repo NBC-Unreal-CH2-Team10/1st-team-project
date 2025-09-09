@@ -3,6 +3,7 @@
 class Character;
 class Shop;
 
+#include "Character.h"
 #include "Monster.h"   //몬스터 클래스
 #include "Goblin.h"
 #include "BossMonster.h"
