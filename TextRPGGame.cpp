@@ -107,7 +107,7 @@ int main()
 
                 if (answer == "Y" || answer == "y")
                 {
-                    gm.visitShop(player);
+                    gm.visitShop();
                     break;
                 }
                 else

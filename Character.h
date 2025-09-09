@@ -70,7 +70,7 @@ public:
 	std::string getName();
 	std::string getart();
 
-	//
+	~Character();
 
 
 private:

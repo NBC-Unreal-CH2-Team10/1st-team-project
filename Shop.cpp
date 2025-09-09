@@ -6,6 +6,7 @@
 #include <iostream>
 #include <thread>
 #include <chrono>
+#include <vector>
 #include <Windows.h>
 
 using namespace std;
@@ -232,7 +233,6 @@ void Shop::sellLoop(Character* player)
 // 판매 처리 함수 작성
 void Shop::sellItem(int index, Character* player)
 {
-
     vector<Item*> playerInventory = player->getInventory();
     Item* itemToSell = playerInventory[index];
 

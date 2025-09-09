@@ -8,7 +8,7 @@ using namespace std;
 
 class Monster {
 public:
-	//¼ø¼ö°¡»óÇÔ¼ö ÀÚ½Ä Å¬·¡½º¿¡¼­ ¹«Á¶°Ç ±¸ÇöÇØ¾ß ÇÔ
+	//ìˆœìˆ˜ê°€ìƒí•¨ìˆ˜ ìì‹ í´ë˜ìŠ¤ì—ì„œ ë¬´ì¡°ê±´ êµ¬í˜„í•´ì•¼ í•¨
 	virtual string getName() const = 0;
 	virtual int getHealth() const = 0;
 	virtual int getAttack() const = 0;

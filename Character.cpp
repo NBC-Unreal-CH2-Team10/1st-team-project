@@ -99,14 +99,6 @@ void Character::setExp(int a)
 	return;
 }
 
-//void Character::addInventory(Item* item)
-//{
-//	inventory.push_back(item);
-//}
-//vector<Item*> Character::getInventory()
-//{
-//	return inventory;
-//}
 void Character::useItem(int index)
 {
 

@@ -13,14 +13,14 @@ Goblin::Goblin(int level)
 
 	exp = 50;
 
-	//·£´ı ¹üÀ§ÀÇ °ª ÄÚµå chat GptÀÇ µµ¿òÀ» ¹Ş¾Æ¼­ ÀÛ¼ºÇß½À´Ï´Ù.
-	random_device rd;	 //½Ãµå »ı¼º (³­¼ö ½Ãµå¸¦ ¸¸µå´Â ÀåÄ¡)
-	mt19937 gen(rd());	 //¿£Áø ÃÊ±âÈ­ (Mersenne Twister 19937 ¾Ë°í¸®Áò ±â¹İÀÇ ³­¼ö »ı¼º±â)
+	//ëœë¤ ë²”ìœ„ì˜ ê°’ ì½”ë“œ chat Gptì˜ ë„ì›€ì„ ë°›ì•„ì„œ ì‘ì„±í–ˆìŠµë‹ˆë‹¤.
+	random_device rd;	 //ì‹œë“œ ìƒì„± (ë‚œìˆ˜ ì‹œë“œë¥¼ ë§Œë“œëŠ” ì¥ì¹˜)
+	mt19937 gen(rd());	 //ì—”ì§„ ì´ˆê¸°í™” (Mersenne Twister 19937 ì•Œê³ ë¦¬ì¦˜ ê¸°ë°˜ì˜ ë‚œìˆ˜ ìƒì„±ê¸°)
 
-	uniform_int_distribution<int> healthDist(level * 20, level * 30);	//¹üÀ§ ¼³Á¤ (level * 20 ~ level * 30)
-	uniform_int_distribution<int> attackDist(level * 5, level * 10);	//¹üÀ§ ¼³Á¤ (level * 5 ~ level * 10)
+	uniform_int_distribution<int> healthDist(level * 20, level * 30);	//ë²”ìœ„ ì„¤ì • (level * 20 ~ level * 30)
+	uniform_int_distribution<int> attackDist(level * 5, level * 10);	//ë²”ìœ„ ì„¤ì • (level * 5 ~ level * 10)
 
-	uniform_int_distribution<int> goldDist(1, 5);  // 1~5°ñµå
+	uniform_int_distribution<int> goldDist(1, 5);  // 1~5ê³¨ë“œ
 	gold = goldDist(gen);
 
 
@@ -62,25 +62,25 @@ string Goblin::getart() const
 }
 
 
-//¸ó½ºÅÍ ÇÇ°İ
+//ëª¬ìŠ¤í„° í”¼ê²©
 void Goblin::takeDamage(int damage)
 {
 	health -= damage;
-	if (health < 0) health = 0;  // 0ÀÌ µÇ¸é Á×¾î¾ßÇÏ´Ï µ¥¹ÌÁö°¡ ¿À¹öµÉ ‹š 0À¸·Î ¼³Á¤
+	if (health < 0) health = 0;  // 0ì´ ë˜ë©´ ì£½ì–´ì•¼í•˜ë‹ˆ ë°ë¯¸ì§€ê°€ ì˜¤ë²„ë  ë–„ 0ìœ¼ë¡œ ì„¤ì •
 }
 
-//¾ÆÀÌÅÛ µå¶ø
+//ì•„ì´í…œ ë“œë
 Item* Goblin::dropItem() {
 
 	random_device rd;
 	mt19937 gen(rd());
 
-	//FMath¿¡ RandRange´Â ¾ğ¸®¾ó Àü¿ë ¶óÀÌºê·¯¸®¶ó »ç¿ëÇÏÁö ¸øÇÑ´Ù°í ÇÏ³×¿ä.. 
-	uniform_int_distribution<int> dist(0, 99);  // 0~99 ³­¼ö »ı¼º
+	//FMathì— RandRangeëŠ” ì–¸ë¦¬ì–¼ ì „ìš© ë¼ì´ë¸ŒëŸ¬ë¦¬ë¼ ì‚¬ìš©í•˜ì§€ ëª»í•œë‹¤ê³  í•˜ë„¤ìš”.. 
+	uniform_int_distribution<int> dist(0, 99);  // 0~99 ë‚œìˆ˜ ìƒì„±
 
 	int per = dist(gen);
 
-	//È®·ü¿¡ µû¸¥ µå¶ø¾ÆÀÌÅÛ
+	//í™•ë¥ ì— ë”°ë¥¸ ë“œëì•„ì´í…œ
 	if (per < 40) {
 		return new HealthPotion();  // 40% hp drop
 	}
