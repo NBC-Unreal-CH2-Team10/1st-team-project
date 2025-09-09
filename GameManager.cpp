@@ -1,5 +1,5 @@
-#include "GameManager.h"
-
+ï»¿#include "GameManager.h"
+#include "Shop.h"
 #include <Windows.h>
 #include <iostream>
 #include <vector>
@@ -17,11 +17,11 @@ using std::cout;
 
 Monster* GameManager::generateMonster(int level)
 {
-	vector<Monster*> Monsterlist = { new Goblin(level), new Orc(level), new Troll(level) }; //ÇÑ¹ø¿¡ ´Ù ¹Ş´Â ¹æ¹ı?
+	vector<Monster*> Monsterlist = { new Goblin(level), new Orc(level), new Troll(level) }; //í•œë²ˆì— ë‹¤ ë°›ëŠ” ë°©ë²•?
 	
 	random_device rand;
 	mt19937 gen(rand());
-	uniform_int_distribution<int> dis(0, 2);	// 0 ~ 2 »çÀÌ¿¡¼­ ·£´ıÇÏ°Ô ¼ıÀÚ¸¦ ¼±ÅÃÇÏ°í ¸ó½ºÅÍ¸®½ºÆ®¿¡ ÀÎµ¦½º·Î ³ÖÀ½
+	uniform_int_distribution<int> dis(0, 2);	// 0 ~ 2 ì‚¬ì´ì—ì„œ ëœë¤í•˜ê²Œ ìˆ«ìë¥¼ ì„ íƒí•˜ê³  ëª¬ìŠ¤í„°ë¦¬ìŠ¤íŠ¸ì— ì¸ë±ìŠ¤ë¡œ ë„£ìŒ
 
 	return Monsterlist[dis(gen)];
 }
@@ -31,14 +31,14 @@ Monster* GameManager::generateBossMonster(int level)
 	return new BossMonster(level);
 }
 
-void GameManager::battle(Character* player, Monster* monster)  // Ä³¸¯ÅÍ/¸ó½ºÅÍ ¼ø¼­·Î ÇÑ¹ø¾¿ °ø°İÇÏ°í µÑ Áß ÇÏ³ª°¡ Á×À¸¸é break
+void GameManager::battle(Character* player, Monster* monster)  // ìºë¦­í„°/ëª¬ìŠ¤í„° ìˆœì„œë¡œ í•œë²ˆì”© ê³µê²©í•˜ê³  ë‘˜ ì¤‘ í•˜ë‚˜ê°€ ì£½ìœ¼ë©´ break
 {
-	int curAttack = player->getAttack();	//ÇöÀç °ø°İ·Â
+	int curAttack = player->getAttack();	//í˜„ì¬ ê³µê²©ë ¥
 	vector<Item*> inventory = player->getInventory();
 
 	string find = "AttackBoost";
 
-	auto it = find_if(inventory.begin(), inventory.end(), [&find](Item* item) {return item->getName() == find; }); // °ø°İ·Â Áõ°¡ Æ÷¼ÇÀÌ Á¸ÀçÇÏ´ÂÁö È®ÀÎ
+	auto it = find_if(inventory.begin(), inventory.end(), [&find](Item* item) {return item->getName() == find; }); // ê³µê²©ë ¥ ì¦ê°€ í¬ì…˜ì´ ì¡´ì¬í•˜ëŠ”ì§€ í™•ì¸
 
 	if (it != inventory.end()) 
 	{
@@ -46,14 +46,14 @@ void GameManager::battle(Character* player, Monster* monster)  // Ä³¸¯ÅÍ/¸ó½ºÅÍ 
 
 		while (true)
 		{
-			cout << "°ø°İ·Â °­È­ Æ÷¼ÇÀ» »ç¿ëÇÏ½Ã°Ú½À´Ï±î? (Y/N)\n" << endl;
+			cout << "ê³µê²©ë ¥ ê°•í™” í¬ì…˜ì„ ì‚¬ìš©í•˜ì‹œê² ìŠµë‹ˆê¹Œ? (Y/N)\n" << endl;
 			cin >> choice;
 
-			if (cin.fail()) //Àß ¸øµÈ Å¸ÀÔÀÌ ÀÔ·ÂµÇ¸é true ¹İÈ¯
+			if (cin.fail()) //ì˜ ëª»ëœ íƒ€ì…ì´ ì…ë ¥ë˜ë©´ true ë°˜í™˜
 			{
-				cin.clear(); // ¿À·ù »óÅÂ ÃÊ±âÈ­
-				cin.ignore(1000, '\n'); // Àß¸øµÈ ÀÔ·Â ¹ö¸®±â
-				cout << "Àß¸øµÈ ÀÔ·ÂÀÔ´Ï´Ù. ´Ù½Ã ÀÔ·ÂÇØÁÖ¼¼¿ä.\n" << endl;
+				cin.clear(); // ì˜¤ë¥˜ ìƒíƒœ ì´ˆê¸°í™”
+				cin.ignore(1000, '\n'); // ì˜ëª»ëœ ì…ë ¥ ë²„ë¦¬ê¸°
+				cout << "ì˜ëª»ëœ ì…ë ¥ì…ë‹ˆë‹¤. ë‹¤ì‹œ ì…ë ¥í•´ì£¼ì„¸ìš”.\n" << endl;
 				continue;
 			}
 
@@ -69,29 +69,34 @@ void GameManager::battle(Character* player, Monster* monster)  // Ä³¸¯ÅÍ/¸ó½ºÅÍ 
 		}
 	}
 
-	cout << "ÀüÅõ¸¦ ½ÃÀÛÇÕ´Ï´Ù!" << endl;
-	this_thread::sleep_for(chrono::milliseconds(1000)); //1ÃÊ µô·¹ÀÌ
+	cout << "ì „íˆ¬ë¥¼ ì‹œì‘í•©ë‹ˆë‹¤!" << endl;
+	this_thread::sleep_for(chrono::milliseconds(1000)); //1ì´ˆ ë”œë ˆì´
 
-	int logline = 45; //¾ÆÆ® Å©±â + ¿©À¯ °ø°£
+
+	int logline = 45; 
 	int battlelog = logline + 10;
-	int delay = 500; //0.5ÃÊ
+	int delay = 500; 
 
 	system("cls");
 	
-	while (true) // attack ÇÔ¼ö Á¦ÀÛ?
+	while (true) // attack 
+
 	{
-		playerUI(player);  //Ä¿¼­ ¸ÇÀ§·Î ÀÌµ¿ ÈÄ 1ÁÙÂ¥¸® UI Ãâ·Â
+		playerUI(player);  //ì»¤ì„œ ë§¨ìœ„ë¡œ ì´ë™ í›„ 1ì¤„ì§œë¦¬ UI ì¶œë ¥
 
-		drawMonsterArt(monster, 5); // 3¹øÂ° ÁÙºÎÅÍ ¾ÆÆ® Ãâ·Â
 
-		printLog(monster->getName() + "ÀÌ(°¡) ³ªÅ¸³µ½À´Ï´Ù!", logline);
+		drawMonsterArt(monster, 5); 
+
+
+		printLog(monster->getName() + "ì´(ê°€) ë‚˜íƒ€ë‚¬ìŠµë‹ˆë‹¤!", logline);
 		
 		battleUI(player, monster, logline + 4);
 
-		monster->takeDamage(player->getAttack());				//¸ó½ºÅÍ°¡ ¸ÕÀú °ø°İ ¹ŞÀ½
+		monster->takeDamage(player->getAttack());				//ëª¬ìŠ¤í„°ê°€ ë¨¼ì € ê³µê²© ë°›ìŒ
 		playerUI(player);
+
 		battleUI(player, monster, logline + 4);
-		printLog("¸ğÇè°¡°¡ " + to_string(player->getAttack()) + "ÀÇ ÇÇÇØ¸¦ ÀÔÇû½À´Ï´Ù.", battlelog);
+		printLog("ëª¨í—˜ê°€ê°€" + to_string(player->getAttack()) + "ì˜ í”¼í•´ë¥¼ ì…í˜”ìŠµë‹ˆë‹¤.", battlelog);
 		++battlelog;
 		this_thread::sleep_for(chrono::milliseconds(delay));
 
@@ -100,10 +105,11 @@ void GameManager::battle(Character* player, Monster* monster)  // Ä³¸¯ÅÍ/¸ó½ºÅÍ 
 			break;
 		}
 
-		player->takeDamage(monster->getAttack());				//ÇÃ·¹ÀÌ¾î°¡ °ø°İ ¹ŞÀ½
+		player->takeDamage(monster->getAttack());				
 		playerUI(player);
 		battleUI(player, monster, logline + 4);
-		printLog("¸ó½ºÅÍ°¡ " + to_string(monster->getAttack()) + "ÀÇ ÇÇÇØ¸¦ ÀÔÇû½À´Ï´Ù.", battlelog);
+		printLog("ëª¬ìŠ¤í„°ê°€ " + to_string(monster->getAttack()) + "ì˜ í”¼í•´ë¥¼ ì…í˜”ìŠµë‹ˆë‹¤.", battlelog);
+
 		++battlelog;
 		this_thread::sleep_for(chrono::milliseconds(delay));
 
@@ -112,19 +118,19 @@ void GameManager::battle(Character* player, Monster* monster)  // Ä³¸¯ÅÍ/¸ó½ºÅÍ 
 			break;
 		}
 
-		if (player->getHealth() < (player->getMaxHealth() / 2)) //ÃÖ´ë Ã¼·ÂÀÇ 50% ¾Æ·¡·Î ³»·Á°¥ °æ¿ì ÀÚµ¿ »ç¿ë
+		if (player->getHealth() < (player->getMaxHealth() / 2)) //ìµœëŒ€ ì²´ë ¥ì˜ 50% ì•„ë˜ë¡œ ë‚´ë ¤ê°ˆ ê²½ìš° ìë™ ì‚¬ìš©
 		{
-			string find = "Ã¼·Â ¹°¾à";
+			string find = "ì²´ë ¥ ë¬¼ì•½";
 
-			auto it = find_if(inventory.begin(), inventory.end(), [&find](Item* item) {return item->getName() == find; }); // Ã¼·Â Æ÷¼ÇÀÌ Á¸ÀçÇÏ´ÂÁö È®ÀÎ
+			auto it = find_if(inventory.begin(), inventory.end(), [&find](Item* item) {return item->getName() == find; }); // ì²´ë ¥ í¬ì…˜ì´ ì¡´ì¬í•˜ëŠ”ì§€ í™•ì¸
 
 			if (it != inventory.end())
 			{
-				//Ã¼·Â Æ÷¼Ç »ç¿ë
+				//ì²´ë ¥ í¬ì…˜ ì‚¬ìš©
 				inventory[it - inventory.begin()]->use(player);
 				playerUI(player);
 				battleUI(player, monster, logline);
-				printLog("Ã¼·Â Æ÷¼ÇÀ» »ç¿ëÇÏ¿© 50ÀÇ Ã¼·ÂÀ» È¸º¹Çß½À´Ï´Ù!", battlelog);
+				printLog("ì²´ë ¥ í¬ì…˜ì„ ì‚¬ìš©í•˜ì—¬ 50ì˜ ì²´ë ¥ì„ íšŒë³µí–ˆìŠµë‹ˆë‹¤!", battlelog);
 				++battlelog;
 				this_thread::sleep_for(chrono::milliseconds(delay));
 			}
@@ -134,70 +140,199 @@ void GameManager::battle(Character* player, Monster* monster)  // Ä³¸¯ÅÍ/¸ó½ºÅÍ 
 
 	if (player->getHealth() == 0)
 	{
-		throw runtime_error("¸ğÇè°¡°¡ »ç¸ÁÇß½À´Ï´Ù.");
+		throw runtime_error("ëª¨í—˜ê°€ê°€ ì‚¬ë§í–ˆìŠµë‹ˆë‹¤.");
 	}
 
-	player->setAttack(curAttack); //°ø°İ·Â ¿ø»ó º¹±¸
+	player->setAttack(curAttack); //ê³µê²©ë ¥ ì›ìƒ ë³µêµ¬
 
-	player->setKillcount(player->getKillcount() + 1);  //¸ó½ºÅÍ Å³¼ö +1
+	player->setKillcount(player->getKillcount() + 1);  //ëª¬ìŠ¤í„° í‚¬ìˆ˜ +1
 	player->setGold(monster->getGold() + player->getGold());
 
 	playerUI(player);
 	battleUI(player, monster, logline);
-	printLog("¸ó½ºÅÍ¸¦ Ã³Ä¡Çß½À´Ï´Ù!", logline + 10);
+	printLog("ëª¬ìŠ¤í„°ë¥¼ ì²˜ì¹˜í–ˆìŠµë‹ˆë‹¤!", logline + 10);
 
-	//¸ó½ºÅÍ Ã³Ä¡ -> °æÇèÄ¡¿Í °ñµå ¾ÆÀÌÅÛ È¹µæ
+	//ëª¬ìŠ¤í„° ì²˜ì¹˜ -> ê²½í—˜ì¹˜ì™€ ê³¨ë“œ ì•„ì´í…œ íšë“
 
-	//°ñµå È¹µæ
-	//¸ó½ºÅÍ¸¶´Ù °ñµå ´Ù¸£°Ô ÇÏ°í dropGold °°Àº ÇÔ¼ö·Î µå¶ø °ñµå È®ÀÎ
-	//ÇÃ·¹ÀÌ¾î¿¡ addGold ÇÔ¼ö·Î °ñµå Ãß°¡, °ñµå È¹µæ ¹®±¸ Ãâ·Â
+	//ê³¨ë“œ íšë“
+	//ëª¬ìŠ¤í„°ë§ˆë‹¤ ê³¨ë“œ ë‹¤ë¥´ê²Œ í•˜ê³  dropGold ê°™ì€ í•¨ìˆ˜ë¡œ ë“œë ê³¨ë“œ í™•ì¸
+	//í”Œë ˆì´ì–´ì— addGold í•¨ìˆ˜ë¡œ ê³¨ë“œ ì¶”ê°€, ê³¨ë“œ íšë“ ë¬¸êµ¬ ì¶œë ¥
 
-	cout << monster->getGold() << "°ñµå¸¦ È¹µæÇß½À´Ï´Ù." << endl;
+	cout << monster->getGold() << "ê³¨ë“œë¥¼ íšë“í–ˆìŠµë‹ˆë‹¤." << endl;
 
 	player->addInventory(monster->dropItem());
 
-	//µå¶ø ¾ÆÀÌÅÛÀÌ ÀÖ´ÂÁö È®ÀÎÇÏ°í ÀÖÀ¸¸é ÀÎº¥¿¡ Ãß°¡ ¾øÀ¸¸é ³Ñ¾î°¡±â
+	//ë“œë ì•„ì´í…œì´ ìˆëŠ”ì§€ í™•ì¸í•˜ê³  ìˆìœ¼ë©´ ì¸ë²¤ì— ì¶”ê°€ ì—†ìœ¼ë©´ ë„˜ì–´ê°€ê¸°
 
 	delete monster;
 }
 
-void GameManager::visitShop(Character* player)
+//void GameManager::visitShop(Character* player)
+//{
+//	Shop* shop = new Shop();
+//
+//	int logline = shop->getart().size() + 4; //ìƒì  ì•„íŠ¸ 4ì¤„ ì•„ë˜ë¶€í„°
+//
+//	while (true)
+//	{
+//		system("cls"); //ì½˜ì†” í™”ë©´ ì§€ìš°ê¸°
+//
+//		playerUI(player);
+//
+//		drawShopArt(shop, 2);
+//
+//		int choice;
+//		//êµ¬ë§¤ í˜¹ì€ íŒë§¤ ì„ íƒì§€ ì¶œë ¥
+//
+//		printLog("==================", logline);
+//		printLog("1. êµ¬ë§¤", logline + 1);
+//		printLog("2. íŒë§¤", logline + 2);
+//		printLog("3. ìƒì  ë‚˜ê°€ê¸°", logline + 3);
+//		printLog("==================", logline + 4);
+//		
+//		cout << "ë²ˆí˜¸ë¥¼ ì…ë ¥í•˜ì„¸ìš”: ";
+//
+//		cin >> choice;
+//		cin.ignore(1000, '\n');
+//
+//		if (cin.fail()) //ì˜ ëª»ëœ íƒ€ì…ì´ ì…ë ¥ë˜ë©´ true ë°˜í™˜
+//		{
+//			cin.clear(); // ì˜¤ë¥˜ ìƒíƒœ ì´ˆê¸°í™”
+//			cin.ignore(1000, '\n'); // ì˜ëª»ëœ ì…ë ¥ ë²„ë¦¬ê¸°
+//			cout << "ì˜ëª»ëœ ì…ë ¥ì…ë‹ˆë‹¤. ë‹¤ì‹œ ì…ë ¥í•´ì£¼ì„¸ìš”." << endl;
+//			continue;
+//		}
+//
+//		if (choice == 1) //êµ¬ë§¤
+//		{
+//			while (true) {
+//				system("clear");
+//
+//				playerUI(player);
+//
+//				drawShopArt(shop, 2);
+//
+//				setCursor(0, logline);
+//
+//				int choice = shop->buyLoop(player);
+//
+//				if (choice == 0) break;       // ë’¤ë¡œê°€ê¸°
+//				if (choice == -1) 
+//				{
+//					printLog("ì˜ëª»ëœ ì…ë ¥ì…ë‹ˆë‹¤. ë‹¤ì‹œ ì…ë ¥í•´ì£¼ì„¸ìš”.", logline + 10);											//ë¡œê·¸ ì¶œë ¥ ë¼ì¸ ìœ„ì¹˜ ìˆ˜ì • í•„ìš”
+//					this_thread::sleep_for(chrono::milliseconds(1000)); // 1ì´ˆ ëŒ€ê¸°
+//					continue;
+//				}
+//
+//				// ì„ íƒí•œ ì•„ì´í…œ êµ¬ë§¤ ì²˜ë¦¬
+//				setCursor(0, logline + 10);
+//				shop->buyItem(choice - 1, player);
+//			}
+//		}
+//		else if (choice == 2) //íŒë§¤
+//		{
+//			while (true)
+//			{
+//				system("cls"); //ì½˜ì†” í™”ë©´ ì§€ìš°ê¸°
+//
+//				playerUI(player);
+//
+//				drawShopArt(shop, 2);
+//
+//				setCursor(0, logline);
+//
+//				int choice = shop->sellLoop(player);
+//
+//				if (choice == 0) break;       // ë’¤ë¡œê°€ê¸°
+//				if (choice == -1)
+//				{
+//					printLog("ì˜ëª»ëœ ì„ íƒì…ë‹ˆë‹¤. ë‹¤ì‹œ ì…ë ¥í•´ì£¼ì„¸ìš”.", logline + 10);											//ë¡œê·¸ ì¶œë ¥ ë¼ì¸ ìœ„ì¹˜ ìˆ˜ì • í•„ìš”
+//					this_thread::sleep_for(chrono::milliseconds(1000)); // 1ì´ˆ ëŒ€ê¸°
+//					continue;
+//				}
+//				else if (choice == -2)
+//				{
+//					printLog("íŒë§¤í•  ì•„ì´í…œì´ ì—†ìŠµë‹ˆë‹¤.", logline + 10);
+//					break;
+//				}
+//
+//				// ì•„ì´í…œ íŒë§¤
+//
+//				shop->sellItem(choice - 1, player);
+//				printLog("ì•„ì´í…œì„ íŒë§¤í–ˆìŠµë‹ˆë‹¤.", logline + 10);
+//				this_thread::sleep_for(chrono::milliseconds(1000)); // 1ì´ˆ ëŒ€ê¸°
+//			}
+//		}
+//		else if (choice == 3)
+//		{
+//			string answer;
+//
+//			cout << "ìƒì ì„ ë‚˜ê°€ì‹œê² ìŠµë‹ˆê¹Œ? (Y/N)" << endl;
+//			cin >> answer;
+//			cin.ignore(1000, '\n');
+//
+//			if (cin.fail()) //ì˜ ëª»ëœ íƒ€ì…ì´ ì…ë ¥ë˜ë©´ true ë°˜í™˜
+//			{
+//				cin.clear(); // ì˜¤ë¥˜ ìƒíƒœ ì´ˆê¸°í™”
+//				cin.ignore(1000, '\n'); // ì˜ëª»ëœ ì…ë ¥ ë²„ë¦¬ê¸°
+//				cout << "ì˜ëª»ëœ ì…ë ¥ì…ë‹ˆë‹¤. ë‹¤ì‹œ ì…ë ¥í•´ì£¼ì„¸ìš”." << endl;
+//				continue;
+//			}
+//
+//			if (answer == "Y" || answer == "y")
+//			{
+//				break;
+//			}
+//			else
+//			{
+//				continue;
+//			}
+//		}
+//		else
+//		{
+//			cout << "ì˜ëª»ëœ ì…ë ¥ì…ë‹ˆë‹¤. ë‹¤ì‹œ ì…ë ¥í•´ì£¼ì„¸ìš”." << endl;
+//			continue;
+//		}
+//	}
+//	delete shop;
+//}
+void GameManager::visitShop()
 {
+
 	Shop* shop = new Shop();
 
-	int logline = 20; //»óÁ¡ ¾ÆÆ® 4ÁÙ ¾Æ·¡ºÎÅÍ
+	int logline = 20; 
 
 	while (true)
 	{
-		system("cls"); //ÄÜ¼Ö È­¸é Áö¿ì±â
+		system("cls"); 
 
 		playerUI(player);
 
 		drawShopArt(shop, 2);
 
 		int choice;
-		//±¸¸Å È¤Àº ÆÇ¸Å ¼±ÅÃÁö Ãâ·Â
-
+		
 		printLog("==================", logline);
-		printLog("1. ±¸¸Å", logline + 1);
-		printLog("2. ÆÇ¸Å", logline + 2);
-		printLog("3. »óÁ¡ ³ª°¡±â", logline + 3);
+		printLog("1. êµ¬ë§¤", logline + 1);
+		printLog("2. íŒë§¤", logline + 2);
+		printLog("3. ìƒì  ë‚˜ê°€ê¸°", logline + 3);
 		printLog("==================", logline + 4);
 		
-		cout << "¹øÈ£¸¦ ÀÔ·ÂÇÏ¼¼¿ä: ";
+		cout << "ë²ˆí˜¸ë¥¼ìš”ì…ë ¥í•˜ì„¸ìš”: ";
 
 		cin >> choice;
 		cin.ignore(1000, '\n');
 
-		if (cin.fail()) //Àß ¸øµÈ Å¸ÀÔÀÌ ÀÔ·ÂµÇ¸é true ¹İÈ¯
+		if (cin.fail()) 
 		{
-			cin.clear(); // ¿À·ù »óÅÂ ÃÊ±âÈ­
-			cin.ignore(1000, '\n'); // Àß¸øµÈ ÀÔ·Â ¹ö¸®±â
-			cout << "Àß¸øµÈ ÀÔ·ÂÀÔ´Ï´Ù. ´Ù½Ã ÀÔ·ÂÇØÁÖ¼¼¿ä." << endl;
+			cin.clear(); 
+			cin.ignore(1000, '\n'); 
+			cout << "ì˜ëª»ëœ ì…ë ¥ì…ë‹ˆë‹¤. ë‹¤ì‹œ ì…ë ¥í•´ìš”ì£¼ì„¸ìš”." << endl;
 			continue;
 		}
 
-		if (choice == 1) //±¸¸Å
+		if (choice == 1) 
 		{
 			while (true) {
 				system("cls");
@@ -210,24 +345,24 @@ void GameManager::visitShop(Character* player)
 
 				int choice = shop->buyLoop(player);
 
-				if (choice == 0) break;       // µÚ·Î°¡±â
+				if (choice == 0) break;       
 				if (choice == -1) 
 				{
-					printLog("Àß¸øµÈ ÀÔ·ÂÀÔ´Ï´Ù. ´Ù½Ã ÀÔ·ÂÇØÁÖ¼¼¿ä.", logline + 10);											//·Î±× Ãâ·Â ¶óÀÎ À§Ä¡ ¼öÁ¤ ÇÊ¿ä
-					this_thread::sleep_for(chrono::milliseconds(1000)); // 1ÃÊ ´ë±â
+					printLog("ì˜ëª»ëœ ì„ íƒì…ë‹ˆë‹¤. ë‹¤ì‹œ ì„ íƒí•´ì„¸ìš”.", logline + 10);											
+					this_thread::sleep_for(chrono::milliseconds(1000)); 
 					continue;
 				}
 
-				// ¼±ÅÃÇÑ ¾ÆÀÌÅÛ ±¸¸Å Ã³¸®
+				
 				setCursor(0, logline + 10);
 				shop->buyItem(choice - 1, player);
 			}
 		}
-		else if (choice == 2) //ÆÇ¸Å
+		else if (choice == 2) 
 		{
 			while (true)
 			{
-				system("cls"); //ÄÜ¼Ö È­¸é Áö¿ì±â
+				system("cls");
 
 				playerUI(player);
 
@@ -237,39 +372,39 @@ void GameManager::visitShop(Character* player)
 
 				int choice = shop->sellLoop(player);
 
-				if (choice == 0) break;       // µÚ·Î°¡±â
+				if (choice == 0) break;       
 				if (choice == -1)
 				{
-					printLog("Àß¸øµÈ ¼±ÅÃÀÔ´Ï´Ù. ´Ù½Ã ÀÔ·ÂÇØÁÖ¼¼¿ä.", logline + 10);											//·Î±× Ãâ·Â ¶óÀÎ À§Ä¡ ¼öÁ¤ ÇÊ¿ä
-					this_thread::sleep_for(chrono::milliseconds(1000)); // 1ÃÊ ´ë±â
+					printLog("ì˜ëª»ëœ ì„ íƒì…ë‹ˆë‹¤. ë‹¤ì‹œ ì…ë ¥í•´ì£¼ì„¸ìš”.", logline + 10);											
+					this_thread::sleep_for(chrono::milliseconds(1000));
 					continue;
 				}
 				else if (choice == -2)
 				{
-					printLog("ÆÇ¸ÅÇÒ ¾ÆÀÌÅÛÀÌ ¾ø½À´Ï´Ù.", logline + 10);
+					printLog("íŒë§¤í•  ì•„ì´í…œì´ ì—†ìŠµë‹ˆë‹¤.", logline + 10);
 					break;
 				}
 
-				// ¾ÆÀÌÅÛ ÆÇ¸Å
+
 
 				shop->sellItem(choice - 1, player);
-				printLog("¾ÆÀÌÅÛÀ» ÆÇ¸ÅÇß½À´Ï´Ù.", logline + 10);
-				this_thread::sleep_for(chrono::milliseconds(1000)); // 1ÃÊ ´ë±â
+				printLog("ì•„ì´í…œì„ íŒë§¤í–ˆìŠµë‹ˆë‹¤.", logline + 10);
+				this_thread::sleep_for(chrono::milliseconds(1000)); 
 			}
 		}
 		else if (choice == 3)
 		{
 			string answer;
 
-			cout << "»óÁ¡À» ³ª°¡½Ã°Ú½À´Ï±î? (Y/N)" << endl;
+			cout << "ìƒì ì„ ë‚˜ê°€ì‹œê² ìŠµë‹ˆê¹Œ? (Y/N)" << endl;
 			cin >> answer;
 			cin.ignore(1000, '\n');
 
-			if (cin.fail()) //Àß ¸øµÈ Å¸ÀÔÀÌ ÀÔ·ÂµÇ¸é true ¹İÈ¯
+			if (cin.fail()) //ì˜ ëª»ëœ íƒ€ì…ì´ ì…ë ¥ë˜ë©´ true ë°˜í™˜
 			{
-				cin.clear(); // ¿À·ù »óÅÂ ÃÊ±âÈ­
-				cin.ignore(1000, '\n'); // Àß¸øµÈ ÀÔ·Â ¹ö¸®±â
-				cout << "Àß¸øµÈ ÀÔ·ÂÀÔ´Ï´Ù. ´Ù½Ã ÀÔ·ÂÇØÁÖ¼¼¿ä." << endl;
+				cin.clear(); // ì˜¤ë¥˜ ìƒíƒœ ì´ˆê¸°í™”
+				cin.ignore(1000, '\n'); // ì˜ëª»ëœ ì…ë ¥ ë²„ë¦¬ê¸°
+				cout << "ì˜ëª»ëœ ì…ë ¥ì…ë‹ˆë‹¤. ë‹¤ì‹œ ì…ë ¥í•´ì£¼ì„¸ìš”." << endl;
 				continue;
 			}
 
@@ -284,23 +419,27 @@ void GameManager::visitShop(Character* player)
 		}
 		else
 		{
-			cout << "Àß¸øµÈ ÀÔ·ÂÀÔ´Ï´Ù. ´Ù½Ã ÀÔ·ÂÇØÁÖ¼¼¿ä." << endl;
+			cout << "ì˜ëª»ëœ ì…ë ¥ì…ë‹ˆë‹¤. ë‹¤ì‹œ ì…ë ¥í•´ì£¼ì„¸ìš”." << endl;
 			continue;
 		}
 	}
 	delete shop;
 }
 
-void GameManager::displayInventory(Character* player)
+//void GameManager::displayInventory(Character* player)
+//{
+//	//ìºë¦­í„° í´ë˜ìŠ¤ì—ì„œ getInventory í•¨ìˆ˜ í•„ìš”
+//	
+//	vector<Item*> item = player->getInventory();
+//	
+//	for (int i = 1; i <= item.size(); ++i)
+//	{
+//		cout << i << ". " << item[i]->getName() << ": " << item[i]->getPrice()*0.8 << "ê³¨ë“œ" << endl; //ì—¬ê¸°ì„œ priceëŠ” ìƒì ì—ì„œ íŒë§¤ì‹œ ê°€ê²©
+//	}
+//}
+void GameManager::manageInventory()
 {
-	//Ä³¸¯ÅÍ Å¬·¡½º¿¡¼­ getInventory ÇÔ¼ö ÇÊ¿ä
-	
-	vector<Item*> item = player->getInventory();
-	
-	for (int i = 1; i <= item.size(); ++i)
-	{
-		cout << i << ". " << item[i]->getName() << ": " << item[i]->getPrice()*0.8 << "°ñµå" << endl; //¿©±â¼­ price´Â »óÁ¡¿¡¼­ ÆÇ¸Å½Ã °¡°İ
-	}
+	player->getInventory()->manage(player);
 }
 
 void GameManager::drawHealthbar(int hp, int maxHp, int barWidth = 10)
@@ -318,43 +457,43 @@ void GameManager::drawHealthbar(int hp, int maxHp, int barWidth = 10)
 	for (int i = 0; i < barWidth; i++)
 	{
 		if (i < filled) {
-			SetConsoleTextAttribute(hConsole, 10); // 10 = ÃÊ·Ï»ö
-			cout << u8"¡á";
+			SetConsoleTextAttribute(hConsole, 10); // 10 = ì´ˆë¡ìƒ‰
+			cout << u8"â– ";
 		}
 		else {
-			SetConsoleTextAttribute(hConsole, 7); // 12 = »¡°£»ö
-			cout << u8"-";  // ºó Ä­µµ ¡à ´ë½Å »öÄ¥µÈ ¡á·Î ÅëÀÏ °¡´É
+			SetConsoleTextAttribute(hConsole, 7); // 12 = ë¹¨ê°„ìƒ‰
+			cout << u8"-";  // ë¹ˆ ì¹¸ë„ â–¡ ëŒ€ì‹  ìƒ‰ì¹ ëœ â– ë¡œ í†µì¼ ê°€ëŠ¥
 		}
 	}
 
-	SetConsoleTextAttribute(hConsole, 7); // ±âº» »ö»óÀ¸·Î º¹±¸
+	SetConsoleTextAttribute(hConsole, 7); // ê¸°ë³¸ ìƒ‰ìƒìœ¼ë¡œ ë³µêµ¬
 	cout << "] ";
 
 	SetConsoleOutputCP(oldCP);
 }
 
-void GameManager::playerUI(Character* player) // ÄÜ¼ÖÃ¢ »ó´Ü °íÁ¤
+void GameManager::playerUI(Character* player) // ì½˜ì†”ì°½ ìƒë‹¨ ê³ ì •
 {
 	setCursor(0, 0);
-	cout << "´Ğ³×ÀÓ: " << player->getName() << " | Ã¼·Â: ";
+	cout << "ë‹‰ë„¤ì„: " << player->getName() << " | ì²´ë ¥: ";
 	drawHealthbar(player->getHealth(), player->getMaxHealth());
 	cout << " " << player->getHealth() << "/" << player->getMaxHealth();
-	cout << " | ·¹º§: " << player->getLevel();
-	cout << " | °æÇèÄ¡: " << player->getExp() << "/100";
-	cout << " | °ñµå: " << player->getGold() << " G";
-	cout << " | Ã³Ä¡ÇÑ ¸ó½ºÅÍ ¼ö: " << player->getKillcount() << "¸¶¸®\n" << endl;
+	cout << " | ë ˆë²¨: " << player->getLevel();
+	cout << " | ê²½í—˜ì¹˜: " << player->getExp() << "/100";
+	cout << " | ê³¨ë“œ: " << player->getGold() << " G";
+	cout << " | ì²˜ì¹˜í•œ ëª¬ìŠ¤í„° ìˆ˜: " << player->getKillcount() << "ë§ˆë¦¬\n" << endl;
 }
 
 void GameManager::battleUI(Character* player, Monster* monster, int line)
 {
-	setCursor(0, line); // Ä¿¼­ ÀÌµ¿
-	cout << "========== ÀüÅõ »óÅÂ ==========\n";
-	cout << "¸ğÇè°¡ Ã¼·Â: ";
+	setCursor(0, line); // ì»¤ì„œ ì´ë™
+	cout << "========== ì „íˆ¬ ìƒíƒœ ==========\n";
+	cout << "ëª¨í—˜ê°€ ì²´ë ¥: ";
 	drawHealthbar(player->getHealth(), player->getMaxHealth(), 20);
-	cout << "  " << player->getHealth() << "/" << player->getMaxHealth() << "  °ø°İ·Â: " << player->getAttack() << "\n";
-	cout << "¸ó½ºÅÍ Ã¼·Â: ";
+	cout << "  " << player->getHealth() << "/" << player->getMaxHealth() << "  ê³µê²©ë ¥: " << player->getAttack() << "\n";
+	cout << "ëª¬ìŠ¤í„° ì²´ë ¥: ";
 	drawHealthbar(monster->getHealth(), monster->getMaxHealth(), 20);
-	cout << "  " << monster->getHealth() << "/" << monster->getMaxHealth() << "  °ø°İ·Â: " << monster->getAttack() << "\n";
+	cout << "  " << monster->getHealth() << "/" << monster->getMaxHealth() << "  ê³µê²©ë ¥: " << monster->getAttack() << "\n";
 	cout << "===============================\n";
 }
 
@@ -454,5 +593,5 @@ void GameManager::drawMainArt(MainArt* mainart, int line)
 void GameManager::printLog(const string& msg, int line)
 {
 	setCursor(0, line);
-	cout << msg << "                         \n"; // °ø¹éÀ¸·Î ÀÌÀü ÅØ½ºÆ® Áö¿ì±â
+	cout << msg << "                         \n"; // ê³µë°±ìœ¼ë¡œ ì´ì „ í…ìŠ¤íŠ¸ ì§€ìš°ê¸°
 }

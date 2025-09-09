@@ -25,7 +25,7 @@ public:
 
     // 플레이어가 아이템을 구매하는 루프
     // param player가 상점과 상호작용
-    int buyLoop(Character* player);
+    void buyLoop(Character* player);
 
     // 플레이어가 아이템을 구매하는 로직
     // param player의 골드를 차감하고 인벤토리에 아이템 추가
@@ -33,7 +33,7 @@ public:
 
     // 플레이어가 아이템을 판매하는 루프
     // param player가 상점과 상호작용
-    int sellLoop(Character* player);
+    void sellLoop(Character* player);
 
     // 플레이어가 아이템을 판매하는 로직
     // param player의 골드를 지급하고 인벤토리에 아이템 제거
