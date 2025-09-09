@@ -13,7 +13,8 @@ Character::Character(string name) :
 	maxHealth(300),
 	attack(30),
 	experience(0),
-	gold(0)
+	gold(0),
+	killcount(0)
 {}
 
 void Character :: displayStatus() const
@@ -93,18 +94,9 @@ void Character::addInventory(Item* item)
 {
 	inventory.push_back(item);
 }
-void Character::getInventory()
+vector<Item*> Character::getInventory()
 {
-	if (inventory.empty())
-	{
-		cout << "인벤토리가 비어있습니다.\n";
-	}
-	cout << "======== 인벤토리 ========\n";
-	for (size_t i = 0; i < inventory.size(); ++i)
-	{
-		cout << i+1 << " : " << inventory[i]->getName() << "\n";
-	}
-	return;
+	return inventory;
 }
 void Character::useItem(int index)
 {
@@ -116,4 +108,30 @@ void Character::takeDamage(int a)
 {
 	health -= a;
 	return;
+}
+
+int Character::getGold()
+{
+	return gold;
+}
+
+int Character::getLevel()
+{
+	return level;
+}
+
+string Character::getName()
+{
+	return name;
+}
+
+int Character :: getKillcount()
+{
+	return killcount;
+}
+
+void Character::setKillcount(int a)
+{
+	killcount = a;
+	return ;
 }

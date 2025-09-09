@@ -1,17 +1,34 @@
 ﻿#include "AttackBoost.h"
-#include "Character.h"
+#include "Character.h" // Character의 멤버 함수 사용
 #include <iostream>
 
 using namespace std;
 
-// 생성자: 아이템 이름과 공격력 증가량을 초기화한다.
+
 AttackBoost::AttackBoost()
-    : Item("공격력 부스트", 25), attackIncrease(10)
 {
+    // 공격력 강화 아이템 초기값 설정
+    name = "공격력 강화";
+    price = 15;
+    attackIncrease = 10;
 }
-// 기능 구현: 캐릭터의 increaseAttack 함수를 호출하여 공격력을 증가시킨다.
+
+string AttackBoost::getName() const
+{
+    return name;
+}
+
+int AttackBoost::getPrice() const
+{
+    return price;
+}
+
 void AttackBoost::use(Character* character)
 {
-    cout << character->getName() << "이(가) " << getName() << "을(를) 사용합니다." << endl;
-    character->increaseAttack(attackIncrease);
+    // ※ Character 클래스에 public: getAttack, setAttack 필요 
+    int currentAttack = character->getAttack();
+    character->setAttack(currentAttack + attackIncrease);
+
+    cout << name << "을(를) 사용했습니다. 공격력이 영구적으로 " << attackIncrease << " 증가합니다!" << endl;
+    cout << "현재 공격력: " << character->getAttack() << endl;
 }

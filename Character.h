@@ -15,6 +15,7 @@ private:
 	int attack;
 	int experience;
 	int gold;
+	int killcount;
 	std::vector <Item*> inventory;
 
 public:
@@ -42,6 +43,7 @@ public:
 
 	// Gold
 	void setGold(int a);
+	int getGold();
 
 	// Exp
 	int getExp();
@@ -53,8 +55,17 @@ public:
 	// inventory
 	void addInventory(Item* item);		// inventory ∫§≈Õø° »πµÊ æ∆¿Ã≈€ ≥÷±‚
 
-	void getInventory();
+	vector<Item*> getInventory();
 
-	// Damage
+	// monster
 	void takeDamage(int a);
+	int getKillcount();
+	void setKillcount(int a);
+
+	// Level
+	int getLevel();
+
+	// Name
+	std::string getName();
+
 };

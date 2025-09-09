@@ -33,6 +33,12 @@
     <ClCompile Include="Character.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="art.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="askii test.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="GameManager.h">

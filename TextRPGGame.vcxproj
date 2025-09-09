@@ -123,6 +123,8 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="art.cpp" />
+    <ClCompile Include="askii test.cpp" />
     <ClCompile Include="AttackBoost.cpp" />
     <ClCompile Include="Character.cpp" />
     <ClCompile Include="GameManager.cpp" />
