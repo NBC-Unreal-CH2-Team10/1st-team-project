@@ -1,23 +1,45 @@
 ﻿#pragma once
 #include <vector>
-#include "item.h"
 
-using namespace std;
-
+class Item;
 class Character;
 
-// 상점 클래스 설계
+
+// 아이템 상점의 기능을 담당하는 클래스
+// 1. 플레이어가 아이템을 구매, 판매할 수 있는 인터페이스 루프 제공
+// 2. 아이템 구매, 판매 기능 제공
 class Shop
 {
-private:
-	vector<Item*> availableItems; // 상점이 판매하는 아이템 목록
-
-	void displayBuyMenu(Character* player);
-	void displaySellMenu(Character* player);
-
 public:
-	Shop();
-	~Shop();
+    // 생성자 : 최소 아이템이 하나 이상 있어야 함
+    Shop();
+    ~Shop();
 
-	void enter(Character* player); // 플레이어가 상점에 입장시 호출
+    // 플레이어가 상점과 상호작용을 시작하는 진입 함수
+    // GameManager는 이 함수만 호출
+    void visit(Character* player);
+private:
+    // 상점의 메인 메뉴를 화면에 출력
+    // param player를 받아 골드 정보를 함께 출력
+    void displayMainMenu(Character* player) const;
+
+    // 플레이어가 아이템을 구매하는 루프
+    // param player가 상점과 상호작용
+    void buyLoop(Character* player);
+
+    // 플레이어가 아이템을 구매하는 로직
+    // param player의 골드를 차감하고 인벤토리에 아이템 추가
+    void buyItem(int index, Character* player);
+
+    // 플레이어가 아이템을 판매하는 루프
+    // param player가 상점과 상호작용
+    void sellLoop(Character* player);
+
+    // 플레이어가 아이템을 판매하는 로직
+    // param player의 골드를 지급하고 인벤토리에 아이템 제거
+    void sellItem(int index, Character* player);
+
+    // --- 멤버변수 ---
+    // 판매하는 아이템 정보를 저장하는 벡터
+    std::vector<Item*> availableItems;
 };
