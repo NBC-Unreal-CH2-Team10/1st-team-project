@@ -14,6 +14,8 @@ private:
 	int exp;
 	int gold;
 
+	vector<string> art;
+
 public:
 	Goblin(int level);
 	string getName() const override;
@@ -25,5 +27,7 @@ public:
 	int getExp() const override;
 	int getGold() const override;
 
-	DropItem* dropItem() override;
+	vector<string>& getArt() const;
+
+	Item* dropItem() override;
 };

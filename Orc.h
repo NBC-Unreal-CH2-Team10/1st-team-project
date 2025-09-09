@@ -14,6 +14,8 @@ private:
 	int exp;
 	int gold;
 
+	vector<string> art;
+
 public:
 	Orc(int level);
 	string getName() const override;
@@ -25,6 +27,8 @@ public:
 	int getExp() const override;
 	int getGold() const override;
 
-	DropItem* dropItem() override;
+	vector<string>& getArt();
+
+	Item* dropItem() override;
 };
 
