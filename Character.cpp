@@ -2,13 +2,12 @@
 #include <iostream>
 #include <string>
 
-using namespace std;
-
 Character* Character::instance = nullptr;
 
-Character::Character(string name) :
+Character::Character(std::string name) :
 	name(name),
 	level(1),
+	
 	health(100),
 	maxHealth(100),
 	attack(5),
@@ -26,31 +25,31 @@ Character::~Character()
 
 void Character :: displayStatus() const
 {
-	cout << "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━";
-	cout << endl;
-	cout << "이름 : " << name << "\n";
-	cout << "Lv : " << level << "\n";
-	cout << "경험치 : " << experience << "\n";
-	cout << "HP : " << health << "/"<<maxHealth<< "\n";
-	cout << "공격력 : " << attack;
-	cout << endl;
-	cout << "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━";
+	std::cout << "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━";
+	std::cout << std::endl;
+	std::cout << "이름 : " << name << "\n";
+	std::cout << "Lv : " << level << "\n";
+	std::cout << "경험치 : " << experience << "\n";
+	std::cout << "HP : " << health << "/"<<maxHealth<< "\n";
+	std::cout << "공격력 : " << attack;
+	std::cout << std::endl;
+	std::cout << "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━";
 }
 
 void Character :: levelUp()
 {
 		experience -= 100;
-		cout << endl;
-		cout << "레벨업 했습니다!" << endl;
+		std::cout << std::endl;
+		std::cout << "레벨업 했습니다!" << std::endl;
 		++level;
 		maxHealth += level * 20;
 		health = maxHealth;
-		cout << "체력이 모두 회복됐습니다.\n";
+		std::cout << "체력이 모두 회복됐습니다.\n";
 		attack += level * 5;
-		cout << "공격력이 상승했습니다.\n";
-		cout << "현재 Lv : " << level << endl;
-		cout << "현재 체력 :" << health << "/" << maxHealth << endl;
-		cout << "현재 공격력 :" << attack << endl;
+		std::cout << "공격력이 상승했습니다.\n";
+		std::cout << "현재 Lv : " << level << std::endl;
+		std::cout << "현재 체력 :" << health << "/" << maxHealth << std::endl;
+		std::cout << "현재 공격력 :" << attack << std::endl;
 }
 
 int Character::getAttack()
@@ -105,7 +104,7 @@ void Character::useItem(int index)
 
 void Character::addInventory(Item* item)
 {
-	inventory.push_back(item);
+    inventory->addItem(item);
 }
 
 void Character::takeDamage(int a)
@@ -124,7 +123,7 @@ int Character::getLevel()
 	return level;
 }
 
-string Character::getName()
+std::string Character::getName()
 {
 	return name;
 }
@@ -140,5 +139,4 @@ void Character::setKillcount(int a)
 	return ;
 }
 
-string Character::getart() { return art; }
-
+std::string Character::getart() { return art; }

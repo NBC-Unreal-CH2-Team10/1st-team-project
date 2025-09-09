@@ -9,8 +9,6 @@
 #include <vector>
 #include <Windows.h>
 
-using namespace std;
-
 Shop::Shop()
 {
     availableItems.push_back(new HealthPotion());
@@ -31,17 +29,17 @@ Shop::~Shop()
 // 상점 진입
 void Shop::visit(Character* player)
 {
-    cout << "\n상점에 방문합니다..." << endl;
-    this_thread::sleep_for(chrono::milliseconds(1500));
+    std::cout << "\n상점에 방문합니다..." << std::endl;
+    std::this_thread::sleep_for(std::chrono::milliseconds(1500));
     int mainChoice = -1;
     while (mainChoice != 3) // 3을 입력할 때 까지 반복
     {
         displayMainMenu(player);
-        cin >> mainChoice;
+        std::cin >> mainChoice;
         // 입력 오류 처리
-        if (cin.fail()) {
-            cin.clear();
-            cin.ignore(1024, '\n');
+        if (std::cin.fail()) {
+            std::cin.clear();
+            std::cin.ignore(1024, '\n');
             mainChoice = -1;
         }
 
@@ -54,12 +52,12 @@ void Shop::visit(Character* player)
             sellLoop(player); // 판매 루프 시작
             break;
         case 3:
-            cout << "\n상점에서 나갑니다..." << endl;
-            this_thread::sleep_for(chrono::milliseconds(1500));
+            std::cout << "\n상점에서 나갑니다..." << std::endl;
+            std::this_thread::sleep_for(std::chrono::milliseconds(1500));
             break;
         default:
-            cout << "\n잘못된 입력입니다." << endl;
-            this_thread::sleep_for(chrono::milliseconds(1500));
+            std::cout << "\n잘못된 입력입니다." << std::endl;
+            std::this_thread::sleep_for(std::chrono::milliseconds(1500));
             break;
         }
     }
@@ -98,14 +96,14 @@ void Shop::displayMainMenu(Character* player) const
 ⠀⠀⠘⠛⠛⠛⠛⠛⠛⠛⠛⠛⠛⠛⠛⠛⠛⠛⠛⠛⠛⠛⠛⠛⠛⠛⠛⠛⠛⠛⠛⠛⠛⠛⠛⠛⠛⠛⠛⠛⠛⠛⠛⠛⠃⠀⠀
 )" << std::endl;
     SetConsoleOutputCP(oldCP);
-    cout << "\n주인: 어서 오세요! 무엇을 도와드릴까요?\n" << std::endl;
-    cout << "--- [ 상점 ] ---" << endl;
-    cout << "1. 아이템 구매" << endl;
-    cout << "2. 아이템 판매" << endl;
-    cout << "3. 나가기" << endl;
-    cout << "-----------------" << endl;
-    cout << "현재 소지 골드: " << player->getGold() << " G\n" << endl;
-    cout << "선택: ";
+    std::cout << "\n주인: 어서 오세요! 무엇을 도와드릴까요?\n" << std::endl;
+    std::cout << "--- [ 상점 ] ---" << std::endl;
+    std::cout << "1. 아이템 구매" << std::endl;
+    std::cout << "2. 아이템 판매" << std::endl;
+    std::cout << "3. 나가기" << std::endl;
+    std::cout << "-----------------" << std::endl;
+    std::cout << "현재 소지 골드: " << player->getGold() << " G\n" << std::endl;
+    std::cout << "선택: ";
 }
 
 // 구매 루프
@@ -137,7 +135,6 @@ int Shop::buyLoop(Character* player)
     {
         return -2;
     }
-
 }
 
 // 구매 처리
@@ -162,13 +159,13 @@ void Shop::buyItem(int index, Character* player)
         // ※ 새로운 아이템이 추가되면 여기에 else if를 추가 ...
 
         if (newItem) {
-            player->getInventory().push_back(newItem);
-            cout << "'" << itemToBuy->getName() << "'을(를) 구매했습니다." << endl;
+            player->getInventory()->addItem(newItem, false);
+            std::cout << "'" << itemToBuy->getName() << "'을(를) 구매했습니다." << std::endl;
         }
     }
     else
     {
-        cout << "골드가 부족합니다." << endl;
+        std::cout << "골드가 부족합니다." << std::endl;
     }
 }
 
@@ -212,22 +209,21 @@ int Shop::sellLoop(Character* player)
     else if (sellChoice != 0) {
         return -2;
     }
-    
+
 }
 
 // 판매 처리 함수 작성
 void Shop::sellItem(int index, Character* player)
 {
-    vector<Item*> playerInventory = player->getInventory();
-    Item* itemToSell = playerInventory[index];
+    Item* itemToSell = player->getInventory()->getItem(index);
 
     // 1. 판매 가격 계산 (원가의 60%)
-    int sellPrice = itemToSell->getPrice() * 0.6;
+    int sellPrice = static_cast<int>(itemToSell->getPrice() * 0.6);
 
     // 2. 플레이어에게 골드 지급
     player->setGold(player->getGold() + sellPrice);
 
     // 3. 인벤토리에서 아이템 제거
-    cout << "'" << itemToSell->getName() << "'을(를) 판매하여 " << sellPrice << " Gold를 얻었습니다." << endl;
-    delete playerInventory[index];
+    std::cout << "'" << itemToSell->getName() << "'을(를) 판매하여 " << sellPrice << " Gold를 얻었습니다." << std::endl;
+    player->getInventory()->sellItem(index);
 }

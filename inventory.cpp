@@ -113,7 +113,7 @@ void Inventory::sellItem(int index)
     }
 }
 
-int Inventory::getSize() const
+size_t Inventory::getSize() const
 {
     return slots.size();
 }

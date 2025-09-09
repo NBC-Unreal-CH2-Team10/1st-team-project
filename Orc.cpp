@@ -1,4 +1,4 @@
-#include <iostream>
+﻿#include <iostream>
 #include <string>
 #include "Orc.h"
 #include <random>
@@ -76,14 +76,14 @@ Item* Orc::dropItem() {
 	int per = dist(gen);
 
 	//확률에 따른 드랍아이템
-	if (per < 40) {
+	if (per < 100) {
 		return new HealthPotion();  // 40% hp drop
 	}
-	else if (per < 60) {
-		return new AttackBoost();  // 20% AB drop
-	}
-	else {
-		return nullptr;  // 40% drop X
-	}
+	//else if (per < 60) {
+	//	return new AttackBoost();  // 20% AB drop
+	//}
+	//else {
+	//	return nullptr;  // 40% drop X
+	//}
 
 }
