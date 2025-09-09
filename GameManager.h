@@ -1,8 +1,9 @@
-#pragma once
+ï»¿#pragma once
 
-#include "Character.h" //Ä³¸¯ÅÍ Å¬·¡½º
-#include "Shop.h"      //»óÁ¡ Å¬·¡½º
-#include "Monster.h"   //¸ó½ºÅÍ Å¬·¡½º
+class Character;
+class Shop;
+
+#include "Monster.h"   //ëª¬ìŠ¤í„° í´ë˜ìŠ¤
 #include "Goblin.h"
 #include "BossMonster.h"
 #include "Orc.h"
@@ -12,13 +13,16 @@
 class GameManager
 {
 public:
-	Monster* generateMonster(int level);							//Ä³¸¯ÅÍ ·¹º§À» ¹Ş¾Æ¼­ ¸ó½ºÅÍÀÇ ·¹º§ ¼³Á¤
+	Monster* generateMonster(int level);							//ìºë¦­í„° ë ˆë²¨ì„ ë°›ì•„ì„œ ëª¬ìŠ¤í„°ì˜ ë ˆë²¨ ì„¤ì •
 	Monster* generateBossMonster(int level);
 
-	void battle(Character* player, Monster* monster);				//Ä³¸¯ÅÍ ¼±°ø, ¸ó½ºÅÍ ÈÄ°øÀ¸·Î ÇÑ¹ø¾¿ °ø°İ
-	void visitShop(Character* player);								//Ä³¸¯ÅÍ°¡ »óÁ¡ ¹æ¹®
-	void displayInventory(Character* player);						//Ä³¸¯ÅÍ ÀÎº¥Åä¸® È®ÀÎ
+
+
+	void battle(Character* player, Monster* monster);				//ìºë¦­í„° ì„ ê³µ, ëª¬ìŠ¤í„° í›„ê³µìœ¼ë¡œ í•œë²ˆì”© ê³µê²©
+	void visitShop();			// ìƒì ì„ ë°©ë¬¸í•©ë‹ˆë‹¤.
+	void manageInventory();			// ì¸ë²¤í† ë¦¬ë¥¼ í™•ì¸í•˜ê³  ì•„ì´í…œì„ ì‚¬ìš©í•©ë‹ˆë‹¤.
 	void drawHealthbar(int hp, int maxHp, int barWidth);
+
 
 	void playerUI(Character* player);
 	void battleUI(Character* player, Monster* monster, int line);
@@ -28,5 +32,8 @@ public:
 	void drawDefeat(Character* player, int line);
 	void drawMainArt(MainArt* mainart, int line);
 	void printLog(const string& msg, int line);
+
+	Character* player;
+	Shop* shop;
 };
 
