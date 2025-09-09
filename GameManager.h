@@ -4,6 +4,9 @@
 #include "Shop.h"      //상점 클래스
 #include "Monster.h"   //몬스터 클래스
 #include "Goblin.h"
+#include "BossMonster.h"
+#include "Orc.h"
+#include "Troll.h"
 
 class GameManager
 {
@@ -17,7 +20,7 @@ public:
 	void drawHealthbar(int hp, int maxHp, int barWidth = 20);
 
 	void playerUI(Character* player);
-	void battelUI(Character* player, Monster* monster, int line);
+	void battleUI(Character* player, Monster* monster, int line);
 	void setCursor(int x, int y);
 	void drawMonsterArt(Monster* monster, int line);
 	void drawShopArt(Shop* shop, int line);
