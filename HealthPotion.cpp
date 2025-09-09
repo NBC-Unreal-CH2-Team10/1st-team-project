@@ -33,14 +33,5 @@ void HealthPotion::use(Character* character)
     // 최대 체력을 초과하여 회복되지 않도록 실제 회복량 계산, min: 두 값 중 작은 값을 반환
     int healAmount = min(healthRestore, maxHealth - currentHealth);
 
-    if (healAmount > 0)
-    {
-        character->setHealth(currentHealth + healAmount);
-        cout << name << "을(를) 사용했습니다. 체력을 " << healAmount << " 회복합니다." << endl;
-        cout << "현재 체력: " << character->getHealth() << " / " << maxHealth << endl;
-    }
-    else
-    {
-        cout << "이미 체력이 가득 차 있어 물약을 사용할 수 없습니다." << endl;
-    }
+    character->setHealth(currentHealth + healAmount);
 }

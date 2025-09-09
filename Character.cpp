@@ -135,3 +135,5 @@ void Character::setKillcount(int a)
 	killcount = a;
 	return ;
 }
+
+string Character::getart() { return art; }

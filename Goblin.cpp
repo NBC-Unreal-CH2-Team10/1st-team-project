@@ -58,7 +58,8 @@ int Goblin::getGold() const
 {
 	return gold;
 }
-vector<string>& Goblin::getArt() 
+
+string Goblin::getart() const
 {
 	return art;
 }

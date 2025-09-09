@@ -20,5 +20,7 @@ public:
 	virtual int getExp() const = 0;
 	virtual int getGold() const = 0;
 
+	virtual string getart();
+
 	virtual ~Monster() = default;
 };

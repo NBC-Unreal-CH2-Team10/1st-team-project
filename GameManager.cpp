@@ -105,14 +105,14 @@ void GameManager::battle(Character* player, Monster* monster)  // 캐릭터/몬스터 
 
 		if (player->getHealth() < (player->getMaxHealth() / 2)) //최대 체력의 50% 아래로 내려갈 경우 자동 사용
 		{
-			string find = "HealthPotion";
+			string find = "체력 물약";
 
 			auto it = find_if(inventory.begin(), inventory.end(), [&find](Item* item) {return item->getName() == find; }); // 체력 포션이 존재하는지 확인
 
 			if (it != inventory.end())
 			{
 				//체력 포션 사용
-				inventory[it - inventory.begin()]->useItem(player);
+				inventory[it - inventory.begin()]->use(player);
 				playerUI(player);
 				battleUI(player, monster, logline);
 				printLog("체력 포션을 사용하여 50의 체력을 회복했습니다!", battlelog);
@@ -130,10 +130,8 @@ void GameManager::battle(Character* player, Monster* monster)  // 캐릭터/몬스터 
 
 	player->setAttack(curAttack); //공격력 원상 복구
 
-	int dropGold = monster->getGold(); //드랍 골드 출력하기
-
 	player->setKillcount(player->getKillcount() + 1);  //몬스터 킬수 +1
-	player->setGold(dropGold + player->getGold());
+	player->setGold(monster->getGold() + player->getGold());
 
 	playerUI(player);
 	battleUI(player, monster, logline);
