@@ -29,11 +29,14 @@ Monster* GameManager::generateBossMonster(int level)
 void GameManager::battle(Character* player, Monster* monster)  // 캐릭터/몬스터 순서로 한번씩 공격하고 둘 중 하나가 죽으면 break
 {
 	int curAttack = player->getAttack();	//현재 공격력
+
 	std::vector<Item*> inventory;
 	for (const auto& slot : player->getInventory()->getSlots())
 	{
 		inventory.push_back(slot.item);
 	}
+  
+  int logCount = 0;
 
 	std::string find = "AttackBoost";
 
@@ -72,50 +75,40 @@ void GameManager::battle(Character* player, Monster* monster)  // 캐릭터/몬�
 	std::this_thread::sleep_for(std::chrono::milliseconds(1000)); //1초 딜레이
 
 
-	int logline = 45; 
-	int battlelog = logline + 10;
+	int logline = 30; 
+	int battlelog = logline + 6;
 	int delay = 500; 
 
 	system("cls");
 	
-	while (true) // attack 
+	playerUI(player);  //커서 맨위로 이동 후 1줄짜리 UI 출력
 
+	drawMonsterArt(monster, 5); 
+
+	battleUI(player, monster, logline);
+
+	printLog(monster->getName() + "이(가) 나타났습니다!", battlelog, logCount);
+	this_thread::sleep_for(chrono::milliseconds(1000));
+	
+
+	while (player->getHealth() > 0 && monster->getHealth() > 0) // attack 
 	{
-		playerUI(player);  //커서 맨위로 이동 후 1줄짜리 UI 출력
-
-
-		drawMonsterArt(monster, 5); 
-
-
-		printLog(monster->getName() + "이(가) 나타났습니다!", logline);
-		
-		battleUI(player, monster, logline + 4);
-
 		monster->takeDamage(player->getAttack());				//몬스터가 먼저 공격 받음
-		playerUI(player);
 
-		battleUI(player, monster, logline + 4);
-		printLog("모험가가"+ std::to_string(player->getAttack()) + "의 피해를 입혔습니다.", battlelog);
-		++battlelog;
-		std::this_thread::sleep_for(std::chrono::milliseconds(delay));
+		battleUI(player, monster, logline);
+		printLog("모험가가" + to_string(player->getAttack()) + "의 피해를 입혔습니다.", battlelog, logCount);
+		this_thread::sleep_for(chrono::milliseconds(delay));
 
-		if (player->getHealth() == 0 || monster->getHealth() == 0)
-		{
-			break;
-		}
+		if (player->getHealth() == 0 || monster->getHealth() == 0) break;
 
 		player->takeDamage(monster->getAttack());				
 		playerUI(player);
-		battleUI(player, monster, logline + 4);
-		printLog("몬스터가 " + std::to_string(monster->getAttack()) + "의 피해를 입혔습니다.", battlelog);
 
-		++battlelog;
-		std::this_thread::sleep_for(std::chrono::milliseconds(delay));
+		battleUI(player, monster, logline);
+		printLog("몬스터가 " + to_string(monster->getAttack()) + "의 피해를 입혔습니다.", battlelog, logCount);
+		this_thread::sleep_for(chrono::milliseconds(delay));
 
-		if(player->getHealth() == 0 || monster->getHealth() == 0)
-		{
-			break;
-		}
+		if (player->getHealth() == 0 || monster->getHealth() == 0) break;
 
 		if (player->getHealth() < (player->getMaxHealth() / 2)) //최대 체력의 50% 아래로 내려갈 경우 자동 사용
 		{
@@ -129,12 +122,12 @@ void GameManager::battle(Character* player, Monster* monster)  // 캐릭터/몬�
 				inventory[it - inventory.begin()]->use(player);
 				playerUI(player);
 				battleUI(player, monster, logline);
-				printLog("체력 포션을 사용하여 50의 체력을 회복했습니다!", battlelog);
-				++battlelog;
-				std::this_thread::sleep_for(std::chrono::milliseconds(delay));
+
+				printLog("체력 포션을 사용하여 50의 체력을 회복했습니다!", battlelog, logCount);
+				
+				this_thread::sleep_for(chrono::milliseconds(delay));
 			}
 		}
-		++battlelog;
 	}
 
 	if (player->getHealth() == 0)
@@ -149,7 +142,8 @@ void GameManager::battle(Character* player, Monster* monster)  // 캐릭터/몬�
 
 	playerUI(player);
 	battleUI(player, monster, logline);
-	printLog("몬스터를 처치했습니다!", logline + 10);
+	printLog("몬스터를 처치했습니다!", battlelog, logCount);
+	this_thread::sleep_for(chrono::milliseconds(1500));
 
 	//몬스터 처치 -> 경험치와 골드 아이템 획득
 
@@ -157,10 +151,11 @@ void GameManager::battle(Character* player, Monster* monster)  // 캐릭터/몬�
 	//몬스터마다 골드 다르게 하고 dropGold 같은 함수로 드랍 골드 확인
 	//플레이어에 addGold 함수로 골드 추가, 골드 획득 문구 출력
 
-	std::cout << monster->getGold() << "골드를 획득했습니다." << std::endl;
+	printLog(to_string(monster->getGold()) + "골드를 획득했습니다.", battlelog, logCount);
+	this_thread::sleep_for(chrono::milliseconds(1500));
 
 	player->addInventory(monster->dropItem());
-
+	this_thread::sleep_for(chrono::milliseconds(1500));
 	//드랍 아이템이 있는지 확인하고 있으면 인벤에 추가 없으면 넘어가기
 
 	delete monster;
@@ -171,7 +166,8 @@ void GameManager::visitShop()
 
 	Shop* shop = new Shop();
 
-	int logline = 20; 
+	int logline = 20;
+	int logCount = 0;
 
 	while (true)
 	{
@@ -183,11 +179,11 @@ void GameManager::visitShop()
 
 		int choice;
 		
-		printLog("==================", logline);
-		printLog("1. 구매", logline + 1);
-		printLog("2. 판매", logline + 2);
-		printLog("3. 상점 나가기", logline + 3);
-		printLog("==================", logline + 4);
+		printLog("==================", logline, logCount);
+		printLog("1. 구매", logline + 1, logCount);
+		printLog("2. 판매", logline + 2, logCount);
+		printLog("3. 상점 나가기", logline + 3, logCount);
+		printLog("==================", logline + 4, logCount);
 		
 		std::cout << "번호를 입력하세요: ";
 
@@ -218,12 +214,19 @@ void GameManager::visitShop()
 				if (choice == 0) break;       
 				if (choice == -1) 
 				{
-					printLog("잘못된 선택입니다. 다시 선택해세요.", logline + 10);									
-					std::this_thread::sleep_for(std::chrono::milliseconds(1000)); 
+
+					printLog("잘못된 입력입니다. 다시 입력하세요.", logline + 10, logCount);
+					this_thread::sleep_for(chrono::milliseconds(1000)); 
+
+					continue;
+				}
+				else if (choice == -2)
+				{
+					printLog("잘못된 아이템 번호입니다.", logline + 10, logCount);
+					this_thread::sleep_for(chrono::milliseconds(1000));
 					continue;
 				}
 
-				
 				setCursor(0, logline + 10);
 				shop->buyItem(choice - 1, player);
 			}
@@ -245,21 +248,21 @@ void GameManager::visitShop()
 				if (choice == 0) break;       
 				if (choice == -1)
 				{
-					printLog("잘못된 선택입니다. 다시 입력해주세요.", logline + 10);									
-					std::this_thread::sleep_for(std::chrono::milliseconds(1000));
+
+					printLog("잘못된 선택입니다. 다시 입력해주세요.", logline + 10, logCount);
+					this_thread::sleep_for(chrono::milliseconds(1000));
+
 					continue;
 				}
 				else if (choice == -2)
 				{
-					printLog("판매할 아이템이 없습니다.", logline + 10);
+					printLog("판매할 아이템이 없습니다.", logline + 10, logCount);
 					break;
 				}
 
-
-
 				shop->sellItem(choice - 1, player);
-				printLog("아이템을 판매했습니다.", logline + 10);
-				std::this_thread::sleep_for(std::chrono::milliseconds(1000)); 
+				printLog("아이템을 판매했습니다.", logline + 10, logCount);
+				this_thread::sleep_for(chrono::milliseconds(1000)); 
 			}
 		}
 		else if (choice == 3)
@@ -296,10 +299,6 @@ void GameManager::visitShop()
 	delete shop;
 }
 
-void GameManager::manageInventory()
-{
-	player->getInventory()->manage(player);
-}
 
 void GameManager::drawHealthbar(int hp, int maxHp, int barWidth = 10)
 {
@@ -449,8 +448,36 @@ void GameManager::drawMainArt(MainArt* mainart, int line)
 	SetConsoleCP(oldInputCP);
 }
 
-void GameManager::printLog(const std::string& msg, int line)
+vector<string> logs;
+const int MAX_LOGS = 10;
+int logCount = 0;
+
+void GameManager::printLog(const string& msg, int line, int& logCount)
 {
-	setCursor(0, line);
-	std::cout << msg << "                         \n"; // 공백으로 이전 텍스트 지우기
+	// 로그 영역이 가득 찼으면 클리어 후 초기화
+	if (logCount >= MAX_LOGS) {
+		clearLogs(line);
+		logCount = 0;
+	}
+
+	setCursor(0, line + logCount);
+
+	// 한 줄 전체를 먼저 지움
+	cout << string(80, ' ');
+
+	// 다시 커서 위치 맞추고 로그 출력
+	setCursor(0, line + logCount);
+	cout << msg;
+
+	logCount++;
+}
+
+void GameManager::clearLogs(int logStartLine) 
+{
+	for (int i = 0; i < MAX_LOGS; i++) 
+	{
+		setCursor(0, logStartLine + i);
+		cout << string(80, ' ');  // 공백으로 줄 전체 덮기
+	}
+
 }
