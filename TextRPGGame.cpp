@@ -21,6 +21,7 @@ int main()
 
     delete mainart;
     
+    gm.setCursor(5, 160);
     std::cout << "Press any key to start..." << std::endl;
     _getch();  // 키 입력 대기 (Enter 불필요)
 
@@ -84,8 +85,6 @@ int main()
                 player->displayStatus();
                 delete player;
             }
-
-            system("cls");
         
             //전투 종료 후 상점 방문
             gm.playerUI(player);

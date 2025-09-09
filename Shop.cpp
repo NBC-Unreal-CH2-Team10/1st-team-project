@@ -170,7 +170,7 @@ void Shop::buyItem(int index, Character* player)
         // ※ 새로운 아이템이 추가되면 여기에 else if를 추가 ...
 
         if (newItem) {
-            player->getInventory()->addItem(newItem, false);
+            player->getInventory().push_back(newItem);
             cout << "'" << itemToBuy->getName() << "'을(를) 구매했습니다." << endl;
         }
     }
@@ -233,8 +233,8 @@ void Shop::sellLoop(Character* player)
 void Shop::sellItem(int index, Character* player)
 {
 
-    Inventory* playerInventory = player->getInventory();
-    Item* itemToSell = playerInventory->getItem(index);
+    vector<Item*> playerInventory = player->getInventory();
+    Item* itemToSell = playerInventory[index];
 
     // 1. 판매 가격 계산 (원가의 60%)
     int sellPrice = itemToSell->getPrice() * 0.6;
@@ -244,5 +244,5 @@ void Shop::sellItem(int index, Character* player)
 
     // 3. 인벤토리에서 아이템 제거
     cout << "'" << itemToSell->getName() << "'을(를) 판매하여 " << sellPrice << " Gold를 얻었습니다." << endl;
-    playerInventory->sellItem(index);
+    delete playerInventory[index];
 }

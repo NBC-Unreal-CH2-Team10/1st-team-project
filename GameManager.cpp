@@ -72,36 +72,51 @@ void GameManager::battle(Character* player, Monster* monster)  // 캐릭터/몬�
 	cout << "전투를 시작합니다!" << endl;
 	this_thread::sleep_for(chrono::milliseconds(1000)); //1초 딜레이
 
-	int logline = monster->getart().size() + 4; //아트에서 2줄 아래
-	int battlelog = logline + 6;
-	int delay = 500; //0.5초
+
+	int logline = 45; 
+	int battlelog = logline + 10;
+	int delay = 500; 
 
 	system("cls");
 	
-	while (player->getHealth() != 0 && monster->getHealth() != 0) // attack 함수 제작?
+	while (true) // attack 
+
 	{
 		playerUI(player);  //커서 맨위로 이동 후 1줄짜리 UI 출력
 
-		drawMonsterArt(monster, 2); // 3번째 줄부터 아트 출력
+
+		drawMonsterArt(monster, 5); 
+
 
 		printLog(monster->getName() + "이(가) 나타났습니다!", logline);
 		
-		battleUI(player, monster, logline + 2);
+		battleUI(player, monster, logline + 4);
 
 		monster->takeDamage(player->getAttack());				//몬스터가 먼저 공격 받음
 		playerUI(player);
-		battleUI(player, monster, logline);
-		printLog("모험가가 " + to_string(player->getAttack()) + "의 피해를 입혔습니다.", battlelog);
+
+		battleUI(player, monster, logline + 4);
+		printLog("모험가가" + to_string(player->getAttack()) + "의 피해를 입혔습니다.", battlelog);
 		++battlelog;
 		this_thread::sleep_for(chrono::milliseconds(delay));
 
-		player->takeDamage(monster->getAttack());				//플레이어가 공격 받음
+		if (player->getHealth() == 0 || monster->getHealth() == 0)
+		{
+			break;
+		}
+
+		player->takeDamage(monster->getAttack());				
 		playerUI(player);
-		battleUI(player, monster, logline);
+		battleUI(player, monster, logline + 4);
 		printLog("몬스터가 " + to_string(monster->getAttack()) + "의 피해를 입혔습니다.", battlelog);
+
 		++battlelog;
 		this_thread::sleep_for(chrono::milliseconds(delay));
 
+		if(player->getHealth() == 0 || monster->getHealth() == 0)
+		{
+			break;
+		}
 
 		if (player->getHealth() < (player->getMaxHealth() / 2)) //최대 체력의 50% 아래로 내려갈 경우 자동 사용
 		{
@@ -283,7 +298,132 @@ void GameManager::battle(Character* player, Monster* monster)  // 캐릭터/몬�
 //}
 void GameManager::visitShop()
 {
-	shop->visit(player);
+
+	Shop* shop = new Shop();
+
+	int logline = 20; 
+
+	while (true)
+	{
+		system("cls"); 
+
+		playerUI(player);
+
+		drawShopArt(shop, 2);
+
+		int choice;
+		
+		printLog("==================", logline);
+		printLog("1. 구매", logline + 1);
+		printLog("2. 판매", logline + 2);
+		printLog("3. 상점 나가기", logline + 3);
+		printLog("==================", logline + 4);
+		
+		cout << "번호를요입력하세요: ";
+
+		cin >> choice;
+		cin.ignore(1000, '\n');
+
+		if (cin.fail()) 
+		{
+			cin.clear(); 
+			cin.ignore(1000, '\n'); 
+			cout << "잘못된 입력입니다. 다시 입력해요주세요." << endl;
+			continue;
+		}
+
+		if (choice == 1) 
+		{
+			while (true) {
+				system("cls");
+
+				playerUI(player);
+
+				drawShopArt(shop, 2);
+
+				setCursor(0, logline);
+
+				int choice = shop->buyLoop(player);
+
+				if (choice == 0) break;       
+				if (choice == -1) 
+				{
+					printLog("잘못된 선택입니다. 다시 선택해세요.", logline + 10);											
+					this_thread::sleep_for(chrono::milliseconds(1000)); 
+					continue;
+				}
+
+				
+				setCursor(0, logline + 10);
+				shop->buyItem(choice - 1, player);
+			}
+		}
+		else if (choice == 2) 
+		{
+			while (true)
+			{
+				system("cls");
+
+				playerUI(player);
+
+				drawShopArt(shop, 2);
+
+				setCursor(0, logline);
+
+				int choice = shop->sellLoop(player);
+
+				if (choice == 0) break;       
+				if (choice == -1)
+				{
+					printLog("잘못된 선택입니다. 다시 입력해주세요.", logline + 10);											
+					this_thread::sleep_for(chrono::milliseconds(1000));
+					continue;
+				}
+				else if (choice == -2)
+				{
+					printLog("판매할 아이템이 없습니다.", logline + 10);
+					break;
+				}
+
+
+
+				shop->sellItem(choice - 1, player);
+				printLog("아이템을 판매했습니다.", logline + 10);
+				this_thread::sleep_for(chrono::milliseconds(1000)); 
+			}
+		}
+		else if (choice == 3)
+		{
+			string answer;
+
+			cout << "상점을 나가시겠습니까? (Y/N)" << endl;
+			cin >> answer;
+			cin.ignore(1000, '\n');
+
+			if (cin.fail()) //잘 못된 타입이 입력되면 true 반환
+			{
+				cin.clear(); // 오류 상태 초기화
+				cin.ignore(1000, '\n'); // 잘못된 입력 버리기
+				cout << "잘못된 입력입니다. 다시 입력해주세요." << endl;
+				continue;
+			}
+
+			if (answer == "Y" || answer == "y")
+			{
+				break;
+			}
+			else
+			{
+				continue;
+			}
+		}
+		else
+		{
+			cout << "잘못된 입력입니다. 다시 입력해주세요." << endl;
+			continue;
+		}
+	}
+	delete shop;
 }
 
 //void GameManager::displayInventory(Character* player)
@@ -302,7 +442,7 @@ void GameManager::manageInventory()
 	player->getInventory()->manage(player);
 }
 
-void drawHealthbar(int hp, int maxHp, int barWidth = 10)
+void GameManager::drawHealthbar(int hp, int maxHp, int barWidth = 10)
 {
 	UINT oldCP = GetConsoleOutputCP();
 	SetConsoleOutputCP(CP_UTF8);
@@ -365,7 +505,9 @@ void GameManager::setCursor(int x, int y) {
 void GameManager::drawMonsterArt(Monster* monster, int line)
 {
 	UINT oldCP = GetConsoleOutputCP();
+	UINT oldInputCP = GetConsoleCP();
 	SetConsoleOutputCP(CP_UTF8);
+	SetConsoleCP(CP_UTF8);
 
 	string art = monster->getart();
 	istringstream iss(art);
@@ -379,12 +521,15 @@ void GameManager::drawMonsterArt(Monster* monster, int line)
 	}
 
 	SetConsoleOutputCP(oldCP);
+	SetConsoleCP(oldInputCP);
 }
 
 void GameManager::drawShopArt(Shop* shop, int line)
 {
 	UINT oldCP = GetConsoleOutputCP();
+	UINT oldInputCP = GetConsoleCP();
 	SetConsoleOutputCP(CP_UTF8);
+	SetConsoleCP(CP_UTF8);
 
 	string art = shop->getart();
 	istringstream iss(art);
@@ -398,12 +543,15 @@ void GameManager::drawShopArt(Shop* shop, int line)
 	}
 
 	SetConsoleOutputCP(oldCP);
+	SetConsoleCP(oldInputCP);
 }
 
 void GameManager::drawDefeat(Character* player, int line)
 {
 	UINT oldCP = GetConsoleOutputCP();
+	UINT oldInputCP = GetConsoleCP();
 	SetConsoleOutputCP(CP_UTF8);
+	SetConsoleCP(CP_UTF8);
 
 	string art = player->getart();
 	istringstream iss(art);
@@ -417,12 +565,15 @@ void GameManager::drawDefeat(Character* player, int line)
 	}
 
 	SetConsoleOutputCP(oldCP);
+	SetConsoleCP(oldInputCP);
 }
 
 void GameManager::drawMainArt(MainArt* mainart, int line)
 {
 	UINT oldCP = GetConsoleOutputCP();
+	UINT oldInputCP = GetConsoleCP();
 	SetConsoleOutputCP(CP_UTF8);
+	SetConsoleCP(CP_UTF8);
 
 	string art = mainart->getart();
 	istringstream iss(art);
@@ -436,6 +587,7 @@ void GameManager::drawMainArt(MainArt* mainart, int line)
 	}
 
 	SetConsoleOutputCP(oldCP);
+	SetConsoleCP(oldInputCP);
 }
 
 void GameManager::printLog(const string& msg, int line)
