@@ -67,10 +67,10 @@ void GameManager::battle(Character* player, Monster* monster)  // 캐릭터/몬스터 
 		}
 	}
 
-	cout << "전투를 시작합니다." << endl;
-	this_thread::sleep_for(chrono::milliseconds(800)); //0.8초 딜레이
+	cout << "전투를 시작합니다!" << endl;
+	this_thread::sleep_for(chrono::milliseconds(1000)); //1초 딜레이
 
-	int logline = monster->art().size() + 4; //아트에서 2줄 아래
+	int logline = monster->getart().size() + 4; //아트에서 2줄 아래
 	int battlelog = logline + 6;
 	int delay = 500; //0.5초
 
@@ -78,25 +78,24 @@ void GameManager::battle(Character* player, Monster* monster)  // 캐릭터/몬스터 
 	
 	while (player->getHealth() != 0 && monster->getHealth() != 0) // attack 함수 제작?
 	{
-		setCursor(0, 0);
 		playerUI(player);  //커서 맨위로 이동 후 1줄짜리 UI 출력
 
 		drawMonsterArt(monster, 2); // 3번째 줄부터 아트 출력
 
-		battelUI(player, monster, logline);
+		printLog(monster->getName() + "이(가) 나타났습니다!", logline);
+		
+		battleUI(player, monster, logline + 2);
 
 		monster->takeDamage(player->getAttack());				//몬스터가 먼저 공격 받음
-		setCursor(0, 0);
 		playerUI(player);
-		battelUI(player, monster, logline);
+		battleUI(player, monster, logline);
 		printLog("모험가가 " + to_string(player->getAttack()) + "의 피해를 입혔습니다.", battlelog);
 		++battlelog;
 		this_thread::sleep_for(chrono::milliseconds(delay));
 
 		player->takeDamage(monster->getAttack());				//플레이어가 공격 받음
-		setCursor(0, 0);
 		playerUI(player);
-		battelUI(player, monster, logline);
+		battleUI(player, monster, logline);
 		printLog("몬스터가 " + to_string(monster->getAttack()) + "의 피해를 입혔습니다.", battlelog);
 		++battlelog;
 		this_thread::sleep_for(chrono::milliseconds(delay));
@@ -112,9 +111,8 @@ void GameManager::battle(Character* player, Monster* monster)  // 캐릭터/몬스터 
 			{
 				//체력 포션 사용
 				inventory[it - inventory.begin()]->useItem(player);
-				setCursor(0, 0);
 				playerUI(player);
-				battelUI(player, monster, logline);
+				battleUI(player, monster, logline);
 				printLog("체력 포션을 사용하여 50의 체력을 회복했습니다!", battlelog);
 				++battlelog;
 				this_thread::sleep_for(chrono::milliseconds(delay));
@@ -130,14 +128,13 @@ void GameManager::battle(Character* player, Monster* monster)  // 캐릭터/몬스터 
 
 	player->setAttack(curAttack); //공격력 원상 복구
 
-	int dropGold = monster->dropGold(); //드랍 골드 출력하기
+	int dropGold = monster->getGold(); //드랍 골드 출력하기
 
 	player->setkillmonster(player->getkillmonster + 1);  //몬스터 킬수 +1
 	player->setGold(dropGold + player->getGold());
 
-	setCursor(0, 0);
 	playerUI(player);
-	battelUI(player, monster, logline);
+	battleUI(player, monster, logline);
 	printLog("몬스터를 처치했습니다!", logline + 10);
 
 	//몬스터 처치 -> 경험치와 골드 아이템 획득
@@ -146,7 +143,7 @@ void GameManager::battle(Character* player, Monster* monster)  // 캐릭터/몬스터 
 	//몬스터마다 골드 다르게 하고 dropGold 같은 함수로 드랍 골드 확인
 	//플레이어에 addGold 함수로 골드 추가, 골드 획득 문구 출력
 
-	cout << monster->dropGold() << "골드를 획득했습니다." << endl;
+	cout << monster->getGold() << "골드를 획득했습니다." << endl;
 
 	player->addInventory(monster->dropItem());
 
@@ -159,13 +156,12 @@ void GameManager::visitShop(Character* player)
 {
 	Shop* shop = new Shop();
 
-	int logline = shop->art().size() + 4; //상점 아트 4줄 아래부터
+	int logline = shop->getart().size() + 4; //상점 아트 4줄 아래부터
 
 	while (true)
 	{
 		system("cls"); //콘솔 화면 지우기
 
-		setCursor(0, 0);
 		playerUI(player);
 
 		drawShopArt(shop, 2);
@@ -197,7 +193,6 @@ void GameManager::visitShop(Character* player)
 			while (true) {
 				system("clear");
 
-				setCursor(0, 0);
 				playerUI(player);
 
 				drawShopArt(shop, 2);
@@ -234,7 +229,6 @@ void GameManager::visitShop(Character* player)
 			{
 				system("cls"); //콘솔 화면 지우기
 
-				setCursor(0, 0);
 				playerUI(player);
 
 				drawShopArt(shop, 2);
@@ -311,15 +305,17 @@ void GameManager::drawHealthbar(int hp, int maxHp, int barWidth = 10)
 	int filled = (int)(ratio * barWidth);
 
 	cout << "[";
-	for (int i = 0; i < barWidth; i++) {
-		if (i < filled) cout << "*";  // 체력이 있는 부분
-		else cout << " ";             // 체력이 없는 부분
+	for (int i = 0; i < barWidth; i++) 
+	{
+		if (i < filled) cout << "|";  // 체력이 있는 부분
+		else cout << "-";             // 체력이 없는 부분
 	}
 	cout << "] ";
 }
 
-void GameManager::playerUI(Character* player)
+void GameManager::playerUI(Character* player) // 콘솔창 상단 고정
 {
+	setCursor(0, 0);
 	cout << "닉네임: " << player->getName() << " | 체력: ";
 	drawHealthbar(player->getHealth(), player->getMaxHealth());
 	cout << " " << player->getHealth() << "/" << player->getMaxHealth();
@@ -329,16 +325,16 @@ void GameManager::playerUI(Character* player)
 	cout << " | 처치한 몬스터 수: " << player-> getkillmonster() << "마리\n" << endl;
 }
 
-void GameManager::battelUI(Character* player, Monster* monster, int line)
+void GameManager::battleUI(Character* player, Monster* monster, int line)
 {
 	setCursor(0, line); // 커서 이동
 	cout << "========== 전투 상태 ==========\n";
 	cout << "모험가 체력: ";
 	drawHealthbar(player->getHealth(), player->getMaxHealth(), 20);
-	cout << "  " << player->getHealth() << "/" << player->getMaxHealth() << "\n";
+	cout << "  " << player->getHealth() << "/" << player->getMaxHealth() << "  공격력: " << player->getAttack() << "\n";
 	cout << "몬스터 체력: ";
 	drawHealthbar(monster->getHealth(), monster->getMaxHealth(), 20);
-	cout << "  " << monster->getHealth() << "/" << monster->getMaxHealth() << "\n";
+	cout << "  " << monster->getHealth() << "/" << monster->getMaxHealth() << "  공격력: " << monster->getAttack() << "\n";
 	cout << "===============================\n";
 }
 

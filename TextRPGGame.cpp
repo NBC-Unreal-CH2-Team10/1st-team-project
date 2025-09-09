@@ -77,12 +77,12 @@ int main()
                 cout << e.what() << endl; //플레이어 사망시 프로그램 종료
 
                 player->displayStatus();
+                delete player;
             }
 
             system("cls");
         
             //전투 종료 후 상점 방문
-            gm.setCursor(0, 0);
             gm.playerUI(player);
             cout << "\n" << endl;
 
@@ -133,6 +133,7 @@ int main()
                 cout << e.what() << endl; //플레이어 사망시 프로그램 종료
 
                 player->displayStatus();
+                delete player;
             }
         }
     }
