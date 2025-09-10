@@ -34,18 +34,18 @@ void GameManager::battle(Character* player, Monster* monster)  // 캐릭터/몬�
 	int curAttack = player->getAttack();	//현재 공격력
 
 	std::vector<Item*> inventory;
-	/*for (const auto& slot : player->getInventory()->getSlots())
+	for (const auto& slot : player->getInventory()->getSlots())
 	{
 		inventory.push_back(slot.item);
-	}*/
+	}
   
 	int logCount = 0;
 	string invchoice ="";
 
-	setCursor(0, 4);
 	while (true)
 	{
-		cout << "인벤토리를 확인하시겠습니까? (Y/N) : ";
+		setCursor(0, 30);
+		printLog("인벤토리를 확인하시겠습니까? (Y/N) : ", 30, logCount);
 		cin >> invchoice;
 
 		// 입력 오류 처리
@@ -68,7 +68,7 @@ void GameManager::battle(Character* player, Monster* monster)  // 캐릭터/몬�
 		// 잘못된 번호 처리
 		else
 		{
-			cout << "잘못된 입력입니다." << endl;
+			cout << "\n잘못된 입력입니다." << endl;
 			this_thread::sleep_for(chrono::milliseconds(1000));
 		}
 	}
@@ -146,7 +146,7 @@ void GameManager::battle(Character* player, Monster* monster)  // 캐릭터/몬�
 	playerUI(player);
 	battleUI(player, monster, logline);
 	printLog("몬스터를 처치했습니다!", battlelog, logCount);
-	this_thread::sleep_for(chrono::milliseconds(1500));
+	this_thread::sleep_for(chrono::milliseconds(1000));
 
 	//몬스터 처치 -> 경험치와 골드 아이템 획득
 
@@ -156,10 +156,10 @@ void GameManager::battle(Character* player, Monster* monster)  // 캐릭터/몬�
 
 	string goldmsg = to_string(monster->getGold()) + "골드를 획득했습니다.";
 	printLog(goldmsg, battlelog, logCount);
-	this_thread::sleep_for(chrono::milliseconds(1500));
+	this_thread::sleep_for(chrono::milliseconds(1000));
 
 	player->addInventory(monster->dropItem());
-	this_thread::sleep_for(chrono::milliseconds(1500));
+	this_thread::sleep_for(chrono::milliseconds(1000));
 	//드랍 아이템이 있는지 확인하고 있으면 인벤에 추가 없으면 넘어가기
 
 	delete monster;
