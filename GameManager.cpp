@@ -11,6 +11,8 @@
 #include <sstream>
 #include <cctype>
 
+using namespace std;
+
 Monster* GameManager::generateMonster(int level)
 {
 	std::vector<Monster*> Monsterlist = { new Goblin(level), new Orc(level), new Troll(level) }; //한번에 다 받는 방법?
@@ -37,42 +39,37 @@ void GameManager::battle(Character* player, Monster* monster)  // 캐릭터/몬�
 		inventory.push_back(slot.item);
 	}
   
-  int logCount = 0;
+	int logCount = 0;
+	string invchoice;
 
-	std::string find = "AttackBoost";
-
-	auto it = find_if(inventory.begin(), inventory.end(), [&find](Item* item) {return item->getName() == find; }); // 공격력 증가 포션이 존재하는지 확인
-
-	if (it != inventory.end()) 
+	setCursor(0, 8);
+	while (true)
 	{
-		std::string choice;
+		cout << "인벤토리를 확인하시겠습니까? (Y/N) : ";
+		cin >> invchoice;
 
-		while (true)
+		// 입력 오류 처리
+		if (cin.fail()) {
+			cin.clear();
+			cin.ignore(1024, '\n');
+			invchoice = -1;
+			cout << "\n잘못된 입력입니다." << endl;
+			this_thread::sleep_for(chrono::milliseconds(1000));
+			continue;
+		}
+		// 아이템 사용, 인덱스는 번호 -1
+		else if (invchoice == "Y" || "y")
 		{
-			std::cout << "공격력 강화 포션을 사용하시겠습니까? (Y/N)\n" << std::endl;
-			std::cin >> choice;
-
-			if (std::cin.fail()) //잘 못된 타입이 입력되면 true 반환
-			{
-				std::cin.clear(); // 오류 상태 초기화
-				std::cin.ignore(1000, '\n'); // 잘못된 입력 버리기
-				std::cout << "잘못된 입력입니다. 다시 입력해주세요.\n" << std::endl;
-				continue;
-			}
-
-			if (choice == "Y" || choice == "y")
-			{
-				inventory[it - inventory.begin()]->use(player);
-				string boostmsg = "공격력이 일시적으로 10 증가합니다!";
-				printLog(boostmsg, 10, logCount);									//로그 위치 수정
-				break;
-			}
-			else
-			{
-				break;
-			}
+			player->getInventory()->manage(player);
+		}
+		// 잘못된 번호 처리
+		else
+		{
+			break;
 		}
 	}
+
+	player->getInventory()->manage(player);
 
 	std::cout << "전투를 시작합니다!" << std::endl;
 	std::this_thread::sleep_for(std::chrono::milliseconds(1000)); //1초 딜레이
