@@ -138,7 +138,6 @@ void GameManager::battle(Character* player, Monster* monster)  // 캐릭터/몬�
 		throw std::runtime_error("모험가가 사망했습니다.");
 	}
 
-	player->setAttack(curAttack); //공격력 원상 복구
 	player->setKillcount(player->getKillcount() + 1);  //몬스터 킬수 +1
 
 	playerUI(player);
@@ -176,6 +175,7 @@ void GameManager::visitShop()
 
 	while (true)
 	{
+		int shoplog = 0;
 		system("cls"); 
 
 		playerUI(player);
@@ -184,11 +184,11 @@ void GameManager::visitShop()
 
 		int choice;
 		
-		printLog("==================", logline, logCount);
-		printLog("1. 구매", logline + 1, logCount);
-		printLog("2. 판매", logline + 2, logCount);
-		printLog("3. 상점 나가기", logline + 3, logCount);
-		printLog("==================", logline + 4, logCount);
+		printLog("==================", logline, shoplog);
+		printLog("1. 구매", logline + 1, shoplog);
+		printLog("2. 판매", logline + 2, shoplog);
+		printLog("3. 상점 나가기", logline + 3, shoplog);
+		printLog("==================", logline + 4, shoplog);
 		
 		std::cout << "번호를 입력하세요: ";
 
@@ -220,19 +220,13 @@ void GameManager::visitShop()
 				if (choice == 0) break;       
 				if (choice == -1) 
 				{
-					printLog("잘못된 입력입니다. 다시 입력하세요.", logline + 10, logCount);
-					this_thread::sleep_for(chrono::milliseconds(1000)); 
-
 					continue;
 				}
 				else if (choice == -2)
 				{
-					printLog("잘못된 아이템 번호입니다.", logline + 10, logCount);
-					this_thread::sleep_for(chrono::milliseconds(1000));
 					continue;
 				}
 
-				setCursor(0, logline + 10);
 				shop->buyItem(choice - 1, player);
 			}
 		}
@@ -253,7 +247,6 @@ void GameManager::visitShop()
 				if (choice == 0) break;       
 				if (choice == -1)
 				{
-
 					printLog("잘못된 선택입니다. 다시 입력해주세요.", logline + 10, logCount);
 					this_thread::sleep_for(chrono::milliseconds(1000));
 
@@ -261,12 +254,10 @@ void GameManager::visitShop()
 				}
 				else if (choice == -2)
 				{
-					printLog("판매할 아이템이 없습니다.", logline + 10, logCount);
-					break;
+					continue;
 				}
 
 				shop->sellItem(choice - 1, player);
-				printLog("아이템을 판매했습니다.", logline + 10, logCount);
 				this_thread::sleep_for(chrono::milliseconds(1000)); 
 			}
 		}
