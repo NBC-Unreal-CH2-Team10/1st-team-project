@@ -13,6 +13,10 @@ public:
     int getPrice() const override;
     // 캐릭터의 체력을 회복시킴
     void use(Character* character) override;
+
+    // 객체 생성 없이 접근하기 위한 static 멤버
+    static const std::string BASE_NAME;
+    static const int BASE_PRICE;
 private:
     // --- 멤버변수 ---
     // 물약의 회복량

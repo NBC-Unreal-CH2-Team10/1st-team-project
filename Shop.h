@@ -1,10 +1,20 @@
 ﻿#pragma once
 #include <vector>
 #include <string>
+#include <functional>   // function 사용
 
 class Item;
 class Character;
 
+// 상점에서 판매하는 아이템의 정보를 담는 구조체
+struct ShopSlot
+{
+    std::string name;
+    int price;
+    int stock;              // 재고
+    // 팩토리 함수 포인터(?)
+    std::function<Item* ()> createItem;
+};
 
 // 아이템 상점의 기능을 담당하는 클래스
 // 1. 플레이어가 아이템을 구매, 판매할 수 있는 인터페이스 루프 제공
@@ -44,7 +54,7 @@ public:
 private:
     // --- 멤버변수 ---
     // 판매하는 아이템 정보를 저장하는 벡터
-    std::vector<Item*> availableItems;
+    std::vector<ShopSlot> availableItems;
 
     std::string art = u8R"(
 ⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣀⣀⣀⣀⣀⣀⣀⣀⣀⣀⣀⣀⣀⣀⣀⣀⣀⣀⣀⣀⣀⣀⣀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
