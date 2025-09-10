@@ -192,3 +192,26 @@
 ⠀⠀⠀⠀⠀⠀⠀⠀⠀⠋⠹⠝⠖⠞⠛⠋⠉⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠐⣿⠪⢠⠲⣧⣠⢽⠤⣧⣳⠀⠀⠀⠀⠀⠀⠀
 ⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠹⠧⡦⠘⠘⢦⡜⢣⠏⠙⠀⠀⠀⠀⠀⠀⠀
 ⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠈⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
+
+
+
+{
+	UINT oldCP = GetConsoleOutputCP();
+	UINT oldInputCP = GetConsoleCP();
+	SetConsoleOutputCP(CP_UTF8);
+	SetConsoleCP(CP_UTF8);
+
+	string art = monster->getart();
+	istringstream iss(art);
+	string lineStr;
+	int offset = 0;
+
+	while (std::getline(iss, lineStr)) {
+		setCursor(0, line + offset);
+		cout << lineStr << "                                         ";
+		offset++;
+	}
+
+	SetConsoleOutputCP(oldCP);
+	SetConsoleCP(oldInputCP);
+}

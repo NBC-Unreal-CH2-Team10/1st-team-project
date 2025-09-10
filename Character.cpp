@@ -6,7 +6,7 @@ Character* Character::instance = nullptr;
 
 Character::Character(std::string name) :
 	name(name),
-	level(1),
+	level(10),
 	
 	health(100),
 	maxHealth(100),
@@ -32,6 +32,7 @@ void Character :: displayStatus() const
 	std::cout << "경험치 : " << experience << "\n";
 	std::cout << "HP : " << health << "/"<<maxHealth<< "\n";
 	std::cout << "공격력 : " << attack;
+	std::cout << "처치한 몬스터 수 : " << killcount;
 	std::cout << std::endl;
 	std::cout << "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━";
 }
@@ -109,7 +110,14 @@ void Character::addInventory(Item* item)
 
 void Character::takeDamage(int a)
 {
-	health -= a;
+	if (health - a <= 0)
+	{
+		health = 0;
+	}
+	else
+	{
+		health -= a;
+	}
 	return;
 }
 
