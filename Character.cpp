@@ -6,8 +6,7 @@ Character* Character::instance = nullptr;
 
 Character::Character(std::string name) :
 	name(name),
-	level(10),
-	
+	level(1),
 	health(100),
 	maxHealth(100),
 	attack(5),
@@ -16,7 +15,7 @@ Character::Character(std::string name) :
 	killcount(0)
 
 {
-	inventory = {};
+	inventory = new Inventory();
 }
 
 Character::~Character()
