@@ -1,6 +1,8 @@
 ﻿#include "AttackBoost.h"
 #include "Character.h" // Character의 멤버 함수 사용
 #include <iostream>
+#include <thread>
+#include <chrono>
 
 using namespace std;
 const std::string AttackBoost::BASE_NAME = "공격력 강화";
@@ -32,4 +34,5 @@ void AttackBoost::use(Character* character)
 
     cout << name << "을(를) 사용했습니다. 공격력이 영구적으로 " << attackIncrease << " 증가합니다!" << endl;
     cout << "현재 공격력: " << character->getAttack() << endl;
+    this_thread::sleep_for(chrono::milliseconds(1500));
 }
