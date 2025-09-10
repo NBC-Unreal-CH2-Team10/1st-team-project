@@ -6,12 +6,12 @@ Character* Character::instance = nullptr;
 
 Character::Character(std::string name) :
 	name(name),
-	level(10),
-	health(1000),
-	maxHealth(1000),
-	attack(500),
+	level(1),
+	health(100),
+	maxHealth(100),
+	attack(50),
 	experience(0),
-	gold(0),
+	gold(100),
 	killcount(0)
 
 {

@@ -3,6 +3,7 @@
 #include "Character.h"
 #include "HealthPotion.h"
 #include "AttackBoost.h"
+#include "GameManager.h"
 #include <iostream>
 #include <thread>
 #include <chrono>
@@ -129,7 +130,7 @@ int Shop::buyLoop(Character* player)
 {
     int buyChoice;
 
-    cout << "\n--- [ 아이템 구매 ] ---" << endl;
+    //cout << "\n--- [ 아이템 구매 ] ---" << endl;
     for (size_t i = 0; i < availableItems.size(); ++i)
     {
         std::cout << "\n--- [ 아이템 구매 ] ---" << std::endl;
@@ -159,6 +160,8 @@ int Shop::buyLoop(Character* player)
         }
         else
         {
+            cout << "\n잘못된 아이템 번호입니다." << endl;
+            std::this_thread::sleep_for(std::chrono::milliseconds(1500));
             return -2;
         }
     }
@@ -169,10 +172,13 @@ void Shop::buyItem(int index, Character* player)
 {
     ShopSlot& itemToBuy = availableItems[index]; // 참조로 가져와서 직접 수정
 
+    GameManager* gm = new GameManager();
+    gm->setCursor(0, 33);
     // 1. 재고 확인
     if (itemToBuy.stock <= 0)
     {
         std::cout << "해당 아이템은 품절되었습니다." << std::endl;
+        this_thread::sleep_for(chrono::milliseconds(1500));
         return;
     }
     // 2. 플레이어의 골드 확인
@@ -186,13 +192,16 @@ void Shop::buyItem(int index, Character* player)
 
         player->getInventory()->addItem(newItem, false);
         std::cout << "'" << itemToBuy.name << "'을(를) 구매했습니다." << std::endl;
+        this_thread::sleep_for(chrono::milliseconds(1500));
         // 5. 재고 감소
         itemToBuy.stock--;
     }
     else
     {
         std::cout << "골드가 부족합니다." << std::endl;
+        this_thread::sleep_for(chrono::milliseconds(1500));
     }
+    delete gm;
 }
 
 // 판매 루프
@@ -213,7 +222,7 @@ int Shop::sellLoop(Character* player)
     {
         cout << "\n판매할 아이템이 없습니다." << endl;
         this_thread::sleep_for(chrono::milliseconds(1500));
-        return -2;
+        return 0;
     }
     cout << "현재 소지 골드: " << player->getGold() << " G\n" << endl;
     cout << "\n판매할 아이템 번호를 입력하세요 (0: 뒤로 가기): ";
@@ -235,7 +244,7 @@ int Shop::sellLoop(Character* player)
     }
     // 잘못된 번호 처리
     else if (sellChoice != 0) {
-        return -2;
+        return -1;
     }
 
 }
@@ -256,12 +265,12 @@ void Shop::sellItem(int index, Character* player)
     std::cout << "'" << itemToSell->getName() << "'을(를) 판매하여 " << sellPrice << " Gold를 얻었습니다." << std::endl;
     playerInventory->sellItem(index);
     // 4. 상점 재고 증가
-    for (auto& slot : availableItems)
-    {
-        if (slot.name == itemToSell->getName())
-        {
-            slot.stock++;
-            break; // 해당 아이템을 찾았으면 루프 종료
-        }
-    }
+    //for (auto& slot : availableItems)
+    //{
+    //    if (slot.name == itemToSell->getName())
+    //    {
+    //        slot.stock++;
+    //        break; // 해당 아이템을 찾았으면 루프 종료
+    //    }
+    //}
 }
