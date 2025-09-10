@@ -10,6 +10,7 @@ class Shop;
 #include "Orc.h"
 #include "Troll.h"
 #include "MainArt.h"
+#include "inventory.h"
 
 class GameManager
 {
