@@ -143,6 +143,7 @@ int Shop::buyLoop(Character* player)
         std::cout << "현재 소지 골드: " << player->getGold() << " G\n" << std::endl;
         std::cout << "\n구매할 아이템 번호를 입력하세요 (0: 뒤로 가기): ";
         std::cin >> buyChoice;
+
         // 입력 오류 처리
         if (std::cin.fail()) {
             std::cin.clear();
@@ -150,7 +151,7 @@ int Shop::buyLoop(Character* player)
             buyChoice = -1;
             std::cout << "잘못된 입력입니다." << std::endl;
             std::this_thread::sleep_for(std::chrono::milliseconds(1500));
-			      return -1;
+			return -1;
         }
         else if (buyChoice >= 0 && buyChoice <= availableItems.size()) 
         {

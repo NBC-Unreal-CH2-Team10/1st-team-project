@@ -33,6 +33,8 @@ public:
 	void drawShopArt(Shop* shop, int line);
 	void drawDefeat(Character* player, int line);
 	void drawMainArt(MainArt* mainart, int line);
+	void drawclearArt(Character* player, int line);
+	void drawopenInv(Character* player, int line);
 	void printLog(const string& msg, int line, int& logCount);
 	void clearLogs(int logStartLine);
 

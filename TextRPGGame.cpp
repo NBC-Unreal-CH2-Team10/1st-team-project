@@ -72,7 +72,6 @@ int main()
         }
     }
 
-
     Character* player = Character::getInstance(nickname);    //싱글톤 사용
     gm.player = player;
     
@@ -160,7 +159,12 @@ int main()
 
                 gm.battle(player, monster);
 
+                system("cls");
+                gm.drawclearArt(player, 2);
+
+                gm.setCursor(0, 35);
                 cout << "보스 몬스터를 처치했습니다!" << endl;
+                player->displayStatus();
                 break;
             }
             catch (const runtime_error& e)
