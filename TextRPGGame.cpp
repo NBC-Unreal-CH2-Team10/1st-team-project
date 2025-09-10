@@ -6,6 +6,8 @@
 #include <vector>
 #include <conio.h>
 #include <windows.h>
+#include <thread>
+#include <chrono>
 #include "GameManager.h"
 
 using namespace std;
@@ -42,20 +44,34 @@ int main()
 
     while (true)
     {
-        gm.setCursor(0, 35);
-        cout << "닉네임을 입력해 주세요(공백 불가): "; //공백 입력시 예외 처리 추가 필요
+        gm.setCursor(0, 35); // 입력 시작 위치
+        cout << "닉네임을 입력해 주세요(공백 불가): ";
 
-        getline(cin, nickname); //일단은 공백 포함에서 모두 받음
+        getline(cin, nickname);
 
-        if (nickname.find(' ') != string::npos)  //공백이 있는지 확인
+        if (nickname.empty())
         {
-            cout << "공백은 입력할 수 없습니다." << endl;
+            // 이전 입력 지우기
+            gm.setCursor(0, 35);
+            cout << string(50, ' '); // 50칸 정도 공백으로 덮기
+            gm.setCursor(0, 35);      // 다시 커서 위치
+            cout << "닉네임은 비워둘 수 없습니다.";
+            Sleep(1000);              // 1초 대기
+        }
+        else if (nickname.find(' ') != string::npos)
+        {
+            gm.setCursor(0, 35);
+            cout << string(50, ' ');
+            gm.setCursor(0, 35);
+            cout << "공백은 입력할 수 없습니다.";
+            Sleep(1000);
         }
         else
         {
             break;
         }
     }
+
 
     Character* player = Character::getInstance(nickname);    //싱글톤 사용
     gm.player = player;
@@ -80,12 +96,14 @@ int main()
 
                 //경험치 획득 문구 출력, 레벨 업 문구 출력
                 cout << "50 Exp를 획득했습니다." << endl;
+                this_thread::sleep_for(chrono::milliseconds(1000));
 
                 player->setExp(player->getExp() + 50);
 
                 if (player->getExp() == 100)
                 {
                     player->levelUp();
+                    this_thread::sleep_for(chrono::milliseconds(3500));
                 }
             }
             catch (const runtime_error& e)

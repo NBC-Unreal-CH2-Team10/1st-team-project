@@ -30,7 +30,7 @@ void Character :: displayStatus() const
 	std::cout << "Lv : " << level << "\n";
 	std::cout << "경험치 : " << experience << "\n";
 	std::cout << "HP : " << health << "/"<<maxHealth<< "\n";
-	std::cout << "공격력 : " << attack;
+	std::cout << "공격력 : " << attack << "\n";
 	std::cout << "처치한 몬스터 수 : " << killcount;
 	std::cout << std::endl;
 	std::cout << "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━";

@@ -11,8 +11,6 @@ BossMonster::BossMonster(int level)
 {
 	name = "BossMonster";
 
-	art = {};
-
 	//랜덤 범위의 값 코드 chat Gpt의 도움을 받아서 작성했습니다.
 	random_device rd;	 //시드 생성 (난수 시드를 만드는 장치)
 	mt19937 gen(rd());	 //엔진 초기화 (Mersenne Twister 19937 알고리즘 기반의 난수 생성기)
