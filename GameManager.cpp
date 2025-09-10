@@ -140,7 +140,6 @@ void GameManager::battle(Character* player, Monster* monster)  // 캐릭터/몬�
 
 	player->setAttack(curAttack); //공격력 원상 복구
 	player->setKillcount(player->getKillcount() + 1);  //몬스터 킬수 +1
-	player->setGold(monster->getGold() + player->getGold());
 
 	playerUI(player);
 	battleUI(player, monster, logline);
@@ -155,6 +154,7 @@ void GameManager::battle(Character* player, Monster* monster)  // 캐릭터/몬�
 
 	if (dynamic_cast<BossMonster*>(monster) == nullptr)
 	{
+		player->setGold(monster->getGold() + player->getGold());
 		string goldmsg = to_string(monster->getGold()) + "골드를 획득했습니다.";
 		printLog(goldmsg, battlelog, logCount);
 
