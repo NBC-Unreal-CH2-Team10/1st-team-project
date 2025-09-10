@@ -76,7 +76,7 @@ void Inventory::addItem(Item* newItem, bool showMessage)
             // 4. 새로 생성된 newItem 객체는 메모리 해제
             delete newItem;
             if (showMessage) {
-                cout << "'" << slot.item->getName() << "'을(를) 획득했습니다." << endl;
+                cout <<"\n" << "'" << slot.item->getName() << "'을(를) 획득했습니다." << endl;
             }
             return;
         }

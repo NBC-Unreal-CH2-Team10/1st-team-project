@@ -124,7 +124,7 @@ void GameManager::battle(Character* player, Monster* monster)  // 캐릭터/몬�
 
 				printLog("체력 포션을 사용하여 50의 체력을 회복했습니다!", battlelog, logCount);
 				
-				this_thread::sleep_for(chrono::milliseconds(delay));
+				this_thread::sleep_for(chrono::milliseconds(1200));
 			}
 		}
 	}
@@ -141,7 +141,7 @@ void GameManager::battle(Character* player, Monster* monster)  // 캐릭터/몬�
 	playerUI(player);
 	battleUI(player, monster, logline);
 	printLog("몬스터를 처치했습니다!", battlelog, logCount);
-	this_thread::sleep_for(chrono::milliseconds(1500));
+	this_thread::sleep_for(chrono::milliseconds(1000));
 
 	//몬스터 처치 -> 경험치와 골드 아이템 획득
 
@@ -151,10 +151,9 @@ void GameManager::battle(Character* player, Monster* monster)  // 캐릭터/몬�
 
 	string goldmsg = to_string(monster->getGold()) + "골드를 획득했습니다.";
 	printLog(goldmsg, battlelog, logCount);
-	this_thread::sleep_for(chrono::milliseconds(1500));
 
 	player->addInventory(monster->dropItem());
-	this_thread::sleep_for(chrono::milliseconds(1500));
+	this_thread::sleep_for(chrono::milliseconds(1000));
 	//드랍 아이템이 있는지 확인하고 있으면 인벤에 추가 없으면 넘어가기
 
 	delete monster;
@@ -347,10 +346,10 @@ void GameManager::battleUI(Character* player, Monster* monster, int line)
 	std::cout << "========== 전투 상태 ==========\n";
 	std::cout << "모험가 체력: ";
 	drawHealthbar(player->getHealth(), player->getMaxHealth(), 20);
-	std::cout << "  " << player->getHealth() << "/" << player->getMaxHealth() << "  공격력: " << player->getAttack() << "\n";
+	std::cout << "  " << player->getHealth() << "/" << player->getMaxHealth() << "  공격력: " << player->getAttack() << "      \n";
 	std::cout << "몬스터 체력: ";
 	drawHealthbar(monster->getHealth(), monster->getMaxHealth(), 20);
-	std::cout << "  " << monster->getHealth() << "/" << monster->getMaxHealth() << "  공격력: " << monster->getAttack() << "\n";
+	std::cout << "  " << monster->getHealth() << "/" << monster->getMaxHealth() << "  공격력: " << monster->getAttack() << "       \n";
 	std::cout << "===============================\n";
 }
 
@@ -371,7 +370,8 @@ void GameManager::drawMonsterArt(Monster* monster, int line)
 	std::string lineStr;
 	int offset = 0;
 
-	while (std::getline(iss, lineStr)) {
+	while (std::getline(iss, lineStr)) 
+	{
 		setCursor(0, line + offset);
 		std::cout << lineStr << "                                         ";
 		offset++;
@@ -393,7 +393,8 @@ void GameManager::drawShopArt(Shop* shop, int line)
 	std::string lineStr;
 	int offset = 0;
 
-	while (std::getline(iss, lineStr)) {
+	while (std::getline(iss, lineStr)) 
+	{
 		setCursor(0, line + offset);
 		std::cout << lineStr << "                                         ";
 		offset++;
@@ -415,7 +416,8 @@ void GameManager::drawDefeat(Character* player, int line)
 	std::string lineStr;
 	int offset = 0;
 
-	while (std::getline(iss, lineStr)) {
+	while (std::getline(iss, lineStr)) 
+	{
 		setCursor(0, line + offset);
 		std::cout << lineStr << "                                         ";
 		offset++;
@@ -437,7 +439,8 @@ void GameManager::drawMainArt(MainArt* mainart, int line)
 	std::string lineStr;
 	int offset = 0;
 
-	while (std::getline(iss, lineStr)) {
+	while (std::getline(iss, lineStr)) 
+	{
 		setCursor(0, line + offset);
 		std::cout << lineStr << "                                         ";
 		offset++;
