@@ -13,33 +13,45 @@
 
 # 프로젝트 목표
 
+그 동안 배운 C++ 문법들을 총동원해서 간단한 게임을 만들어 보고 팀 프로젝트를 진행하면서 소통의 중요성과 git 사용법에 대해 배운다.
+
 # 프로젝트 구조
 ```less
 TextRPGGAme
 ┗ src
-  ┣ TextRPGGame.cpp // 메인 함수 진입점
-  ┣ AttakBoost.cpp
-  ┣ AttakBoost.h
-  ┣ BossMonster.cpp
-  ┣ BossMonster.h
-  ┣ Character.cpp
-  ┣ Character.h
-  ┣ DropItem.h
-  ┣ GameManager.cpp
-  ┣ GameManager.h
-  ┣ Goblin.cpp
-  ┣ Goblin.h
-  ┣ HealthPotion.cpp
-  ┣ HealthPotion.h
-  ┣ inventory.cpp
-  ┣ inventory.h
-  ┣ item.h
-  ┣ MainArt.h
-  ┣ Monster.h
-  ┣ Orc.cpp
-  ┣ Orc.h
-  ┣ Shop.cpp
-  ┗ Shop.h
+  │  TextRPGGame.cpp
+  │  TextRPGGame.sln
+  │                          
+  ├─Character
+  │      Character.cpp
+  │      Character.h
+  │      
+  ├─GameManager
+  │      GameManager.cpp
+  │      GameManager.h
+  │      MainArt.h
+  │      
+  ├─Item
+  │      AttackBoost.cpp
+  │      AttackBoost.h
+  │      HealthPotion.cpp
+  │      HealthPotion.h
+  │      inventory.cpp
+  │      inventory.h
+  │      item.h
+  │      Shop.cpp
+  │      Shop.h
+  │      
+  └─Monster
+         BossMonster.cpp
+         BossMonster.h
+         Goblin.cpp
+         Goblin.h
+         Monster.h
+         Orc.cpp
+         Orc.h
+         Troll.cpp
+         Troll.h
 ```
 # 미리보기
 
