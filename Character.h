@@ -17,7 +17,7 @@ private:
 	int experience;
 	int gold;
 	int killcount;
-	std::vector<Item*> inventory;
+	Inventory* inventory;
 
 
 public:
@@ -56,7 +56,7 @@ public:
 
 	// inventory
 	void addInventory(Item* item);		// inventory 벡터에 획득 아이템 넣기
-	std::vector<Item*> getInventory() { return inventory; }
+	Inventory* getInventory() { return inventory; }
 
 	// monster
 	void takeDamage(int a);

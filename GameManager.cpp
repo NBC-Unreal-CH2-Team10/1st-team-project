@@ -9,6 +9,7 @@
 #include <thread>
 #include <chrono>
 #include <sstream>
+#include <cctype>
 
 Monster* GameManager::generateMonster(int level)
 {
@@ -62,6 +63,8 @@ void GameManager::battle(Character* player, Monster* monster)  // 캐릭터/몬�
 			if (choice == "Y" || choice == "y")
 			{
 				inventory[it - inventory.begin()]->use(player);
+				string boostmsg = "공격력이 일시적으로 10 증가합니다!";
+				printLog(boostmsg, 10, logCount);									//로그 위치 수정
 				break;
 			}
 			else
@@ -90,13 +93,15 @@ void GameManager::battle(Character* player, Monster* monster)  // 캐릭터/몬�
 	printLog(monster->getName() + "이(가) 나타났습니다!", battlelog, logCount);
 	this_thread::sleep_for(chrono::milliseconds(1000));
 	
+	string playermsg = "용사가" + to_string(player->getAttack()) + "의 피해를 입혔습니다.";
+	string monstermsg = "몬스터가 " + to_string(monster->getAttack()) + "의 피해를 입혔습니다.";
 
 	while (player->getHealth() > 0 && monster->getHealth() > 0) // attack 
 	{
 		monster->takeDamage(player->getAttack());				//몬스터가 먼저 공격 받음
 
 		battleUI(player, monster, logline);
-		printLog("모험가가" + to_string(player->getAttack()) + "의 피해를 입혔습니다.", battlelog, logCount);
+		printLog(playermsg, battlelog, logCount);
 		this_thread::sleep_for(chrono::milliseconds(delay));
 
 		if (player->getHealth() == 0 || monster->getHealth() == 0) break;
@@ -105,7 +110,7 @@ void GameManager::battle(Character* player, Monster* monster)  // 캐릭터/몬�
 		playerUI(player);
 
 		battleUI(player, monster, logline);
-		printLog("몬스터가 " + to_string(monster->getAttack()) + "의 피해를 입혔습니다.", battlelog, logCount);
+		printLog(monstermsg, battlelog, logCount);
 		this_thread::sleep_for(chrono::milliseconds(delay));
 
 		if (player->getHealth() == 0 || monster->getHealth() == 0) break;
@@ -136,7 +141,6 @@ void GameManager::battle(Character* player, Monster* monster)  // 캐릭터/몬�
 	}
 
 	player->setAttack(curAttack); //공격력 원상 복구
-
 	player->setKillcount(player->getKillcount() + 1);  //몬스터 킬수 +1
 	player->setGold(monster->getGold() + player->getGold());
 
@@ -151,7 +155,8 @@ void GameManager::battle(Character* player, Monster* monster)  // 캐릭터/몬�
 	//몬스터마다 골드 다르게 하고 dropGold 같은 함수로 드랍 골드 확인
 	//플레이어에 addGold 함수로 골드 추가, 골드 획득 문구 출력
 
-	printLog(to_string(monster->getGold()) + "골드를 획득했습니다.", battlelog, logCount);
+	string goldmsg = to_string(monster->getGold()) + "골드를 획득했습니다.";
+	printLog(goldmsg, battlelog, logCount);
 	this_thread::sleep_for(chrono::milliseconds(1500));
 
 	player->addInventory(monster->dropItem());
@@ -452,10 +457,16 @@ vector<string> logs;
 const int MAX_LOGS = 10;
 int logCount = 0;
 
+void setColor(int color) 
+{
+	SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), color);
+}
+
 void GameManager::printLog(const string& msg, int line, int& logCount)
 {
 	// 로그 영역이 가득 찼으면 클리어 후 초기화
-	if (logCount >= MAX_LOGS) {
+	if (logCount >= MAX_LOGS) 
+	{
 		clearLogs(line);
 		logCount = 0;
 	}
@@ -467,7 +478,29 @@ void GameManager::printLog(const string& msg, int line, int& logCount)
 
 	// 다시 커서 위치 맞추고 로그 출력
 	setCursor(0, line + logCount);
-	cout << msg;
+
+	bool isDamage = msg.find("피해") != std::string::npos;
+	bool isHeal = msg.find("회복") != std::string::npos;
+	bool isGold = msg.find("골드") != std::string::npos;
+	bool isBoost = msg.find("증가") != std::string::npos;
+
+	for (char c : msg) 
+	{
+		if (isdigit(c)) 
+		{
+			if (isDamage) setColor(12);   // 빨강 (데미지)
+			else if (isHeal) setColor(10); // 초록 (회복)
+			else if (isGold) setColor(14); // 노랑 (골드)
+			else if (isBoost) setColor(9); // 파랑 (공격력 증가)
+			else setColor(7);              // 기본색
+			std::cout << c;
+			setColor(7); // 다시 기본색으로
+		}
+		else 
+		{
+			std::cout << c;
+		}
+	}
 
 	logCount++;
 }

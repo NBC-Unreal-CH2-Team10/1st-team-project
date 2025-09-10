@@ -9,6 +9,8 @@
 #include <vector>
 #include <Windows.h>
 
+using namespace std;
+
 Shop::Shop()
 {
     availableItems.push_back(new HealthPotion());
@@ -182,7 +184,7 @@ int Shop::sellLoop(Character* player)
     }
 
     // 인벤토리가 비었을 경우 판매 불가
-    if (player->getInventory().size() == 0)
+    if (player->getInventory()->getSize() == 0)
     {
         cout << "\n판매할 아이템이 없습니다." << endl;
         this_thread::sleep_for(chrono::milliseconds(1500));
@@ -201,7 +203,7 @@ int Shop::sellLoop(Character* player)
         return sellChoice;
     }
     // 아이템 판매, 인덱스는 번호 -1
-    else if (sellChoice > 0 && sellChoice <= player->getInventory().size())
+    else if (sellChoice > 0 && sellChoice <= player->getInventory()->getSize())
     {
         return sellChoice;
     }
