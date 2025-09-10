@@ -9,7 +9,7 @@ Character::Character(std::string name) :
 	level(1),
 	health(100),
 	maxHealth(100),
-	attack(50),
+	attack(5),
 	experience(0),
 	gold(100),
 	killcount(0)
