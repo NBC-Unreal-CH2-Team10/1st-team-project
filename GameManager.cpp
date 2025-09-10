@@ -42,9 +42,13 @@ void GameManager::battle(Character* player, Monster* monster)  // 캐릭터/몬�
     int logCount = 0;
     string invchoice;
 
-	setCursor(0, 4);
 	while (true)
 	{
+		system("cls");
+		playerUI(player);
+
+		drawopenInv(player, 2);
+		setCursor(0, 38);
 		cout << "인벤토리를 확인하시겠습니까? (Y/N) : ";
 		cin >> invchoice;
 
@@ -149,11 +153,14 @@ void GameManager::battle(Character* player, Monster* monster)  // 캐릭터/몬�
 	//몬스터마다 골드 다르게 하고 dropGold 같은 함수로 드랍 골드 확인
 	//플레이어에 addGold 함수로 골드 추가, 골드 획득 문구 출력
 
-	string goldmsg = to_string(monster->getGold()) + "골드를 획득했습니다.";
-	printLog(goldmsg, battlelog, logCount);
+	if (dynamic_cast<BossMonster*>(monster) == nullptr)
+	{
+		string goldmsg = to_string(monster->getGold()) + "골드를 획득했습니다.";
+		printLog(goldmsg, battlelog, logCount);
 
-	player->addInventory(monster->dropItem());
-	this_thread::sleep_for(chrono::milliseconds(1000));
+		player->addInventory(monster->dropItem());
+		this_thread::sleep_for(chrono::milliseconds(1000));
+	}
 	//드랍 아이템이 있는지 확인하고 있으면 인벤에 추가 없으면 넘어가기
 
 	delete monster;
@@ -198,7 +205,8 @@ void GameManager::visitShop()
 
 		if (choice == 1) 
 		{
-			while (true) {
+			while (true) 
+			{
 				system("cls");
 
 				playerUI(player);
@@ -212,7 +220,6 @@ void GameManager::visitShop()
 				if (choice == 0) break;       
 				if (choice == -1) 
 				{
-
 					printLog("잘못된 입력입니다. 다시 입력하세요.", logline + 10, logCount);
 					this_thread::sleep_for(chrono::milliseconds(1000)); 
 
@@ -440,6 +447,52 @@ void GameManager::drawMainArt(MainArt* mainart, int line)
 	int offset = 0;
 
 	while (std::getline(iss, lineStr)) 
+	{
+		setCursor(0, line + offset);
+		std::cout << lineStr << "                                         ";
+		offset++;
+	}
+
+	SetConsoleOutputCP(oldCP);
+	SetConsoleCP(oldInputCP);
+}
+
+void GameManager::drawclearArt(Character* player, int line)
+{
+	UINT oldCP = GetConsoleOutputCP();
+	UINT oldInputCP = GetConsoleCP();
+	SetConsoleOutputCP(CP_UTF8);
+	SetConsoleCP(CP_UTF8);
+
+	std::string art = player->getclearArt();
+	std::istringstream iss(art);
+	std::string lineStr;
+	int offset = 0;
+
+	while (std::getline(iss, lineStr))
+	{
+		setCursor(0, line + offset);
+		std::cout << lineStr << "                                         ";
+		offset++;
+	}
+
+	SetConsoleOutputCP(oldCP);
+	SetConsoleCP(oldInputCP);
+}
+
+void GameManager::drawopenInv(Character* player, int line)
+{
+	UINT oldCP = GetConsoleOutputCP();
+	UINT oldInputCP = GetConsoleCP();
+	SetConsoleOutputCP(CP_UTF8);
+	SetConsoleCP(CP_UTF8);
+
+	std::string art = player->getopenInv();
+	std::istringstream iss(art);
+	std::string lineStr;
+	int offset = 0;
+
+	while (std::getline(iss, lineStr))
 	{
 		setCursor(0, line + offset);
 		std::cout << lineStr << "                                         ";

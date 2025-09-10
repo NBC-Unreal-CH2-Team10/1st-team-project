@@ -6,10 +6,10 @@ Character* Character::instance = nullptr;
 
 Character::Character(std::string name) :
 	name(name),
-	level(1),
-	health(100),
-	maxHealth(100),
-	attack(5),
+	level(10),
+	health(1000),
+	maxHealth(1000),
+	attack(500),
 	experience(0),
 	gold(0),
 	killcount(0)
@@ -147,3 +147,8 @@ void Character::setKillcount(int a)
 }
 
 std::string Character::getart() { return art; }
+
+std::string Character::getclearArt() { return clearArt; }
+
+std::string Character::getopenInv() { return openInv; }
+
