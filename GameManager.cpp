@@ -34,15 +34,15 @@ void GameManager::battle(Character* player, Monster* monster)  // 캐릭터/몬�
 	int curAttack = player->getAttack();	//현재 공격력
 
 	std::vector<Item*> inventory;
-	for (const auto& slot : player->getInventory()->getSlots())
+	/*for (const auto& slot : player->getInventory()->getSlots())
 	{
 		inventory.push_back(slot.item);
-	}
+	}*/
   
 	int logCount = 0;
-	string invchoice;
+	string invchoice ="";
 
-	setCursor(0, 8);
+	setCursor(0, 4);
 	while (true)
 	{
 		cout << "인벤토리를 확인하시겠습니까? (Y/N) : ";
@@ -52,24 +52,26 @@ void GameManager::battle(Character* player, Monster* monster)  // 캐릭터/몬�
 		if (cin.fail()) {
 			cin.clear();
 			cin.ignore(1024, '\n');
-			invchoice = -1;
 			cout << "\n잘못된 입력입니다." << endl;
 			this_thread::sleep_for(chrono::milliseconds(1000));
 			continue;
 		}
 		// 아이템 사용, 인덱스는 번호 -1
-		else if (invchoice == "Y" || "y")
+		else if (invchoice == "Y" || invchoice == "y")
 		{
 			player->getInventory()->manage(player);
+		}
+		else if (invchoice == "N" || invchoice == "n")
+		{
+			break;
 		}
 		// 잘못된 번호 처리
 		else
 		{
-			break;
+			cout << "잘못된 입력입니다." << endl;
+			this_thread::sleep_for(chrono::milliseconds(1000));
 		}
 	}
-
-	player->getInventory()->manage(player);
 
 	std::cout << "전투를 시작합니다!" << std::endl;
 	std::this_thread::sleep_for(std::chrono::milliseconds(1000)); //1초 딜레이
@@ -83,7 +85,7 @@ void GameManager::battle(Character* player, Monster* monster)  // 캐릭터/몬�
 	
 	playerUI(player);  //커서 맨위로 이동 후 1줄짜리 UI 출력
 
-	drawMonsterArt(monster, 5); 
+	drawMonsterArt(monster, 2); 
 
 	battleUI(player, monster, logline);
 
@@ -327,7 +329,7 @@ void GameManager::drawHealthbar(int hp, int maxHp, int barWidth = 10)
 	}
 
 	SetConsoleTextAttribute(hConsole, 7); // 기본 색상으로 복구
-	std::cout << "] ";
+	cout << "] ";
 
 	SetConsoleOutputCP(oldCP);
 }
@@ -335,26 +337,26 @@ void GameManager::drawHealthbar(int hp, int maxHp, int barWidth = 10)
 void GameManager::playerUI(Character* player) // 콘솔창 상단 고정
 {
 	setCursor(0, 0);
-	std::cout << "닉네임: " << player->getName() << " | 체력: ";
+	cout << "닉네임: " << player->getName() << " | 체력: ";
 	drawHealthbar(player->getHealth(), player->getMaxHealth());
-	std::cout << " " << player->getHealth() << "/" << player->getMaxHealth();
-	std::cout << " | 레벨: " << player->getLevel();
-	std::cout << " | 경험치: " << player->getExp() << "/100";
-	std::cout << " | 골드: " << player->getGold() << " G";
-	std::cout << " | 처치한 몬스터 수: " << player->getKillcount() << "마리\n" << std::endl;
+	cout << " " << player->getHealth() << "/" << player->getMaxHealth();
+	cout << " | 레벨: " << player->getLevel();
+	cout << " | 경험치: " << player->getExp() << "/100";
+	cout << " | 골드: " << player->getGold() << " G";
+	cout << " | 처치한 몬스터 수: " << player->getKillcount() << "마리\n" << std::endl;
 }
 
 void GameManager::battleUI(Character* player, Monster* monster, int line)
 {
 	setCursor(0, line); // 커서 이동
-	std::cout << "========== 전투 상태 ==========\n";
-	std::cout << "모험가 체력: ";
+	cout << "========== 전투 상태 ==========\n";
+	cout << "모험가 체력: ";
 	drawHealthbar(player->getHealth(), player->getMaxHealth(), 20);
-	std::cout << "  " << player->getHealth() << "/" << player->getMaxHealth() << "  공격력: " << player->getAttack() << "\n";
-	std::cout << "몬스터 체력: ";
+	cout << "  " << player->getHealth() << "/" << player->getMaxHealth() << "  공격력: " << player->getAttack() << "\n";
+	cout << "몬스터 체력: ";
 	drawHealthbar(monster->getHealth(), monster->getMaxHealth(), 20);
-	std::cout << "  " << monster->getHealth() << "/" << monster->getMaxHealth() << "  공격력: " << monster->getAttack() << "\n";
-	std::cout << "===============================\n";
+	cout << "  " << monster->getHealth() << "/" << monster->getMaxHealth() << "  공격력: " << monster->getAttack() << "\n";
+	cout << "===============================\n";
 }
 
 void GameManager::setCursor(int x, int y) {
@@ -369,14 +371,14 @@ void GameManager::drawMonsterArt(Monster* monster, int line)
 	SetConsoleOutputCP(CP_UTF8);
 	SetConsoleCP(CP_UTF8);
 
-	std::string art = monster->getart();
-	std::istringstream iss(art);
-	std::string lineStr;
+	string art = monster->getart();
+	istringstream iss(art);
+	string lineStr;
 	int offset = 0;
 
 	while (std::getline(iss, lineStr)) {
 		setCursor(0, line + offset);
-		std::cout << lineStr << "                                         ";
+		cout << lineStr << "                                         ";
 		offset++;
 	}
 
@@ -391,9 +393,9 @@ void GameManager::drawShopArt(Shop* shop, int line)
 	SetConsoleOutputCP(CP_UTF8);
 	SetConsoleCP(CP_UTF8);
 
-	std::string art = shop->getart();
-	std::istringstream iss(art);
-	std::string lineStr;
+	string art = shop->getart();
+	istringstream iss(art);
+	string lineStr;
 	int offset = 0;
 
 	while (std::getline(iss, lineStr)) {
@@ -413,9 +415,9 @@ void GameManager::drawDefeat(Character* player, int line)
 	SetConsoleOutputCP(CP_UTF8);
 	SetConsoleCP(CP_UTF8);
 
-	std::string art = player->getart();
-	std::istringstream iss(art);
-	std::string lineStr;
+	string art = player->getart();
+	istringstream iss(art);
+	string lineStr;
 	int offset = 0;
 
 	while (std::getline(iss, lineStr)) {
@@ -435,14 +437,14 @@ void GameManager::drawMainArt(MainArt* mainart, int line)
 	SetConsoleOutputCP(CP_UTF8);
 	SetConsoleCP(CP_UTF8);
 
-	std::string art = mainart->getart();
-	std::istringstream iss(art);
-	std::string lineStr;
+	string art = mainart->getart();
+	istringstream iss(art);
+	string lineStr;
 	int offset = 0;
 
 	while (std::getline(iss, lineStr)) {
 		setCursor(0, line + offset);
-		std::cout << lineStr << "                                         ";
+		cout << lineStr << "                                         ";
 		offset++;
 	}
 
@@ -483,7 +485,7 @@ void GameManager::printLog(const string& msg, int line, int& logCount)
 
 	for (char c : msg) 
 	{
-		if (isdigit(c)) 
+		if (isdigit(static_cast<unsigned char>(c)))
 		{
 			if (isDamage) setColor(12);   // 빨강 (데미지)
 			else if (isHeal) setColor(10); // 초록 (회복)

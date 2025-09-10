@@ -24,7 +24,7 @@ void setConsoleSize(int width, int height) {
 
 int main()
 {
-    setConsoleSize(120, 150);
+    setConsoleSize(180, 150);
 
     GameManager gm;
 
@@ -42,6 +42,7 @@ int main()
 
     while (true)
     {
+        gm.setCursor(0, 35);
         cout << "닉네임을 입력해 주세요(공백 불가): "; //공백 입력시 예외 처리 추가 필요
 
         getline(cin, nickname); //일단은 공백 포함에서 모두 받음

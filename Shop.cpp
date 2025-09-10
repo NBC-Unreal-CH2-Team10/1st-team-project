@@ -202,10 +202,10 @@ int Shop::sellLoop(Character* player)
     cout << "--- [ 아이템 판매 ] ---" << endl;
     for (size_t i = 0; i < availableItems.size(); ++i)
     {
-        cout << i + 1 << ". " << availableItems[i]->getName()
-            << " - " << availableItems[i]->getPrice() * 0.6 << " Gold" << endl;
+        cout << i + 1 << ". " << availableItems[i].name
+            << " - " << availableItems[i].price * 0.6 << " Gold" << endl;
     }
-    player->getInventory()->displayInventory()
+    player->getInventory()->displayInventory();
 
     // 인벤토리가 비었을 경우 판매 불가
     if (player->getInventory()->getSize() == 0)
