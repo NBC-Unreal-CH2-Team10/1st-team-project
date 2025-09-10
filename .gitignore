@@ -271,7 +271,7 @@ ipch/
 *.sap
 
 # vcxproj
-*.vcxproj*
+*.vcxproj.*
 
 # Visual Studio Trace Files
 *.e2e
