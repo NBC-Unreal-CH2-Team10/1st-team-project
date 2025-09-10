@@ -10,6 +10,7 @@ class Shop;
 #include "Orc.h"
 #include "Troll.h"
 #include "MainArt.h"
+#include "inventory.h"
 
 class GameManager
 {
@@ -17,11 +18,11 @@ public:
 	Monster* generateMonster(int level);							//캐릭터 레벨을 받아서 몬스터의 레벨 설정
 	Monster* generateBossMonster(int level);
 
-
+	std::vector<string> logs;
 
 	void battle(Character* player, Monster* monster);				//캐릭터 선공, 몬스터 후공으로 한번씩 공격
 	void visitShop();			// 상점을 방문합니다.
-	void manageInventory();			// 인벤토리를 확인하고 아이템을 사용합니다.
+
 	void drawHealthbar(int hp, int maxHp, int barWidth);
 
 
@@ -32,7 +33,8 @@ public:
 	void drawShopArt(Shop* shop, int line);
 	void drawDefeat(Character* player, int line);
 	void drawMainArt(MainArt* mainart, int line);
-	void printLog(const string& msg, int line);
+	void printLog(const string& msg, int line, int& logCount);
+	void clearLogs(int logStartLine);
 
 	Character* player;
 	Shop* shop;

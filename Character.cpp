@@ -16,13 +16,11 @@ Character::Character(std::string name) :
 	killcount(0)
 
 {
-	inventory = new Inventory();
+	inventory = {};
 }
 
 Character::~Character()
 {
-	delete inventory;
-	inventory = nullptr;
 }
 
 void Character :: displayStatus() const
