@@ -3,13 +3,14 @@
 #include <iostream>
 
 using namespace std;
-
+const std::string AttackBoost::BASE_NAME = "공격력 강화";
+const int AttackBoost::BASE_PRICE = 15;
 
 AttackBoost::AttackBoost()
 {
     // 공격력 강화 아이템 초기값 설정
-    name = "공격력 강화";
-    price = 15;
+    name = BASE_NAME;
+    price = BASE_PRICE;
     attackIncrease = 10;
 }
 

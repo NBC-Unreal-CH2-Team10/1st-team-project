@@ -5,11 +5,15 @@
 
 using namespace std;
 
+// 정적 멤버 변수 초기화
+const std::string HealthPotion::BASE_NAME = "체력 물약";
+const int HealthPotion::BASE_PRICE = 10;
+
 HealthPotion::HealthPotion()
 {
-    // 체력포션 초기값 설정
-    name = "체력 물약";
-    price = 10;
+    // 체력포션 초기화
+    name = BASE_NAME;
+    price = BASE_PRICE;
     healthRestore = 50;
 }
 

@@ -9,20 +9,30 @@
 #include <vector>
 #include <Windows.h>
 
+
 Shop::Shop()
 {
-    availableItems.push_back(new HealthPotion());
-    availableItems.push_back(new AttackBoost());
+    availableItems.push_back({
+        HealthPotion::BASE_NAME,    // "체력 물약"
+        HealthPotion::BASE_PRICE,   // 10
+        9,
+        []() { return new HealthPotion(); }
+        });
+    availableItems.push_back({
+        AttackBoost::BASE_NAME,     // "공격력 강화"
+        AttackBoost::BASE_PRICE,    // 15
+        5,
+        []() { return new AttackBoost(); }
+        });
     // ※ 새로운 아이템을 추가하고 싶으면 여기에 추가 . . .
 }
 
 Shop::~Shop()
 {
-    // 상점이 소유한 모든 item 객체를 해제
-    for (auto item : availableItems)
-    {
-        delete item;
-    }
+    //for (auto item : availableItems)
+    //{
+    //    delete item;
+    //}
     availableItems.clear();
 }
 
@@ -32,7 +42,7 @@ void Shop::visit(Character* player)
     std::cout << "\n상점에 방문합니다..." << std::endl;
     std::this_thread::sleep_for(std::chrono::milliseconds(1500));
     int mainChoice = -1;
-    while (mainChoice != 3) // 3을 입력할 때 까지 반복
+    while (mainChoice != 3) // ※ 3을 입력할 때 까지 반복, 기능 추가시 숫자 변경
     {
         displayMainMenu(player);
         std::cin >> mainChoice;
@@ -51,6 +61,11 @@ void Shop::visit(Character* player)
         case 2:
             sellLoop(player); // 판매 루프 시작
             break;
+            /* ※ 상점에서 인벤토리 관리기능 병합시 주석 해제
+        case 3:
+            player->getInventory()->manage(player);
+            break;
+            */
         case 3:
             std::cout << "\n상점에서 나갑니다..." << std::endl;
             std::this_thread::sleep_for(std::chrono::milliseconds(1500));
@@ -100,6 +115,8 @@ void Shop::displayMainMenu(Character* player) const
     std::cout << "--- [ 상점 ] ---" << std::endl;
     std::cout << "1. 아이템 구매" << std::endl;
     std::cout << "2. 아이템 판매" << std::endl;
+    // ※ 인벤토리 관리 기능 추가시 주석 해제
+    //std::cout << "X. 인벤토리 관리" << std::endl;
     std::cout << "3. 나가기" << std::endl;
     std::cout << "-----------------" << std::endl;
     std::cout << "현재 소지 골드: " << player->getGold() << " G\n" << std::endl;
@@ -116,8 +133,9 @@ int Shop::buyLoop(Character* player)
         std::cout << "\n--- [ 아이템 구매 ] ---" << std::endl;
         for (size_t i = 0; i < availableItems.size(); ++i)
         {
-            std::cout << i + 1 << ". " << availableItems[i]->getName()
-                << " - " << availableItems[i]->getPrice() << " Gold" << std::endl;
+            std::cout << i + 1 << ". " << availableItems[i].name
+                << " - " << availableItems[i].price << " Gold"
+                << " (재고: " << availableItems[i].stock << "개)" << std::endl;
         }
         player->getInventory()->displayInventory();
         std::cout << "현재 소지 골드: " << player->getGold() << " G\n" << std::endl;
@@ -152,28 +170,27 @@ int Shop::buyLoop(Character* player)
 // 구매 처리
 void Shop::buyItem(int index, Character* player)
 {
-    Item* itemToBuy = availableItems[index];
+    ShopSlot& itemToBuy = availableItems[index]; // 참조로 가져와서 직접 수정
 
-    // 1. 플레이어의 골드 확인
-    if (player->getGold() >= itemToBuy->getPrice())
+    // 1. 재고 확인
+    if (itemToBuy.stock <= 0)
     {
-        // 2. 플레이어의 골드 차감
-        player->setGold(player->getGold() - itemToBuy->getPrice());
+        std::cout << "해당 아이템은 품절되었습니다." << std::endl;
+        return;
+    }
+    // 2. 플레이어의 골드 확인
+    if (player->getGold() >= itemToBuy.price)
+    {
+        // 3. 플레이어의 골드 차감
+        player->setGold(player->getGold() - itemToBuy.price);
 
-        // 3. 아이템의 '복사본'을 새로 생성하여 플레이어 인벤토리에 추가
-        Item* newItem = nullptr;
-        if (itemToBuy->getName() == "체력 물약") {
-            newItem = new HealthPotion();
-        }
-        else if (itemToBuy->getName() == "공격력 강화") {
-            newItem = new AttackBoost();
-        }
-        // ※ 새로운 아이템이 추가되면 여기에 else if를 추가 ...
+        // 4. Shopslot의 createItem 호출하여 아이템의 '복사본'을 새로 생성
+        Item* newItem = itemToBuy.createItem();
 
-        if (newItem) {
-            player->getInventory()->addItem(newItem, false);
-            std::cout << "'" << itemToBuy->getName() << "'을(를) 구매했습니다." << std::endl;
-        }
+        player->getInventory()->addItem(newItem, false);
+        std::cout << "'" << itemToBuy.name << "'을(를) 구매했습니다." << std::endl;
+        // 5. 재고 감소
+        itemToBuy.stock--;
     }
     else
     {
@@ -191,8 +208,8 @@ int Shop::sellLoop(Character* player)
         std::cout << "--- [ 아이템 판매 ] ---" << std::endl;
         for (size_t i = 0; i < availableItems.size(); ++i)
         {
-            std::cout << i + 1 << ". " << availableItems[i]->getName()
-                << " - " << availableItems[i]->getPrice() * 0.6 << " Gold" << std::endl;
+            std::cout << i + 1 << ". " << availableItems[i].name
+                << " - " << static_cast<int>(availableItems[i].price * 0.6) << " Gold" << std::endl;
         }
         player->getInventory()->displayInventory();
 
@@ -234,15 +251,25 @@ int Shop::sellLoop(Character* player)
 // 판매 처리 함수 작성
 void Shop::sellItem(int index, Character* player)
 {
+    Inventory* playerInventory = player->getInventory();
     Item* itemToSell = player->getInventory()->getItem(index);
 
     // 1. 판매 가격 계산 (원가의 60%)
-    int sellPrice = static_cast<int>(itemToSell->getPrice() * 0.6);
+    int sellPrice = itemToSell->getPrice() * 0.6;
 
     // 2. 플레이어에게 골드 지급
     player->setGold(player->getGold() + sellPrice);
 
     // 3. 인벤토리에서 아이템 제거
     std::cout << "'" << itemToSell->getName() << "'을(를) 판매하여 " << sellPrice << " Gold를 얻었습니다." << std::endl;
-    player->getInventory()->sellItem(index);
+    playerInventory->sellItem(index);
+    // 4. 상점 재고 증가
+    for (auto& slot : availableItems)
+    {
+        if (slot.name == itemToSell->getName())
+        {
+            slot.stock++;
+            break; // 해당 아이템을 찾았으면 루프 종료
+        }
+    }
 }
