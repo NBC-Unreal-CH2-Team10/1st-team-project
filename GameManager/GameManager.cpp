@@ -58,7 +58,7 @@ void GameManager::battle(Character* player, Monster* monster)  // 캐릭터/몬�
             cin.clear();
             cin.ignore(1024, '\n');
             invchoice = -1;
-            cout << "\n잘못된 입력입니다." << endl;
+            cout << "\n잘못된 입력입니다." << '\n';
             this_thread::sleep_for(chrono::milliseconds(1000));
             continue;
         }
@@ -73,7 +73,7 @@ void GameManager::battle(Character* player, Monster* monster)  // 캐릭터/몬�
         }
     }
     
-    std::cout << "전투를 시작합니다!" << std::endl;
+    std::cout << "전투를 시작합니다!" << '\n';
     std::this_thread::sleep_for(std::chrono::milliseconds(1000)); //1초 딜레이
     
     int logline = 30;
@@ -199,7 +199,7 @@ void GameManager::visitShop()
 		{
 			std::cin.clear(); 
 			std::cin.ignore(1000, '\n'); 
-			std::cout << "잘못된 입력입니다. 다시 입력해주세요." << std::endl;
+			std::cout << "잘못된 입력입니다. 다시 입력해주세요." << '\n';
 			continue;
 		}
 
@@ -265,7 +265,7 @@ void GameManager::visitShop()
 		{
 			std::string answer;
 
-			std::cout << "상점을 나가시겠습니까? (Y/N)" << std::endl;
+			std::cout << "상점을 나가시겠습니까? (Y/N)" << '\n';
 			std::cin >> answer;
 			std::cin.ignore(1000, '\n');
 
@@ -273,7 +273,7 @@ void GameManager::visitShop()
 			{
 				std::cin.clear(); // 오류 상태 초기화
 				std::cin.ignore(1000, '\n'); // 잘못된 입력 버리기
-				std::cout << "잘못된 입력입니다. 다시 입력해주세요." << std::endl;
+				std::cout << "잘못된 입력입니다. 다시 입력해주세요." << '\n';
 				continue;
 			}
 
@@ -288,7 +288,7 @@ void GameManager::visitShop()
 		}
 		else
 		{
-			std::cout << "잘못된 입력입니다. 다시 입력해주세요." << std::endl;
+			std::cout << "잘못된 입력입니다. 다시 입력해주세요." << '\n';
 			continue;
 		}
 	}
@@ -335,7 +335,7 @@ void GameManager::playerUI(Character* player) // 콘솔창 상단 고정
 	std::cout << " | 레벨: " << player->getLevel();
 	std::cout << " | 경험치: " << player->getExp() << "/100";
 	std::cout << " | 골드: " << player->getGold() << " G";
-	std::cout << " | 처치한 몬스터 수: " << player->getKillcount() << "마리\n" << std::endl;
+	std::cout << " | 처치한 몬스터 수: " << player->getKillcount() << "마리\n" << '\n';
 }
 
 void GameManager::battleUI(Character* player, Monster* monster, int line)

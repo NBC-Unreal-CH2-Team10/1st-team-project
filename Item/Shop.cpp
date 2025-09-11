@@ -41,7 +41,7 @@ Shop::~Shop()
 // 상점 진입
 void Shop::visit(Character* player)
 {
-    std::cout << "\n상점에 방문합니다..." << std::endl;
+    std::cout << "\n상점에 방문합니다..." << '\n';
     std::this_thread::sleep_for(std::chrono::milliseconds(1500));
     int mainChoice = -1;
     while (mainChoice != 3) // ※ 3을 입력할 때 까지 반복, 기능 추가시 숫자 변경
@@ -69,11 +69,11 @@ void Shop::visit(Character* player)
             break;
             */
         case 3:
-            std::cout << "\n상점에서 나갑니다..." << std::endl;
+            std::cout << "\n상점에서 나갑니다..." << '\n';
             std::this_thread::sleep_for(std::chrono::milliseconds(1500));
             break;
         default:
-            std::cout << "\n잘못된 입력입니다." << std::endl;
+            std::cout << "\n잘못된 입력입니다." << '\n';
             std::this_thread::sleep_for(std::chrono::milliseconds(1500));
             break;
         }
@@ -111,17 +111,17 @@ void Shop::displayMainMenu(Character* player) const
 ⠀⠀⢸⡇⣿                                     ⣿⢸⡇⠀⠀
 ⠀⠀⢸⡇⢿⣤⣤⣤⣤⣤⣤⣤⣤⣤⣤⣤⣤⣤⣤⣤⣤⣤⣤⣤⣤⣤⣤⣤⣤⣤⣤⣤⣤⣤⣤⣤⣤⣤⣤⣤⣤⣤⡿⢸⡇⠀⠀
 ⠀⠀⠘⠛⠛⠛⠛⠛⠛⠛⠛⠛⠛⠛⠛⠛⠛⠛⠛⠛⠛⠛⠛⠛⠛⠛⠛⠛⠛⠛⠛⠛⠛⠛⠛⠛⠛⠛⠛⠛⠛⠛⠛⠛⠃⠀⠀
-)" << std::endl;
+)" << '\n';
     SetConsoleOutputCP(oldCP);
-    std::cout << "\n주인: 어서 오세요! 무엇을 도와드릴까요?\n" << std::endl;
-    std::cout << "--- [ 상점 ] ---" << std::endl;
-    std::cout << "1. 아이템 구매" << std::endl;
-    std::cout << "2. 아이템 판매" << std::endl;
+    std::cout << "\n주인: 어서 오세요! 무엇을 도와드릴까요?\n" << '\n';
+    std::cout << "--- [ 상점 ] ---" << '\n';
+    std::cout << "1. 아이템 구매" << '\n';
+    std::cout << "2. 아이템 판매" << '\n';
     // ※ 인벤토리 관리 기능 추가시 주석 해제
     //std::cout << "X. 인벤토리 관리" << std::endl;
-    std::cout << "3. 나가기" << std::endl;
-    std::cout << "-----------------" << std::endl;
-    std::cout << "현재 소지 골드: " << player->getGold() << " G\n" << std::endl;
+    std::cout << "3. 나가기" << '\n';
+    std::cout << "-----------------" << '\n';
+    std::cout << "현재 소지 골드: " << player->getGold() << " G\n" << '\n';
     std::cout << "선택: ";
 }
 
@@ -133,15 +133,15 @@ int Shop::buyLoop(Character* player)
     //cout << "\n--- [ 아이템 구매 ] ---" << endl;
     for (size_t i = 0; i < availableItems.size(); ++i)
     {
-        std::cout << "\n--- [ 아이템 구매 ] ---" << std::endl;
+        std::cout << "\n--- [ 아이템 구매 ] ---" << '\n';
         for (size_t i = 0; i < availableItems.size(); ++i)
         {
             std::cout << i + 1 << ". " << availableItems[i].name
                 << " - " << availableItems[i].price << " Gold"
-                << " (재고: " << availableItems[i].stock << "개)" << std::endl;
+                << " (재고: " << availableItems[i].stock << "개)" << '\n';
         }
         player->getInventory()->displayInventory();
-        std::cout << "현재 소지 골드: " << player->getGold() << " G\n" << std::endl;
+        std::cout << "현재 소지 골드: " << player->getGold() << " G\n" << '\n';
         std::cout << "\n구매할 아이템 번호를 입력하세요 (0: 뒤로 가기): ";
         std::cin >> buyChoice;
 
@@ -150,7 +150,7 @@ int Shop::buyLoop(Character* player)
             std::cin.clear();
             std::cin.ignore(1024, '\n');
             buyChoice = -1;
-            std::cout << "잘못된 입력입니다." << std::endl;
+            std::cout << "잘못된 입력입니다." << '\n';
             std::this_thread::sleep_for(std::chrono::milliseconds(1500));
 			return -1;
         }
@@ -160,7 +160,7 @@ int Shop::buyLoop(Character* player)
         }
         else
         {
-            cout << "\n잘못된 아이템 번호입니다." << endl;
+            cout << "\n잘못된 아이템 번호입니다." << '\n';
             std::this_thread::sleep_for(std::chrono::milliseconds(1500));
             return -2;
         }
@@ -177,7 +177,7 @@ void Shop::buyItem(int index, Character* player)
     // 1. 재고 확인
     if (itemToBuy.stock <= 0)
     {
-        std::cout << "해당 아이템은 품절되었습니다." << std::endl;
+        std::cout << "해당 아이템은 품절되었습니다." << '\n';
         this_thread::sleep_for(chrono::milliseconds(1500));
         return;
     }
@@ -191,14 +191,14 @@ void Shop::buyItem(int index, Character* player)
         Item* newItem = itemToBuy.createItem();
 
         player->getInventory()->addItem(newItem, false);
-        std::cout << "'" << itemToBuy.name << "'을(를) 구매했습니다." << std::endl;
+        std::cout << "'" << itemToBuy.name << "'을(를) 구매했습니다." << '\n';
         this_thread::sleep_for(chrono::milliseconds(1500));
         // 5. 재고 감소
         itemToBuy.stock--;
     }
     else
     {
-        std::cout << "골드가 부족합니다." << std::endl;
+        std::cout << "골드가 부족합니다." << '\n';
         this_thread::sleep_for(chrono::milliseconds(1500));
     }
     delete gm;
@@ -209,22 +209,22 @@ int Shop::sellLoop(Character* player)
 {
     int sellChoice = -1;
 
-    cout << "--- [ 아이템 판매 ] ---" << endl;
+    cout << "--- [ 아이템 판매 ] ---" << '\n';
     for (size_t i = 0; i < availableItems.size(); ++i)
     {
         cout << i + 1 << ". " << availableItems[i].name
-            << " - " << availableItems[i].price * 0.6 << " Gold" << endl;
+            << " - " << availableItems[i].price * 0.6 << " Gold" << '\n';
     }
     player->getInventory()->displayInventory();
 
     // 인벤토리가 비었을 경우 판매 불가
     if (player->getInventory()->getSize() == 0)
     {
-        cout << "\n판매할 아이템이 없습니다." << endl;
+        cout << "\n판매할 아이템이 없습니다." << '\n';
         this_thread::sleep_for(chrono::milliseconds(1500));
         return 0;
     }
-    cout << "현재 소지 골드: " << player->getGold() << " G\n" << endl;
+    cout << "현재 소지 골드: " << player->getGold() << " G\n" << '\n';
     cout << "\n판매할 아이템 번호를 입력하세요 (0: 뒤로 가기): ";
     cin >> sellChoice;
 
@@ -233,7 +233,7 @@ int Shop::sellLoop(Character* player)
         cin.clear();
         cin.ignore(1024, '\n');
         sellChoice = -1;
-        cout << "잘못된 입력입니다." << endl;
+        cout << "잘못된 입력입니다." << '\n';
         this_thread::sleep_for(chrono::milliseconds(1500));
         return sellChoice;
     }
@@ -262,7 +262,7 @@ void Shop::sellItem(int index, Character* player)
     player->setGold(player->getGold() + sellPrice);
 
     // 3. 인벤토리에서 아이템 제거
-    std::cout << "'" << itemToSell->getName() << "'을(를) 판매하여 " << sellPrice << " Gold를 얻었습니다." << std::endl;
+    std::cout << "'" << itemToSell->getName() << "'을(를) 판매하여 " << sellPrice << " Gold를 얻었습니다." << '\n';
     playerInventory->sellItem(index);
     // 4. 상점 재고 증가
     //for (auto& slot : availableItems)
