@@ -25,31 +25,31 @@ Character::~Character()
 void Character :: displayStatus() const
 {
 	std::cout << "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━";
-	std::cout << std::endl;
+	std::cout << '\n';
 	std::cout << "이름 : " << name << "\n";
 	std::cout << "Lv : " << level << "\n";
 	std::cout << "경험치 : " << experience << "\n";
 	std::cout << "HP : " << health << "/"<<maxHealth<< "\n";
 	std::cout << "공격력 : " << attack << "\n";
 	std::cout << "처치한 몬스터 수 : " << killcount;
-	std::cout << std::endl;
+	std::cout << '\n';
 	std::cout << "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━";
 }
 
 void Character :: levelUp()
 {
 		experience -= 100;
-		std::cout << std::endl;
-		std::cout << "레벨업 했습니다!" << std::endl;
+		std::cout << '\n';
+		std::cout << "레벨업 했습니다!" << '\n';
 		++level;
 		maxHealth += level * 20;
 		health = maxHealth;
 		std::cout << "체력이 모두 회복됐습니다.\n";
 		attack += level * 5;
 		std::cout << "공격력이 상승했습니다.\n";
-		std::cout << "현재 Lv : " << level << std::endl;
-		std::cout << "현재 체력 :" << health << "/" << maxHealth << std::endl;
-		std::cout << "현재 공격력 :" << attack << std::endl;
+		std::cout << "현재 Lv : " << level << '\n';
+		std::cout << "현재 체력 :" << health << "/" << maxHealth << '\n';
+		std::cout << "현재 공격력 :" << attack << '\n';
 }
 
 int Character::getAttack()
