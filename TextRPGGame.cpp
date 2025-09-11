@@ -41,7 +41,7 @@ int main()
     delete mainart;
     
     gm.setCursor(5, 160);
-    std::cout << "Press any key to start..." << std::endl;
+    std::cout << "Press any key to start..." << '\n';
     _getch();  // 키 입력 대기 (Enter 불필요)
 
     string nickname;
@@ -98,7 +98,7 @@ int main()
                 gm.battle(player, monster);
 
                 //경험치 획득 문구 출력, 레벨 업 문구 출력
-                cout << "50 Exp를 획득했습니다." << endl;
+                cout << "50 Exp를 획득했습니다." << '\n';
                 this_thread::sleep_for(chrono::milliseconds(1000));
 
                 player->setExp(player->getExp() + 50);
@@ -114,8 +114,8 @@ int main()
                 system("cls");
 
                 gm.drawDefeat(player, 1);
-                cout << "\n" << endl;
-                cout << e.what() << endl; //플레이어 사망시 프로그램 종료
+                cout << "\n" << '\n';
+                cout << e.what() << '\n'; //플레이어 사망시 프로그램 종료
 
                 player->displayStatus();
                 delete player;
@@ -125,21 +125,21 @@ int main()
             //전투 종료 후 상점 방문
             system("cls");
             gm.playerUI(player);
-            cout << "\n" << endl;
+            cout << "\n" << '\n';
 
             string answer;
 
             while (true)
             {
 
-                cout << "상점을 방문하시겠습니까? (Y/N)" << endl;
+                cout << "상점을 방문하시겠습니까? (Y/N)" << '\n';
                 cin >> answer;
 
                 if (cin.fail()) //잘 못된 타입이 입력되면 true 반환
                 {
                     cin.clear(); // 오류 상태 초기화
                     cin.ignore(1000, '\n'); // 잘못된 입력 버리기
-                    cout << "잘못된 입력입니다. 다시 입력해주세요." << endl;
+                    cout << "잘못된 입력입니다. 다시 입력해주세요." << '\n';
                     continue;
                 }
 
@@ -167,7 +167,7 @@ int main()
                 gm.drawclearArt(player, 2);
 
                 gm.setCursor(0, 35);
-                cout << "보스 몬스터를 처치했습니다!" << endl;
+                cout << "보스 몬스터를 처치했습니다!" << '\n';
                 player->displayStatus();
                 break;
             }
@@ -176,8 +176,8 @@ int main()
                 system("cls");
 
                 gm.drawDefeat(player, 1);
-                cout << "\n" << endl;
-                cout << e.what() << endl; //플레이어 사망시 프로그램 종료
+                cout << "\n" << '\n';
+                cout << e.what() << '\n'; //플레이어 사망시 프로그램 종료
 
                 player->displayStatus();
                 delete player;

@@ -32,7 +32,7 @@ void AttackBoost::use(Character* character)
     int currentAttack = character->getAttack();
     character->setAttack(currentAttack + attackIncrease);
 
-    cout << name << "을(를) 사용했습니다. 공격력이 영구적으로 " << attackIncrease << " 증가합니다!" << endl;
-    cout << "현재 공격력: " << character->getAttack() << endl;
+    cout << name << "을(를) 사용했습니다. 공격력이 영구적으로 " << attackIncrease << " 증가합니다!" << '\n';
+    cout << "현재 공격력: " << character->getAttack() << '\n';
     this_thread::sleep_for(chrono::milliseconds(1500));
 }

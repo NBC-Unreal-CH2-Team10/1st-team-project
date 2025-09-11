@@ -24,9 +24,9 @@ void Inventory::manage(Character* owner)
     while (choice != 0) // 0을 입력할 때 까지 반복
     {
         system("cls");
-        cout << "\n--- [ 캐릭터 상태 ] ---" << endl;
-        cout << "체력: " << owner->getHealth() << " / " << owner->getMaxHealth() << endl;
-        cout << "공격력: " << owner->getAttack() << endl;
+        cout << "\n--- [ 캐릭터 상태 ] ---" << '\n';
+        cout << "체력: " << owner->getHealth() << " / " << owner->getMaxHealth() << '\n';
+        cout << "공격력: " << owner->getAttack() << '\n';
         displayInventory();
 
         if (getSize() == 0) // 인벤토리가 비었다면 1.5초 대기 후 뒤로가기
@@ -43,7 +43,7 @@ void Inventory::manage(Character* owner)
             cin.clear();
             cin.ignore(1024, '\n');
             choice = -1;
-            cout << "\n잘못된 입력입니다." << endl;
+            cout << "\n잘못된 입력입니다." << '\n';
             this_thread::sleep_for(chrono::milliseconds(1500));
             continue;
         }
@@ -56,7 +56,7 @@ void Inventory::manage(Character* owner)
         // 잘못된 번호 처리
         else if (choice != 0)
         {
-            cout << "\n잘못된 번호입니다." << endl;
+            cout << "\n잘못된 번호입니다." << '\n';
             this_thread::sleep_for(chrono::milliseconds(1500));
         }
     }
@@ -76,7 +76,7 @@ void Inventory::addItem(Item* newItem, bool showMessage)
             // 4. 새로 생성된 newItem 객체는 메모리 해제
             delete newItem;
             if (showMessage) {
-                cout <<"\n" << "'" << slot.item->getName() << "'을(를) 획득했습니다." << endl;
+                cout <<"\n" << "'" << slot.item->getName() << "'을(를) 획득했습니다." << '\n';
             }
             return;
         }
@@ -88,7 +88,7 @@ void Inventory::addItem(Item* newItem, bool showMessage)
     newSlot.quantity = 1;
     slots.push_back(newSlot);
     if (showMessage) {
-        cout << "'" << newItem->getName() << "'을(를) 획득했습니다." << endl;
+        cout << "'" << newItem->getName() << "'을(를) 획득했습니다." << '\n';
     }
 }
 
@@ -127,20 +127,20 @@ const vector<InventorySlot>& Inventory::getSlots() const
 // 인벤토리 크기를 검사하고 내용을 출력하는 함수
 void Inventory::displayInventory() const
 {
-    cout << "\n--- [ 인벤토리 ] ---" << endl;
+    cout << "\n--- [ 인벤토리 ] ---" << '\n';
     if (slots.empty())
     {
-        cout << "비어있습니다..." << endl;
+        cout << "비어있습니다..." << '\n';
     }
     else
     {
         for (size_t i = 0; i < slots.size(); ++i)
         {
             cout << i + 1 << ". " << slots[i].item->getName()
-                << " (" << slots[i].quantity << "개)" << endl;
+                << " (" << slots[i].quantity << "개)" << '\n';
         }
     }
-    cout << "--------------------" << endl;
+    cout << "--------------------" << '\n';
 }
 
 // 아이템을 사용하고 수량을 관리하는 함수
@@ -149,7 +149,7 @@ void Inventory::useItem(int index, Character* owner)
     // 인덱스가 유효하지 않으면 사용없이 종료
     if (index < 0 || index >= slots.size())
     {
-        cout << "잘못된 번호입니다." << endl;
+        cout << "잘못된 번호입니다." << '\n';
         return;
     }
 
@@ -162,7 +162,7 @@ void Inventory::useItem(int index, Character* owner)
     // 수량이 0이 되면 인벤토리에서 제거
     if (slots[index].quantity <= 0)
     {
-        cout << "'" << slots[index].item->getName() << "'을(를) 모두 사용했습니다." << endl;
+        cout << "'" << slots[index].item->getName() << "'을(를) 모두 사용했습니다." << '\n';
         delete slots[index].item; // 아이템 객체 메모리 해제
         slots.erase(slots.begin() + index); // 벡터에서 슬롯 제거
     }
