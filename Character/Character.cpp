@@ -7,7 +7,7 @@ Character* Character::instance = nullptr;
 Character::Character(std::string name) :
 	name(name),
 	level(1),
-	health(100),
+	health(20),
 	maxHealth(100),
 	attack(5),
 	experience(0),
