@@ -4,20 +4,54 @@
 
 # 프로젝트 소개
 
+이 게임은 무수한 에러 끝에 보스몬스터를 쓰러뜨리는데 성공한 김전사30호기의 이야기를
+담고 있습니다.
+
 ## 소제목
+
+김전사30호기의 모험
 
 # 프로젝트 목표
 
+그 동안 배운 C++ 문법들을 총동원해서 간단한 게임을 만들어 보고 팀 프로젝트를 진행하면서 소통의 중요성과 git 사용법에 대해 배운다.
+
 # 프로젝트 구조
 ```less
-MUD_RPG_PROJECT
-┣ src
-┃ ┣ main.cpp // 메인 함수 진입점
-┃ ┗ game // 게임 디렉토리 (필요한 헤더 파일, 구현부 파일 위치)
-┃ ┃ ┣ character.h // 캐릭터 시스템 헤더
-┃ ┃ ┣ character.cpp // 캐릭터 시스템 구현
-┣ tests // 테스트 코드
-// 이외에 필요한 디렉토리 혹은 파일들...
+TextRPGGAme
+┗ src
+  │  TextRPGGame.cpp
+  │  TextRPGGame.sln
+  │                          
+  ├─Character
+  │      Character.cpp
+  │      Character.h
+  │      
+  ├─GameManager
+  │      GameManager.cpp
+  │      GameManager.h
+  │      MainArt.h
+  │      
+  ├─Item
+  │      AttackBoost.cpp
+  │      AttackBoost.h
+  │      HealthPotion.cpp
+  │      HealthPotion.h
+  │      inventory.cpp
+  │      inventory.h
+  │      item.h
+  │      Shop.cpp
+  │      Shop.h
+  │      
+  └─Monster
+         BossMonster.cpp
+         BossMonster.h
+         Goblin.cpp
+         Goblin.h
+         Monster.h
+         Orc.cpp
+         Orc.h
+         Troll.cpp
+         Troll.h
 ```
 # 미리보기
 
