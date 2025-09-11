@@ -1,6 +1,10 @@
 ﻿// TextRPGGame.cpp : This file contains the 'main' function. Program execution begins and ends there.
 //
 
+#define _CRTDBG_MAP_ALLOC
+#include <stdlib.h>
+#include <crtdbg.h>
+
 #include <string>
 #include <iostream>
 #include <vector>
@@ -181,6 +185,8 @@ int main()
             }
         }
     }
+    _CrtSetReportMode(_CRT_WARN, _CRTDBG_MODE_DEBUG);
+    _CrtDumpMemoryLeaks();
     return 0;
 }
 
